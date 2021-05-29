@@ -28,9 +28,10 @@ namespace PhiGraphicsEngineExample
          Renderer.obj.addText(sceneSwitchMessage);
       }
 
-      public override IScene OnKeyDownEvent(System.Windows.Forms.Keys key)
+      public override IScene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent)
       {
          // by default, do not switch scenes
+         System.Windows.Forms.Keys key = keyevent.KeyCode;
          IScene toSwitchTo = this;
          if (key == SWITCH_TO_SCENE_2)
          {

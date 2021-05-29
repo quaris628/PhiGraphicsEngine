@@ -38,7 +38,17 @@ namespace phi
        *         'return this' to retain focus on this scene
        *         'return null' to exit application
        */
-      IScene OnKeyDownEvent(System.Windows.Forms.Keys key);
+      IScene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent);
+
+      /**
+       * Run on each MouseEvent
+       * (That is, is run exactly once for each time a Mousebutton is pressed down)
+       * @Param Mousevent that was created
+       * @Return Interactable scene to switch to next
+       *         'return this' to retain focus on this scene
+       *         'return null' to exit application
+       */
+       IScene OnMouseEvent(System.Windows.Forms.MouseEventArgs e);
 
       /**
        * Run on each frame
