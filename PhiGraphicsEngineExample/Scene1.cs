@@ -14,18 +14,24 @@ namespace PhiGraphicsEngineExample
 
       private TextOverlay sceneLabel;
       private TextOverlay sceneSwitchMessage;
+      private Ball ball;
+      private bool ballToggler;
+
 
       public Scene1()
       {
          sceneLabel = new TextOverlay("This is scene 1");
          sceneSwitchMessage = new TextOverlay(
             "Press 2 to switch to scene 2", 0, 20);
+         ball = new Ball();
+         
       }
 
       public override void Initialize()
       {
          Renderer.obj.addText(sceneLabel);
          Renderer.obj.addText(sceneSwitchMessage);
+         Renderer.obj.addRenderable(ball, 0);
       }
 
       public override IScene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent)
@@ -38,6 +44,33 @@ namespace PhiGraphicsEngineExample
             toSwitchTo = new Scene2();
          }
          return toSwitchTo;
+      }
+
+      public override IScene OnFrameTickEvent()
+      {
+         if(ballToggler)
+         {
+            if(ball.getSprite().getX() > 300)
+            {
+               ballToggler = !ballToggler;
+            }
+            else
+            {
+               ball.getSprite().setX(ball.getSprite().getX() + 3);
+            }
+         }
+         else
+         {
+            if (ball.getSprite().getX() <= 0)
+            {
+               ballToggler = !ballToggler;
+            }
+            else
+            {
+               ball.getSprite().setX(ball.getSprite().getX() - 3);
+            }
+         }
+         return this;  
       }
 
    }
