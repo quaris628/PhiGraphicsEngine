@@ -47,7 +47,7 @@ namespace phi
          pictureBox.Height = WIN_HEIGHT;
          pictureBox.Width = WIN_WIDTH;
          pictureBox.Image = Image.FromFile(Renderer.DEFAULT_BACKGROUND);
-         Renderer.obj.setPictureBox(pictureBox);
+         Renderer.obj.setOutputImage(pictureBox.Image);
 
          // set up keypress detection
          this.KeyPreview = true;
@@ -88,6 +88,7 @@ namespace phi
       {
          IScene newScene = activeScene.OnFrameTickEvent();
          Renderer.obj.Render();
+         pictureBox.Image = pictureBox.Image; // this forces some sort of update: DO NOT DELETE
          switchSceneTo(newScene);
       }
 

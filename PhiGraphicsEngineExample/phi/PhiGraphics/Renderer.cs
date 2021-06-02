@@ -11,7 +11,7 @@ namespace phi
    {
       public const string DEFAULT_BACKGROUND = WindowsForm.FILE_HOME + "phi/PhiGraphics/defaultBackground.png";
 
-      private System.Windows.Forms.PictureBox pictureBox;
+      private Image outputImage;
       private Image defaultBackground;
       private Image background;
       private SortedList<int, LinkedList<Renderable>> layers;
@@ -26,7 +26,7 @@ namespace phi
 
       /**
        * Singleton Renderer class
-       * Make sure to set the picture box output before rendering
+       * Make sure to set the output image before rendering
        * @author Nathan Swartz
        */
       public static readonly Renderer obj = new Renderer();
@@ -47,10 +47,11 @@ namespace phi
       }
 
       /**
-        * Sets the picture box UI element to output images onto
+        * Sets the image to draw images on top of
+        * Is also the output (pass by reference)
         * Should be set before any render() call; render() may throw an exception otherwise
         */
-      public void setPictureBox(System.Windows.Forms.PictureBox pictureBox) { this.pictureBox = pictureBox; this.hasChanged = true; }
+      public void setOutputImage(Image outputImage) { this.outputImage = outputImage; this.hasChanged = true; }
       /**
        * Sets the background that all drawn images are stacked on top of
        */
@@ -69,7 +70,7 @@ namespace phi
       }
 
       /**
-       * Combines all images in the queue onto the pictureBox display
+       * Combines all images in the queue onto the output image
        * Starts with a clean background each time
        * Images appear stacked on top of each other, with the last added to the
        *    queue on top
@@ -84,7 +85,7 @@ namespace phi
       {
          if (this.hasChanged)
          {
-            Graphics g = Graphics.FromImage(pictureBox.Image);
+            Graphics g = Graphics.FromImage(outputImage);
             //g.Clear(SystemColors.AppWorkspace);
             g.DrawImage(background, 0, 0);
             calculateDisplacement();
@@ -115,7 +116,6 @@ namespace phi
             }
 
             g.Dispose();
-            pictureBox.Image = pictureBox.Image; // this forces an update, do not delete
             this.hasChanged = false;
          }
       }
@@ -143,8 +143,8 @@ namespace phi
       {
          isCentered = true;
          centerSprite = s;
-         this.center_X_Displacement = pictureBox.Width / 2 - s.getImage().Width;
-         this.center_Y_Displacement = pictureBox.Height / 2 - s.getImage().Height;
+         this.center_X_Displacement = outputImage.Width / 2 - s.getImage().Width;
+         this.center_Y_Displacement = outputImage.Height / 2 - s.getImage().Height;
       }
 
       /**
@@ -186,7 +186,7 @@ namespace phi
        */
       private int isDisplacedX()
       {
-         if (centerSprite.getX() + centerSprite.getImage().Width + displacementX + center_X_Displacement > pictureBox.Width)
+         if (centerSprite.getX() + centerSprite.getImage().Width + displacementX + center_X_Displacement > outputImage.Width)
          {
             return -1;
          }
@@ -201,7 +201,7 @@ namespace phi
 
       private int isDisplacedY()
       {
-         if (centerSprite.getY() + centerSprite.getImage().Height + displacementY + center_Y_Displacement > pictureBox.Height)
+         if (centerSprite.getY() + centerSprite.getImage().Height + displacementY + center_Y_Displacement > outputImage.Height)
          {
             return -1;
          }
