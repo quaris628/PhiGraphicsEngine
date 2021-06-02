@@ -20,6 +20,7 @@ namespace phi
       private const int FPS = 60;
 
       private PictureBox pictureBox;
+      private Renderer renderer;
       private Timer frameTimer = new Timer();
 
       private IScene activeScene;
@@ -47,7 +48,9 @@ namespace phi
          pictureBox.Height = WIN_HEIGHT;
          pictureBox.Width = WIN_WIDTH;
          pictureBox.Image = Image.FromFile(Renderer.DEFAULT_BACKGROUND);
-         Renderer.obj.setOutputImage(pictureBox.Image);
+
+         // create renderer to manage the image output
+         renderer = new Renderer(pictureBox.Image);
 
          // set up keypress detection
          this.KeyPreview = true;
@@ -61,8 +64,8 @@ namespace phi
 
          // set up MainMenu as "entry point"-ish
          activeScene = ENTRY_SCENE;
-         Renderer.obj.setBackground(activeScene.GetBackgroundImage());
-         activeScene.Initialize();
+         renderer.setBackground(activeScene.GetBackgroundImage());
+         activeScene.Initialize(renderer);
 
          this.Controls.Add(pictureBox); // is this line needed?
       }
@@ -87,7 +90,7 @@ namespace phi
       private void frameTimer_Tick(object sender, EventArgs e)
       {
          IScene newScene = activeScene.OnFrameTickEvent();
-         Renderer.obj.Render();
+         renderer.Render();
          pictureBox.Image = pictureBox.Image; // this forces some sort of update: DO NOT DELETE
          switchSceneTo(newScene);
       }
@@ -101,12 +104,12 @@ namespace phi
          else if (!activeScene.Equals(newScene))
          {
             // clean up old scene
-            Renderer.obj.clearAll();
+            renderer.clearAll();
             activeScene.Close();
 
             // display new scene
-            Renderer.obj.setBackground(newScene.GetBackgroundImage());
-            newScene.Initialize();
+            renderer.setBackground(newScene.GetBackgroundImage());
+            newScene.Initialize(renderer);
 
             activeScene = newScene;
          }

@@ -9,9 +9,11 @@ namespace phi
 {
    public class Sprite : ISprite
    {
-      Image myImage;
-      int x;
-      int y;
+      private Image myImage;
+      private int x;
+      private int y;
+      private Renderer renderer;
+
       public Sprite(Image img, int x, int y)
       {
          if (img == null) { throw new ArgumentNullException(); }
@@ -77,7 +79,8 @@ namespace phi
       }
 
       // each time this sprite has a visible change made, indicate this Renderer also has a visible change made
-      private void flagChange() { Renderer.obj.HasChanged(); }
+      public void setRenderer(Renderer renderer) { this.renderer = renderer; }
+      private void flagChange() { renderer.FlagChange(); }
 
    }
 }

@@ -22,5 +22,7 @@ namespace phi
       void FlipY();
       ISprite RotateLeft();
       ISprite RotateRight();
+
+      void setRenderer(Renderer renderer);
    }
 }

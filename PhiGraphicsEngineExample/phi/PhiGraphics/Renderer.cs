@@ -11,7 +11,7 @@ namespace phi
    {
       public const string DEFAULT_BACKGROUND = WindowsForm.FILE_HOME + "phi/PhiGraphics/defaultBackground.png";
 
-      private Image outputImage;
+      private Image output;
       private Image defaultBackground;
       private Image background;
       private SortedList<int, LinkedList<Renderable>> layers;
@@ -24,15 +24,9 @@ namespace phi
       private int displacementY;
       private bool hasChanged;
 
-      /**
-       * Singleton Renderer class
-       * Make sure to set the output image before rendering
-       * @author Nathan Swartz
-       */
-      public static readonly Renderer obj = new Renderer();
-
-      private Renderer()
+      public Renderer(Image output)
       {
+         this.output = output;
          this.defaultBackground = Image.FromFile(DEFAULT_BACKGROUND);
          this.background = (Image)this.defaultBackground.Clone();
          this.layers = new SortedList<int, LinkedList<Renderable>>();
@@ -49,9 +43,9 @@ namespace phi
       /**
         * Sets the image to draw images on top of
         * Is also the output (pass by reference)
-        * Should be set before any render() call; render() may throw an exception otherwise
         */
-      public void setOutputImage(Image outputImage) { this.outputImage = outputImage; this.hasChanged = true; }
+      public void setOutput(Image outputImage) { this.output = outputImage; this.hasChanged = true; }
+      
       /**
        * Sets the background that all drawn images are stacked on top of
        */
@@ -85,8 +79,7 @@ namespace phi
       {
          if (this.hasChanged)
          {
-            Graphics g = Graphics.FromImage(outputImage);
-            //g.Clear(SystemColors.AppWorkspace);
+            Graphics g = Graphics.FromImage(output);
             g.DrawImage(background, 0, 0);
             calculateDisplacement();
 
@@ -97,7 +90,6 @@ namespace phi
                {
                   if (renderable.isDisplaying())
                   {
-                     //Console.WriteLine(renderable);
                      ISprite s = renderable.getSprite();
                      g.DrawImage(s.getImage(),
                         s.getX() + displacementX,
@@ -127,12 +119,17 @@ namespace phi
             // create new sub-list for a new layer
             layers.Add(layer, new LinkedList<Renderable>());
          }
-         layers[layer].AddLast(renderable); // layers.ElementAt(layer).Value.AddLast(renderable);
+         layers[layer].AddLast(renderable);
+         renderable.getSprite().setRenderer(this);
          this.hasChanged = true;
       }
       public void clearLayer(int layer) { layers.Remove(layer); this.hasChanged = true; }
       public void clearRenderables() { layers.Clear(); this.hasChanged = true; removeCenter(); }
-      public void addText(TextOverlay t) { texts.AddLast(t); this.hasChanged = true; }
+      public void addText(TextOverlay t) {
+         texts.AddLast(t);
+         t.setRenderer(this);
+         this.hasChanged = true;
+      }
       public void clearTexts() { texts.Clear(); this.hasChanged = true; }
       public void clearAll() { clearRenderables(); clearTexts(); this.hasChanged = true; }
 
@@ -143,8 +140,8 @@ namespace phi
       {
          isCentered = true;
          centerSprite = s;
-         this.center_X_Displacement = outputImage.Width / 2 - s.getImage().Width;
-         this.center_Y_Displacement = outputImage.Height / 2 - s.getImage().Height;
+         this.center_X_Displacement = output.Width / 2 - s.getImage().Width;
+         this.center_Y_Displacement = output.Height / 2 - s.getImage().Height;
       }
 
       /**
@@ -186,7 +183,7 @@ namespace phi
        */
       private int isDisplacedX()
       {
-         if (centerSprite.getX() + centerSprite.getImage().Width + displacementX + center_X_Displacement > outputImage.Width)
+         if (centerSprite.getX() + centerSprite.getImage().Width + displacementX + center_X_Displacement > output.Width)
          {
             return -1;
          }
@@ -201,7 +198,7 @@ namespace phi
 
       private int isDisplacedY()
       {
-         if (centerSprite.getY() + centerSprite.getImage().Height + displacementY + center_Y_Displacement > outputImage.Height)
+         if (centerSprite.getY() + centerSprite.getImage().Height + displacementY + center_Y_Displacement > output.Height)
          {
             return -1;
          }
@@ -214,6 +211,6 @@ namespace phi
 
       }
 
-      public void HasChanged() { this.hasChanged = true; }
+      public void FlagChange() { this.hasChanged = true; }
    }
 }

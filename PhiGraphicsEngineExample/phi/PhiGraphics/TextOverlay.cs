@@ -11,11 +11,13 @@ namespace phi
    {
       private const string DEFAULT_TEXT_FONT = "Arial";
       private const float DEFAULT_TEXT_SIZE = 14;
+
       private string message;
       private string textFont;
       private float textSize;
       private int x;
       private int y;
+      private Renderer renderer;
 
       public TextOverlay(string message)
       {
@@ -61,6 +63,7 @@ namespace phi
 
       // each time this text has a visible change made, indicate this Renderer
       //    also has a visible change made
-      private void flagChange() { Renderer.obj.HasChanged(); }
+      public void setRenderer(Renderer renderer) { this.renderer = renderer; }
+      private void flagChange() { renderer.FlagChange(); }
    }
 }

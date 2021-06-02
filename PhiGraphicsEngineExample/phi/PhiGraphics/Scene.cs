@@ -14,10 +14,14 @@ namespace phi
     */
    public abstract class Scene : IScene
    {
+      protected Renderer renderer;
       protected IScene prevScene;
-      protected Scene(IScene prevScene) { this.prevScene = prevScene; }
+      protected Scene(IScene prevScene)
+      {
+         this.prevScene = prevScene;
+      }
       public virtual Image GetBackgroundImage() { return null; }
-      public virtual void Initialize() { }
+      public virtual void Initialize(Renderer renderer) { this.renderer = renderer; }
       public virtual IScene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent) { return this; }
       public virtual IScene OnMouseEvent(System.Windows.Forms.MouseEventArgs e) { return this; }
       public virtual IScene OnFrameTickEvent() { return this; }

@@ -32,11 +32,12 @@ namespace PhiGraphicsEngineExample
          sceneSwitchMessage = new TextOverlay(SWITCH_MSG, 0, SWITCH_MSG_Y);
       }
 
-      public override void Initialize()
+      public override void Initialize(Renderer renderer)
       {
-         Renderer.obj.addText(sceneTitle);
-         Renderer.obj.addText(backMessage);
-         Renderer.obj.addText(sceneSwitchMessage);
+         base.Initialize(renderer);
+         renderer.addText(sceneTitle);
+         renderer.addText(backMessage);
+         renderer.addText(sceneSwitchMessage);
       }
 
       public override IScene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent)

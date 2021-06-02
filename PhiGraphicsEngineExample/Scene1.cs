@@ -36,12 +36,13 @@ namespace PhiGraphicsEngineExample
          ball = new Ball();
       }
 
-      public override void Initialize()
+      public override void Initialize(Renderer renderer)
       {
-         Renderer.obj.addText(sceneTitle);
-         Renderer.obj.addText(backMessage);
-         Renderer.obj.addText(sceneSwitchMessage);
-         Renderer.obj.addRenderable(ball, 0);
+         base.Initialize(renderer);
+         renderer.addText(sceneTitle);
+         renderer.addText(backMessage);
+         renderer.addText(sceneSwitchMessage);
+         renderer.addRenderable(ball, 0);
       }
 
       public override IScene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent)

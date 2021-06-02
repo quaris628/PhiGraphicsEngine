@@ -6,6 +6,6 @@ add mouse event features
 optimize keyDownEvent into "subscribe for when this key is pressed" system?
 
 MINOR:
-make default renderer background image not need a file
-Change Renderer from singleton to attached to a certain image output ( Renderer(image) )
+make default renderer background image not need a file? (maybe not possible/feasible)
 bug? a single keypress is sometimes interpreted as multiple KeyDown events
+~optimize renderer.Render()?
