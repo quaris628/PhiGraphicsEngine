@@ -9,7 +9,7 @@ namespace phi
 {
    public class Renderer
    {
-      public const string DEFAULT_BACKGROUND = WindowsForm.FILE_HOME + "phi/defaultBackground.png";
+      public const string DEFAULT_BACKGROUND = WindowsForm.FILE_HOME + "phi/PhiGraphics/defaultBackground.png";
 
       private System.Windows.Forms.PictureBox pictureBox;
       private Image defaultBackground;

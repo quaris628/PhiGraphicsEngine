@@ -18,7 +18,8 @@ namespace phi
       protected Scene(IScene prevScene) { this.prevScene = prevScene; }
       public virtual Image GetBackgroundImage() { return null; }
       public virtual void Initialize() { }
-      public virtual IScene OnKeyDownEvent(System.Windows.Forms.Keys key) { return this; }
+      public virtual IScene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent) { return this; }
+      public virtual IScene OnMouseEvent(System.Windows.Forms.MouseEventArgs e) { return this; }
       public virtual IScene OnFrameTickEvent() { return this; }
       public virtual void Close() { }
    }

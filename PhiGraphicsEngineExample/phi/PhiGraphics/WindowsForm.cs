@@ -75,7 +75,9 @@ namespace phi
        */
       private void WindowsForm_KeyDown(object sender, KeyEventArgs e)
       {
-         switchSceneTo(activeScene.OnKeyDownEvent(e.KeyCode));
+         switchSceneTo(activeScene.OnKeyDownEvent(e));
+         IScene newScene = activeScene.OnKeyDownEvent(e);
+         switchSceneTo(newScene);
       }
 
       /**
