@@ -26,7 +26,7 @@ namespace phi
 
       /**
        * Run each time this scene is switched to, immediately prior to this
-       * scene being displayed
+       *    scene being displayed
        */
       void Initialize();
 
@@ -49,5 +49,10 @@ namespace phi
        */
       IScene OnFrameTickEvent();
 
+      /**
+       * Run each time this scene is switched away from,
+       *    immediately prior to the new scene being switched to is displayed
+       */
+      void Close();
    }
 }

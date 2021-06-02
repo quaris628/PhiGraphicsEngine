@@ -1,5 +1,5 @@
+
 MAJOR:
-make scene switches not lose memory references -- do with previousScene reference in each scene?
 create unit tests
 add config file for keybinds
 add mouse event features
@@ -9,3 +9,4 @@ optimize keyDownEvent into "subscribe for when this key is pressed" system?
 make default renderer background image not need a file
 Change Renderer from singleton to attached to a certain picturebox/image output ( Renderer(picturebox/image), set/get picturebox/image )
 demo more features in example project (e.g. animation w/ timer)
+bug? a single keypress is sometimes interpreted as multiple KeyDown events

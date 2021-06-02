@@ -9,22 +9,33 @@ namespace PhiGraphicsEngineExample
 {
    class Scene2 : Scene
    {
-      private const System.Windows.Forms.Keys SWITCH_TO_SCENE_1 =
+      private const string TITLE = "This is scene 2";
+
+      private const string BACK_MSG = "Press Backspace to go back";
+      private const int BACK_MSG_Y = 20;
+      private const System.Windows.Forms.Keys BACK_KEY =
+         System.Windows.Forms.Keys.Back;
+      
+      private const string SWITCH_MSG = "Press 1 to switch to scene 1";
+      private const int SWITCH_MSG_Y = 40;
+      private const System.Windows.Forms.Keys SWITCH_TO_1_KEY =
          System.Windows.Forms.Keys.D1;
 
-      private TextOverlay sceneLabel;
+      private TextOverlay sceneTitle;
+      private TextOverlay backMessage;
       private TextOverlay sceneSwitchMessage;
 
-      public Scene2()
+      public Scene2(IScene prevScene) : base(prevScene)
       {
-         sceneLabel = new TextOverlay("This is scene 2");
-         sceneSwitchMessage = new TextOverlay(
-            "Press 1 to switch to scene 1", 0, 20);
+         sceneTitle = new TextOverlay(TITLE);
+         backMessage = new TextOverlay(BACK_MSG, 0, BACK_MSG_Y);
+         sceneSwitchMessage = new TextOverlay(SWITCH_MSG, 0, SWITCH_MSG_Y);
       }
 
       public override void Initialize()
       {
-         Renderer.obj.addText(sceneLabel);
+         Renderer.obj.addText(sceneTitle);
+         Renderer.obj.addText(backMessage);
          Renderer.obj.addText(sceneSwitchMessage);
       }
 
@@ -32,9 +43,13 @@ namespace PhiGraphicsEngineExample
       {
          // by default, do not switch scenes
          IScene toSwitchTo = this;
-         if (key == SWITCH_TO_SCENE_1)
+         if (key == BACK_KEY)
          {
-            toSwitchTo = new Scene1();
+            toSwitchTo = base.prevScene;
+         }
+         if (key == SWITCH_TO_1_KEY)
+         {
+            toSwitchTo = new Scene1(this);
          }
          return toSwitchTo;
       }

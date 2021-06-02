@@ -14,9 +14,12 @@ namespace phi
     */
    public abstract class Scene : IScene
    {
+      protected IScene prevScene;
+      protected Scene(IScene prevScene) { this.prevScene = prevScene; }
       public virtual Image GetBackgroundImage() { return null; }
       public virtual void Initialize() { }
       public virtual IScene OnKeyDownEvent(System.Windows.Forms.Keys key) { return this; }
       public virtual IScene OnFrameTickEvent() { return this; }
+      public virtual void Close() { }
    }
 }

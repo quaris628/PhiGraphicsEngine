@@ -13,7 +13,7 @@ namespace phi
    public partial class WindowsForm : Form
    {
       private static readonly IScene ENTRY_SCENE =
-         new PhiGraphicsEngineExample.Scene1();
+         new PhiGraphicsEngineExample.Scene1(null);
       public const string FILE_HOME = "../../";
       public const int WIN_HEIGHT = 400;
       public const int WIN_WIDTH = 600;
@@ -75,8 +75,7 @@ namespace phi
        */
       private void WindowsForm_KeyDown(object sender, KeyEventArgs e)
       {
-         IScene newScene = activeScene.OnKeyDownEvent(e.KeyCode);
-         switchSceneTo(newScene);
+         switchSceneTo(activeScene.OnKeyDownEvent(e.KeyCode));
       }
 
       /**
@@ -98,10 +97,15 @@ namespace phi
          }
          else if (!activeScene.Equals(newScene))
          {
-            activeScene = newScene;
+            // clean up old scene
             Renderer.obj.clearAll();
-            Renderer.obj.setBackground(activeScene.GetBackgroundImage());
-            activeScene.Initialize();
+            activeScene.Close();
+
+            // display new scene
+            Renderer.obj.setBackground(newScene.GetBackgroundImage());
+            newScene.Initialize();
+
+            activeScene = newScene;
          }
       }
    }
