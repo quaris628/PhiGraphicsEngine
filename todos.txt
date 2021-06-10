@@ -8,6 +8,7 @@ optimize keyDownEvent into "subscribe for when this key is pressed" system?
 MINOR:
 make default renderer background image not need a file? (maybe not possible/feasible)
 add overload-esque displace methods to Movable2D
+Make 1 Renderer : 1 Scene (?)
 bug? a single keypress is sometimes interpreted as multiple KeyDown events
 bug - Renderer center functionality not updated on scene switch
 ~optimize renderer.Render()?
