@@ -55,7 +55,7 @@ namespace phi.graphics
          {
             Graphics g = Graphics.FromImage(output);
             g.DrawImage(background, 0, 0);
-            calculateDisplacement();
+            CalculateDisplacement();
 
             foreach (LinkedList<Drawable> drawables in layers.Values)
             {
@@ -105,18 +105,9 @@ namespace phi.graphics
          return success;
       }
 
-      public void clearLayer(int layer) { layers.Remove(layer); FlagChange(); }
+      public void ClearLayer(int layer) { layers.Remove(layer); FlagChange(); }
       
-      public void clearAllLayers() { layers.Clear(); removeCenter(); FlagChange(); }
-
-      /**
-       * Sets the background that all drawn images are stacked on top of
-       */
-      public void setBackground(Image background)
-      {
-         this.background = background ?? throw new ArgumentNullException();
-         FlagChange();
-      }
+      public void ClearAllLayers() { layers.Clear(); RemoveCenter(); FlagChange(); }
 
       /**
         * Sets the image to draw images on top of
@@ -125,9 +116,18 @@ namespace phi.graphics
       public void setOutput(Image outputImage) { this.output = outputImage; FlagChange(); }
 
       /**
+       * Sets the background that all drawn images are stacked on top of
+       */
+      public void SetBackground(Image background)
+      {
+         this.background = background ?? throw new ArgumentNullException();
+         FlagChange();
+      }
+
+      /**
        * Attempts to center the camera on the sprite
        */
-      public void centerCamera(Drawable s)
+      public void CenterCamera(Drawable s)
       {
          isCentered = true;
          centerDrawable = s;
@@ -139,7 +139,7 @@ namespace phi.graphics
       /**
        * Sets Sprite s the center of the camera, and displaces the camera when the sprite gets within x of the width and y within the height
        */
-      public void borderCamera(Drawable s, int x, int y)
+      public void BorderCamera(Drawable s, int x, int y)
       {
          isCentered = true;
          centerDrawable = s;
@@ -148,18 +148,18 @@ namespace phi.graphics
          FlagChange();
       }
 
-      public void removeCenter()
+      public void RemoveCenter()
       {
          centerDrawable = null;
          isCentered = false;
          FlagChange();
       }
 
-      private void calculateDisplacement()
+      private void CalculateDisplacement()
       {
          if (isCentered)
          {
-            displacementX += centerDrawable.GetWidth() * isDisplacedX();
+            displacementX += centerDrawable.GetWidth() * IsDisplacedX();
             displacementY += centerDrawable.GetHeight() * isDisplacedY();
          }
          else
@@ -174,7 +174,7 @@ namespace phi.graphics
        * Returns -1 if the center sprite is getting too close to the left edge
        * Returns 0 if the center sprite is not near any edge
        */
-      private int isDisplacedX()
+      private int IsDisplacedX()
       {
          if (centerDrawable.GetX() + centerDrawable.GetWidth() + displacementX + center_X_Displacement > output.Width)
          {

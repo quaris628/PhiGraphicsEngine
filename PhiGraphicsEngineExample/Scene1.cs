@@ -46,10 +46,10 @@ namespace PhiGraphicsEngineExample
          renderer.Add(ball.GetDrawable(), 0);
       }
 
-      public override Scene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent)
+      public override Scene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs e)
       {
          // by default, do not switch scenes
-         System.Windows.Forms.Keys key = keyevent.KeyCode;
+         System.Windows.Forms.Keys key = e.KeyCode;
          Scene toSwitchTo = this;
          if (key == BACK_KEY)
          {

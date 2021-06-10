@@ -25,7 +25,7 @@ namespace phi.graphics
        * Renderer will draw all drawables of this scene
        * @Return background Image of this scene
        */
-      public virtual Image GetBackgroundImage() { return Image.FromFile(Renderer.DEFAULT_BACKGROUND); }
+      public virtual Image GetBackground() { return Image.FromFile(Renderer.DEFAULT_BACKGROUND); }
 
       /**
        * Run each time this scene is switched to, immediately prior to this
@@ -41,7 +41,7 @@ namespace phi.graphics
        *         'return this' to retain focus on this scene
        *         'return null' to exit application
        */
-      public virtual Scene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent) { return this; }
+      public virtual Scene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs e) { return this; }
 
       /**
        * Run on each MouseEvent

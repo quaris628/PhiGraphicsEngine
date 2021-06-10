@@ -21,13 +21,16 @@ namespace phi.graphics
          this.image = img ?? throw new ArgumentNullException();
       }
 
+      // extend Drawable
       protected override void DrawAt(Graphics g, int x, int y)
       {
          g.DrawImage(image, x, y);
       }
-
       public override int GetHeight() { return image.Height; }
       public override int GetWidth() { return image.Width; }
+
+      public Image GetImage() { return image; }
+      public void SetImage(Image image) { this.image = image; FlagChange(); }
 
       public Sprite FlipX()
       {
@@ -56,9 +59,6 @@ namespace phi.graphics
          FlagChange();
          return this;
       }
-
-      public Image GetImage() { return image; }
-      public void SetImage(Image image) { this.image = image; FlagChange(); }
 
       public override int GetHashCode()
       {

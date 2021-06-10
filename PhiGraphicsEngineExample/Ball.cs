@@ -12,7 +12,7 @@ namespace PhiGraphicsEngineExample
    {
       private const string IMAGE = WindowsForm.FILE_HOME + "res/Ball.png";
 
-      private readonly Sprite s;
+      private Sprite s;
 
       public Ball()
       {

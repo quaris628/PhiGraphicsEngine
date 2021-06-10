@@ -65,7 +65,7 @@ namespace phi
 
          // set up MainMenu as "entry point"-ish
          activeScene = ENTRY_SCENE;
-         renderer.setBackground(activeScene.GetBackgroundImage());
+         renderer.SetBackground(activeScene.GetBackground());
          activeScene.Initialize(renderer);
 
          this.Controls.Add(pictureBox); // is this line needed?
@@ -105,11 +105,11 @@ namespace phi
          else if (!activeScene.Equals(newScene))
          {
             // clean up old scene
-            renderer.clearAllLayers();
+            renderer.ClearAllLayers();
             activeScene.Close();
 
             // display new scene
-            renderer.setBackground(newScene.GetBackgroundImage());
+            renderer.SetBackground(newScene.GetBackground());
             newScene.Initialize(renderer);
 
             activeScene = newScene;

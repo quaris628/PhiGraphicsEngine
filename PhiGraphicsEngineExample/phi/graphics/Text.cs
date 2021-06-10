@@ -26,26 +26,27 @@ namespace phi.graphics
          this.color = builder.GetColor();
          this.sizeUpToDate = false;
       }
+
+      // extend Drawable
       protected override void DrawAt(Graphics g, int x, int y)
       {
-         g.DrawString(message, GetFont(), color, new PointF(x, y));
+         g.DrawString(message, font, color, new PointF(x, y));
       }
-
-      public void setMessage(string message) { this.message = message; sizeUpToDate = false; FlagChange(); }
-      public string getMessage() { return message; }
-      public Font GetFont() { return font; }
-
       public override int GetHeight() { return GetSize().Height; }
       public override int GetWidth() { return GetSize().Width; }
       private Size GetSize()
       {
          if (!sizeUpToDate)
          {
-            // calculation may be intensive -- implement a cache for better performance
+            // Calculation may be intensive? Implemented a cache for better performance.
             calculatedSize = System.Windows.Forms.TextRenderer.MeasureText(message, font);
          }
          return calculatedSize;
       }
+
+      public void SetMessage(string message) { this.message = message; sizeUpToDate = false; FlagChange(); }
+      public string GetMessage() { return message; }
+      public Font GetFont() { return font; }
 
       public class TextBuilder
       {
