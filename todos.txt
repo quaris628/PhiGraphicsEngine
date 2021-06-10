@@ -1,6 +1,6 @@
 
 MAJOR:
-create unit tests
+write tests (unit, regression...)
 add config file for keybinds
 add mouse event features
 optimize keyDownEvent into "subscribe for when this key is pressed" system?

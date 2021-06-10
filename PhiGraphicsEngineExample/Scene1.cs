@@ -1,9 +1,10 @@
-﻿using phi;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using phi.graphics;
+
 
 namespace PhiGraphicsEngineExample
 {
@@ -21,35 +22,35 @@ namespace PhiGraphicsEngineExample
       private const System.Windows.Forms.Keys SWITCH_TO_2_KEY =
          System.Windows.Forms.Keys.D2;
 
-      private TextOverlay sceneTitle;
-      private TextOverlay backMessage;
-      private TextOverlay sceneSwitchMessage;
+      private Text sceneTitle;
+      private Text backMessage;
+      private Text sceneSwitchMessage;
       private Ball ball;
       private bool ballToggler;
 
 
-      public Scene1(IScene prevScene) : base(prevScene)
+      public Scene1(Scene prevScene) : base(prevScene)
       {
-         sceneTitle = new TextOverlay(TITLE);
-         backMessage = new TextOverlay(BACK_MSG, 0, BACK_MSG_Y);
-         sceneSwitchMessage = new TextOverlay(SWITCH_MSG, 0, SWITCH_MSG_Y);
+         sceneTitle = new Text.TextBuilder(TITLE).Build();
+         backMessage = new Text.TextBuilder(BACK_MSG).WithY(BACK_MSG_Y).Build();
+         sceneSwitchMessage = new Text.TextBuilder(SWITCH_MSG).WithY(SWITCH_MSG_Y).Build(); 
          ball = new Ball();
       }
 
       public override void Initialize(Renderer renderer)
       {
          base.Initialize(renderer);
-         renderer.addText(sceneTitle);
-         renderer.addText(backMessage);
-         renderer.addText(sceneSwitchMessage);
-         renderer.addRenderable(ball, 0);
+         renderer.Add(sceneTitle, 0);
+         renderer.Add(backMessage, 0);
+         renderer.Add(sceneSwitchMessage, 0);
+         renderer.Add(ball.GetDrawable(), 0);
       }
 
-      public override IScene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent)
+      public override Scene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent)
       {
          // by default, do not switch scenes
          System.Windows.Forms.Keys key = keyevent.KeyCode;
-         IScene toSwitchTo = this;
+         Scene toSwitchTo = this;
          if (key == BACK_KEY)
          {
             toSwitchTo = base.prevScene;
@@ -61,28 +62,28 @@ namespace PhiGraphicsEngineExample
          return toSwitchTo;
       }
 
-      public override IScene OnFrameTickEvent()
+      public override Scene OnFrameTickEvent()
       {
          if(ballToggler)
          {
-            if(ball.getSprite().getX() > 300)
+            if(ball.GetDrawable().GetX() > 300)
             {
                ballToggler = !ballToggler;
             }
             else
             {
-               ball.getSprite().setX(ball.getSprite().getX() + 3);
+               ball.GetDrawable().SetX(ball.GetDrawable().GetX() + 3);
             }
          }
          else
          {
-            if (ball.getSprite().getX() <= 0)
+            if (ball.GetDrawable().GetX() <= 0)
             {
                ballToggler = !ballToggler;
             }
             else
             {
-               ball.getSprite().setX(ball.getSprite().getX() - 3);
+               ball.GetDrawable().SetX(ball.GetDrawable().GetX() - 3);
             }
          }
          return this;  

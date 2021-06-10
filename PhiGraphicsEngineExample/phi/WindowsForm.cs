@@ -7,12 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using phi.graphics;
 
 namespace phi
 {
-   public partial class WindowsForm : Form
+   partial class WindowsForm : Form
    {
-      private static readonly IScene ENTRY_SCENE =
+      private static readonly Scene ENTRY_SCENE =
          new PhiGraphicsEngineExample.Scene1(null);
       public const string FILE_HOME = "../../";
       public const int WIN_HEIGHT = 400;
@@ -23,7 +24,7 @@ namespace phi
       private Renderer renderer;
       private Timer frameTimer = new Timer();
 
-      private IScene activeScene;
+      private Scene activeScene;
 
       public WindowsForm()
       {
@@ -79,7 +80,7 @@ namespace phi
       private void WindowsForm_KeyDown(object sender, KeyEventArgs e)
       {
          switchSceneTo(activeScene.OnKeyDownEvent(e));
-         IScene newScene = activeScene.OnKeyDownEvent(e);
+         Scene newScene = activeScene.OnKeyDownEvent(e);
          switchSceneTo(newScene);
       }
 
@@ -89,13 +90,13 @@ namespace phi
        */
       private void frameTimer_Tick(object sender, EventArgs e)
       {
-         IScene newScene = activeScene.OnFrameTickEvent();
+         Scene newScene = activeScene.OnFrameTickEvent();
          renderer.Render();
          pictureBox.Image = pictureBox.Image; // this forces some sort of update: DO NOT DELETE
          switchSceneTo(newScene);
       }
 
-      private void switchSceneTo(IScene newScene)
+      private void switchSceneTo(Scene newScene)
       {
          if (newScene == null)
          {
@@ -104,7 +105,7 @@ namespace phi
          else if (!activeScene.Equals(newScene))
          {
             // clean up old scene
-            renderer.clearAll();
+            renderer.clearAllLayers();
             activeScene.Close();
 
             // display new scene

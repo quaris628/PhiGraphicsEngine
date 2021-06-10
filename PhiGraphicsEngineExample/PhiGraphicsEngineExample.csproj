@@ -47,24 +47,26 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ball.cs" />
-    <Compile Include="phi\PhiGraphics\IScene.cs" />
-    <Compile Include="phi\PhiGraphics\ISprite.cs" />
-    <Compile Include="phi\PhiGraphics\Renderable.cs" />
-    <Compile Include="phi\PhiGraphics\Renderer.cs" />
-    <Compile Include="phi\PhiGraphics\Scene.cs" />
-    <Compile Include="phi\PhiGraphics\Sprite.cs" />
-    <Compile Include="phi\PhiGraphics\TextOverlay.cs" />
-    <Compile Include="phi\PhiGraphics\WindowsForm.cs">
+    <Compile Include="phi\graphics\Drawable.cs" />
+    <Compile Include="phi\graphics\DynamicContainer.cs" />
+    <Compile Include="phi\graphics\DynamicHoldable.cs" />
+    <Compile Include="phi\graphics\Movable2D.cs" />
+    <Compile Include="phi\graphics\Renderable.cs" />
+    <Compile Include="phi\graphics\Renderer.cs" />
+    <Compile Include="phi\graphics\Scene.cs" />
+    <Compile Include="phi\graphics\Sprite.cs" />
+    <Compile Include="phi\graphics\Text.cs" />
+    <Compile Include="phi\WindowsForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="phi\PhiGraphics\WindowsForm.Designer.cs">
+    <Compile Include="phi\WindowsForm.Designer.cs">
       <DependentUpon>WindowsForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="phi\PhiGraphics\PhiMain.cs" />
+    <Compile Include="phi\PhiMain.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Scene1.cs" />
     <Compile Include="Scene2.cs" />
-    <EmbeddedResource Include="phi\PhiGraphics\WindowsForm.resx">
+    <EmbeddedResource Include="phi\WindowsForm.resx">
       <DependentUpon>WindowsForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">

@@ -1,9 +1,0 @@
-
-2020-05-17 13:21 Created simple example project that uses the phi engine
-Changes from phi's usage in Ukulele Hero:
-- moved all phi classes to /phi folder
-- renamed PlayableGameView to IScene
-- renamed Form1 to WindowsForm
-- renamed Program to PhiMain
-- added Scene, an abstract class with some default methods that implements IScene
-- refactored scene switching in the Form to one private method

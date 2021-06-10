@@ -4,25 +4,25 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using phi;
+using phi.graphics;
 
 namespace PhiGraphicsEngineExample
 {
    class Ball : Renderable
    {
-      private Sprite s;
+      private const string IMAGE = WindowsForm.FILE_HOME + "res/Ball.png";
+
+      private readonly Sprite s;
+
       public Ball()
       {
-         s = new Sprite(System.Drawing.Image.FromFile(WindowsForm.FILE_HOME + "res/Ball.png"), 0, 50);
+         s = new Sprite(System.Drawing.Image.FromFile(IMAGE), 0, 50);
       }
 
-      public ISprite getSprite()
+      public Drawable GetDrawable()
       {
          return s;
       }
 
-      public bool isDisplaying()
-      {
-         return true;
-      }
    }
 }

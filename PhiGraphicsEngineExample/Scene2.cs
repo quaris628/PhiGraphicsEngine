@@ -1,9 +1,10 @@
-﻿using phi;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using phi.graphics;
+
 
 namespace PhiGraphicsEngineExample
 {
@@ -21,30 +22,30 @@ namespace PhiGraphicsEngineExample
       private const System.Windows.Forms.Keys SWITCH_TO_1_KEY =
          System.Windows.Forms.Keys.D1;
 
-      private TextOverlay sceneTitle;
-      private TextOverlay backMessage;
-      private TextOverlay sceneSwitchMessage;
+      private Text sceneTitle;
+      private Text backMessage;
+      private Text sceneSwitchMessage;
 
-      public Scene2(IScene prevScene) : base(prevScene)
+      public Scene2(Scene prevScene) : base(prevScene)
       {
-         sceneTitle = new TextOverlay(TITLE);
-         backMessage = new TextOverlay(BACK_MSG, 0, BACK_MSG_Y);
-         sceneSwitchMessage = new TextOverlay(SWITCH_MSG, 0, SWITCH_MSG_Y);
+         sceneTitle = new Text.TextBuilder(TITLE).Build();
+         backMessage = new Text.TextBuilder(BACK_MSG).WithY(BACK_MSG_Y).Build();
+         sceneSwitchMessage = new Text.TextBuilder(SWITCH_MSG).WithY(SWITCH_MSG_Y).Build();
       }
 
       public override void Initialize(Renderer renderer)
       {
          base.Initialize(renderer);
-         renderer.addText(sceneTitle);
-         renderer.addText(backMessage);
-         renderer.addText(sceneSwitchMessage);
+         renderer.Add(sceneTitle, 0);
+         renderer.Add(backMessage, 0);
+         renderer.Add(sceneSwitchMessage, 0);
       }
 
-      public override IScene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent)
+      public override Scene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent)
       {
          // by default, do not switch scenes
          System.Windows.Forms.Keys key = keyevent.KeyCode;
-         IScene toSwitchTo = this;
+         Scene toSwitchTo = this;
          if (key == BACK_KEY)
          {
             toSwitchTo = base.prevScene;
