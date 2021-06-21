@@ -10,16 +10,22 @@ namespace phi.graphics
    public abstract class Drawable : Movable2D
    {
       private bool displaying;
+      protected int height;
+      protected int width;
 
-      public Drawable() { displaying = true; }
-      public Drawable(int x, int y) : base(x, y) { displaying = true; }
+      public Drawable(int x, int y, int height, int width) : base(x, y)
+      {
+         displaying = true;
+         this.height = height;
+         this.width = width;
+      }
 
       public void Draw(Graphics g) { DrawAt(g, this.GetX(), this.GetY()); }
       public void DrawOffset(Graphics g, int xOffset, int yOffset) { DrawAt(g, this.GetX() + xOffset, this.GetY() + yOffset); }
       protected abstract void DrawAt(Graphics g, int x, int y);
 
-      public abstract int GetHeight();
-      public abstract int GetWidth();
+      public virtual int GetHeight() { return height; }
+      public virtual int GetWidth() { return height; }
 
       protected void SetDisplaying(bool displaying) { this.displaying = displaying; FlagChange(); }
       public bool IsDisplaying() { return displaying; }

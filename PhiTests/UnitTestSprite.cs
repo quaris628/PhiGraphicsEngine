@@ -18,7 +18,7 @@ namespace PhiTests
          Image image = Image.FromFile(ARBITRARY_IMAGE_FILE);
 
          // Act
-         Sprite sprite = new Sprite(image);
+         Sprite sprite = new Sprite(image, 0, 0);
          Image result = sprite.GetImage();
 
          // Assert
@@ -35,10 +35,10 @@ namespace PhiTests
          bool exceptionThrown;
          try
          {
-            Sprite sprite = new Sprite(image);
+            Sprite sprite = new Sprite(image, 0, 0);
             exceptionThrown = false;
          }
-         catch (ArgumentNullException e)
+         catch (ArgumentNullException)
          {
             exceptionThrown = true;
          }
@@ -79,7 +79,7 @@ namespace PhiTests
             Sprite sprite = new Sprite(image, x, y);
             exceptionThrown = false;
          }
-         catch (ArgumentNullException e)
+         catch (ArgumentNullException)
          {
             exceptionThrown = true;
          }

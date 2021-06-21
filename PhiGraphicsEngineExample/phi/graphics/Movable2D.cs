@@ -8,13 +8,9 @@ namespace phi.graphics
 {
    public class Movable2D : DynamicHoldable
    {
-      private const int DEFAULT_X = 0;
-      private const int DEFAULT_Y = 0;
-
       private int x;
       private int y;
 
-      public Movable2D() { this.x = DEFAULT_X; this.y = DEFAULT_Y; }
       public Movable2D(int x, int y) { this.x = x; this.y = y; }
 
       public int GetX() { return x; }

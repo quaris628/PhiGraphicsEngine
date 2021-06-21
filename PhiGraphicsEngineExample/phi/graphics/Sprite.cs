@@ -11,12 +11,7 @@ namespace phi.graphics
    {
       private Image image;
 
-      public Sprite(Image img)
-      {
-         this.image = img ?? throw new ArgumentNullException();
-      }
-
-      public Sprite(Image img, int x, int y) : base(x, y)
+      public Sprite(Image img, int x, int y) : base(x, y, img.Height, img.Width)
       {
          this.image = img ?? throw new ArgumentNullException();
       }
@@ -26,11 +21,15 @@ namespace phi.graphics
       {
          g.DrawImage(image, x, y);
       }
-      public override int GetHeight() { return image.Height; }
-      public override int GetWidth() { return image.Width; }
 
       public Image GetImage() { return image; }
-      public void SetImage(Image image) { this.image = image; FlagChange(); }
+      public void SetImage(Image image)
+      {
+         this.image = image;
+         this.height = image.Height;
+         this.width = image.Width;
+         FlagChange();
+      }
 
       public Sprite FlipX()
       {

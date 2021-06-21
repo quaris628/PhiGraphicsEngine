@@ -56,6 +56,11 @@
     <Compile Include="phi\graphics\Scene.cs" />
     <Compile Include="phi\graphics\Sprite.cs" />
     <Compile Include="phi\graphics\Text.cs" />
+    <Compile Include="phi\phisics\Angle.cs" />
+    <Compile Include="phi\phisics\PhisicsObject.cs" />
+    <Compile Include="phi\phisics\PhisicsPlane.cs" />
+    <Compile Include="phi\phisics\Shape.cs" />
+    <Compile Include="phi\phisics\Vector.cs" />
     <Compile Include="phi\WindowsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -91,8 +96,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="phi\PhiPhysics\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

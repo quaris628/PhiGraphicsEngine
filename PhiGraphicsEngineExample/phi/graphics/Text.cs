@@ -19,7 +19,7 @@ namespace phi.graphics
       private Size calculatedSize;
       private bool sizeUpToDate;
 
-      private Text(TextBuilder builder) : base(builder.GetX(), builder.GetY())
+      private Text(TextBuilder builder) : base(builder.GetX(), builder.GetY(), 0, 0)
       {
          this.message = builder.GetMessage();
          this.font = builder.GetFont();
