@@ -56,6 +56,37 @@ namespace phi.phisics
       public double GetDegrees() { return radians * RADIANS_TO_DEGREES; }
       public double GetSlope() { return Math.Tan(radians); }
 
+      public static implicit operator bool(Angle a)
+      {
+         return a != null;
+      }
+
+      public static Angle operator +(Angle a)
+         => a;
+      public static Angle operator -(Angle a)
+         => new Angle(a.radians * -1);
+      public static Angle operator +(Angle a, Angle b)
+         => new Angle(a.radians + b.radians);
+      public static Angle operator -(Angle a, Angle b)
+         => a + -b;
+      public static bool operator ==(Angle a, Angle b)
+         => a.radians == b.radians;
+      public static bool operator !=(Angle a, Angle b)
+         => !(a == b);
+
+      public override bool Equals(object obj)
+      {
+         Angle b = obj as Angle;
+         if(!b)
+         {
+            return false;
+         }
+         else
+         {
+            return this == b;
+         }
+      }
+
    }
 
    public class AngleNotDefinedException : Exception
