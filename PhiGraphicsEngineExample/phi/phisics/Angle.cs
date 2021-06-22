@@ -34,6 +34,22 @@ namespace phi.phisics
       }
 
       /**
+       * Returns the right angle to the angle
+       */
+      public Angle getNormal()
+      {
+         return new Angle(radians + Math.PI / 2);
+      }
+
+      /**
+       * Returns the right angle to the angle
+       */
+      public Angle getAntiNormal()
+      {
+         return new Angle(radians - Math.PI / 2);
+      }
+
+      /**
        * Should output a value between 0 and tau
        */
       public double GetRadians() { return radians; }

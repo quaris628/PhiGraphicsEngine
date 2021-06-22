@@ -54,49 +54,57 @@ namespace phi.phisics
          direction = Angle.CreateSlope(yComp, xComp);
       }
 
+      public void setYComp(double yComp)
+      {
+         this.yComp = yComp;
+         magnitude = Math.Sqrt(xComp * xComp + yComp * yComp);
+         direction = Angle.CreateSlope(yComp, xComp);
+      }
+
+      public void setXYComp(double xComp, double yComp)
+      {
+         this.xComp = xComp;
+         this.yComp = yComp;
+         magnitude = Math.Sqrt(xComp * xComp + yComp * yComp);
+         direction = Angle.CreateSlope(yComp, xComp);
+      }
+
       public Angle getDirection() { return direction; }
       public double getMagnitude() { return magnitude; }
       public double getXComp() { return xComp; }
       public double getYComp() { return yComp; }
 
-      public Angle getNormal()
+      public static implicit operator bool(Vector a)
       {
-         if(angletype == AngleTypes.RADIANS)
-         {
-            return (direction + (float)Math.PI / 2) % (float)(2 * Math.PI) ;
-         }
-         else
-         {
-            return (direction + 180) % 360;
-         }
-         
+         return a != null;
       }
-
-      public Angle getAntiNormal()
-      {
-         if (angletype == AngleTypes.RADIANS)
-         {
-            return direction - (float)Math.PI / 2;
-         }
-         else
-         {
-            return direction + 180;
-         }
-      }
-
       public static Vector operator +(Vector a) => a;
 
-      public static Vector operator -(Vector a) => new Vector(a.angletype, -a.magnitude, a.direction);
+      public static Vector operator -(Vector a) => new Vector(-a.magnitude, a.direction);
 
       public static Vector operator +(Vector a, Vector b)
-         => new Vector(a.angletype, a.xComp + b.xComp, a.yComp + b.yComp);
+         => new Vector(a.xComp + b.xComp, a.yComp + b.yComp);
 
       public static Vector operator -(Vector a, Vector b)
          => a + -(b);
 
+      public static bool operator ==(Vector a, Vector b)
+         => a.xComp == b.xComp && a.yComp == b.yComp;
+
+      public static bool operator !=(Vector a, Vector b)
+         => !(a==b);
+
       public override bool Equals(object obj)
       {
-         
+         Vector b = obj as Vector;
+         if(!b)
+         {
+            return false;
+         }
+         else
+         {
+            return this == b;
+         }
       }
    }
 }
