@@ -29,56 +29,37 @@ namespace phi.phisics
       {
          this.xComp = xComp;
          this.yComp = yComp;
-         this.magnitude = Math.Sqrt(xComp * xComp + yComp * yComp);
-         this.direction = Angle.CreateSlope(yComp, xComp);
+         magnitude = Math.Sqrt(xComp * xComp + yComp * yComp);
+         direction = Angle.CreateSlope(yComp, xComp);
       }
 
-      public void setMagnitude(float Magnitude)
+      public void setMagnitude(float magnitude)
       {
-         this.magnitude = Magnitude;
-         if (angletype == AngleTypes.RADIANS)
-         {
-            yComp = Math.Sin((double)direction) * Magnitude;
-            xComp = Math.Cos((double)direction) * Magnitude;
-         }
-         else
-         {
-            yComp = Math.Sin((double)direction * Math.PI / 180) * Magnitude;
-            xComp = Math.Cos((double)direction * Math.PI / 180) * Magnitude;
-         }
+         this.magnitude = magnitude;
+         xComp = Math.Cos(direction.GetRadians()) * magnitude;
+         yComp = Math.Sin(direction.GetRadians()) * magnitude;
       }
 
-      public void setDirection(float Direction)
+      public void setDirection(Angle direction)
       {
-         this.direction = Direction;
-         if (angletype == AngleTypes.RADIANS)
-         {
-            yComp = Math.Sin((double)Direction) * magnitude;
-            xComp = Math.Cos((double)Direction) * magnitude;
-         }
-         else
-         {
-            yComp = Math.Sin((double)Direction * Math.PI / 180) * magnitude;
-            xComp = Math.Cos((double)Direction * Math.PI / 180) * magnitude;
-         }
+         this.direction = direction;
+         xComp = Math.Cos(this.direction.GetRadians()) * magnitude;
+         yComp = Math.Sin(this.direction.GetRadians()) * magnitude;
       }
 
-      public double getXComp()
+      public void setXComp(double xComp)
       {
-         return xComp;
+         this.xComp = xComp;
+         magnitude = Math.Sqrt(xComp * xComp + yComp * yComp);
+         direction = Angle.CreateSlope(yComp, xComp);
       }
 
-      public double getYComp()
-      {
-         return yComp;
-      }
+      public Angle getDirection() { return direction; }
+      public double getMagnitude() { return magnitude; }
+      public double getXComp() { return xComp; }
+      public double getYComp() { return yComp; }
 
-      public float getDirection()
-      {
-         return direction;
-      }
-
-      public float getNormal()
+      public Angle getNormal()
       {
          if(angletype == AngleTypes.RADIANS)
          {
@@ -91,7 +72,7 @@ namespace phi.phisics
          
       }
 
-      public float getAntiNormal()
+      public Angle getAntiNormal()
       {
          if (angletype == AngleTypes.RADIANS)
          {
@@ -101,11 +82,6 @@ namespace phi.phisics
          {
             return direction + 180;
          }
-      }
-
-      public double getMagnitude()
-      {
-         return magnitude;
       }
 
       public static Vector operator +(Vector a) => a;
