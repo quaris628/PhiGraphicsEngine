@@ -19,8 +19,20 @@ namespace phi.phisics
 
       public Vector(double magnitude, Angle direction)
       {
-         this.magnitude = magnitude;
-         this.direction = direction;
+         this.magnitude = Math.Abs(magnitude);
+         if (magnitude > 0)
+         {
+            this.direction = direction;
+         }
+         else if (magnitude == 0)
+         {
+            this.direction = Angle.UNDEFINED;
+         }
+         else
+         {
+            this.direction = direction.getOpposite();
+         }
+         this.direction = magnitude >= 0 ? direction : Angle.CreateDegrees(direction.GetDegrees() + 180);
          yComp = Math.Sin(direction.GetRadians()) * magnitude;
          xComp = Math.Cos(direction.GetRadians()) * magnitude;
       }
@@ -33,7 +45,7 @@ namespace phi.phisics
          direction = Angle.CreateSlope(yComp, xComp);
       }
 
-      public void setMagnitude(float magnitude)
+      public void setMagnitude(double magnitude)
       {
          this.magnitude = magnitude;
          xComp = Math.Cos(direction.GetRadians()) * magnitude;
@@ -73,11 +85,13 @@ namespace phi.phisics
       public double getMagnitude() { return magnitude; }
       public double getXComp() { return xComp; }
       public double getYComp() { return yComp; }
-
+      
+      
       public static implicit operator bool(Vector a)
       {
          return a != null;
       }
+      
       public static Vector operator +(Vector a) => a;
 
       public static Vector operator -(Vector a) => new Vector(-a.magnitude, a.direction);
@@ -86,7 +100,7 @@ namespace phi.phisics
          => new Vector(a.xComp + b.xComp, a.yComp + b.yComp);
 
       public static Vector operator -(Vector a, Vector b)
-         => a + -(b);
+         => a + -b;
 
       public static bool operator ==(Vector a, Vector b)
          => a.xComp == b.xComp && a.yComp == b.yComp;
@@ -96,15 +110,7 @@ namespace phi.phisics
 
       public override bool Equals(object obj)
       {
-         Vector b = obj as Vector;
-         if(!b)
-         {
-            return false;
-         }
-         else
-         {
-            return this == b;
-         }
+         return (obj.GetType() == typeof(Vector)) && (this == (Vector)obj);
       }
    }
 }

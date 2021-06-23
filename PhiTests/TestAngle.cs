@@ -166,11 +166,11 @@ namespace PhiTests
       }
 
       [TestMethod]
-      public void Convert_SlopeToDegrees_1OverNeg1_Neg45()
+      public void Convert_SlopeToDegrees_1OverNeg1_315()
       {
-         Angle a = Angle.CreateSlope(1, -1);
+         Angle a = Angle.CreateSlope(-1, 1);
 
-         Assert.AreEqual(-45, a.GetRadians(), EPSILON);
+         Assert.AreEqual(315, a.GetDegrees(), EPSILON);
       }
 
       // 0 to tau output boundary
@@ -234,7 +234,6 @@ namespace PhiTests
       }
 
       // isDefined
-
 
       [TestMethod]
       public void IsDefined_0_True()

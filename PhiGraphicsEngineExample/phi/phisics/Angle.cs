@@ -14,18 +14,20 @@ namespace phi.phisics
 
       private double radians;
 
+      public static readonly Angle UNDEFINED = new Angle(Double.NaN);
       public static Angle CreateRadians(double radians) { return new Angle(radians); }
       public static Angle CreateDegrees(double degrees) { return new Angle(degrees * DEGREES_TO_RADIANS); }
-      public static Angle CreateSlope(double rise, double run) { return new Angle(Math.Atan2(rise, run)); }
+      public static Angle CreateSlope(double rise, double run)
+      {
+         double radians = run == 0 ? Double.NaN : Math.Atan2(rise, run);
+         return new Angle(radians);
+      }
 
       private Angle(double radians)
       {
          this.radians = radians % TAU;
          // C# modulo is truncated definition; we want the floored definition, so this fixes that
-         if (radians < 0)
-         {
-            this.radians += TAU;
-         }
+         if (radians < 0) { this.radians += TAU; }
       }
 
       public bool IsDefined()
@@ -38,7 +40,17 @@ namespace phi.phisics
        */
       public Angle getNormal()
       {
+         if (!IsDefined()) { throw new AngleNotDefinedException(); }
          return new Angle(radians + Math.PI / 2);
+      }
+
+      /**
+       * Returns the angle parallel to this angle that is not this angle
+       */
+      public Angle getOpposite()
+      {
+         if (!IsDefined()) { throw new AngleNotDefinedException(); }
+         return new Angle(radians + Math.PI);
       }
 
       /**
@@ -46,15 +58,34 @@ namespace phi.phisics
        */
       public Angle getAntiNormal()
       {
+         if (!IsDefined()) { throw new AngleNotDefinedException(); }
          return new Angle(radians - Math.PI / 2);
       }
 
       /**
        * Should output a value between 0 and tau
        */
-      public double GetRadians() { return radians; }
-      public double GetDegrees() { return radians * RADIANS_TO_DEGREES; }
-      public double GetSlope() { return Math.Tan(radians); }
+      public double GetRadians()
+      {
+         if (!IsDefined()) { throw new AngleNotDefinedException(); }
+         return radians;
+      }
+      /**
+       * Output between 0 and 360
+       */
+      public double GetDegrees()
+      {
+         if (!IsDefined()) { throw new AngleNotDefinedException(); }
+         return radians * RADIANS_TO_DEGREES;
+      }
+      /**
+       * Output any double value
+       */
+      public double GetSlope()
+      {
+         if (!IsDefined()) { throw new AngleNotDefinedException(); }
+         return Math.Tan(radians);
+      }
 
       public static implicit operator bool(Angle a)
       {
@@ -87,11 +118,19 @@ namespace phi.phisics
          }
       }
 
+      public override int GetHashCode()
+      {
+         unchecked // allow arithmetic overflow
+         {
+            long radiansBits = BitConverter.DoubleToInt64Bits(radians);
+            return ((int)radiansBits) ^ ((int)radiansBits >> 32);
+         }
+      }
    }
 
    public class AngleNotDefinedException : Exception
    {
-      AngleNotDefinedException() : base() { }
-      AngleNotDefinedException(string message) : base(message) { }
+      public AngleNotDefinedException() : base() { }
+      public AngleNotDefinedException(string message) : base(message) { }
    }
 }

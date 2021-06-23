@@ -14,7 +14,7 @@ namespace PhiTests
       [TestMethod]
       public void ZeroVector_Magnitude0()
       {
-         Assert.Equals(0, Vector.ZERO.getMagnitude());
+         Assert.AreEqual(0.0, Vector.ZERO.getMagnitude(), EPSILON);
       }
 
       [TestMethod]
@@ -26,13 +26,13 @@ namespace PhiTests
       [TestMethod]
       public void ZeroVector_XComp0()
       {
-         Assert.Equals(0, Vector.ZERO.getXComp());
+         Assert.AreEqual(0.0, Vector.ZERO.getXComp(), EPSILON);
       }
 
       [TestMethod]
       public void ZeroVector_YComp0()
       {
-         Assert.Equals(0, Vector.ZERO.getYComp());
+         Assert.AreEqual(0.0, Vector.ZERO.getYComp(), EPSILON);
       }
 
       [TestMethod]
@@ -145,7 +145,7 @@ namespace PhiTests
          v.setDirection(Angle.CreateDegrees(-30));
 
          Assert.AreEqual(2 * Math.Sqrt(3), v.getXComp(), EPSILON);
-         Assert.AreEqual(-1.0, v.getYComp(), EPSILON);
+         Assert.AreEqual(-2.0, v.getYComp(), EPSILON);
       }
 
       // Set X Y Complements -> Direction, Magnitude correct
@@ -209,10 +209,6 @@ namespace PhiTests
 
          Assert.AreEqual(Math.Sqrt(2), v.getMagnitude(), EPSILON);
       }
-
-      // GetNormal is correct
-
-      // GetAntiNormal is correct
 
       // overload u + v
 
