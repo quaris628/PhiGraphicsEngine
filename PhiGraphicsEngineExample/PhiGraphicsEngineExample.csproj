@@ -57,6 +57,7 @@
     <Compile Include="phi\graphics\Sprite.cs" />
     <Compile Include="phi\graphics\Text.cs" />
     <Compile Include="phi\phisics\Angle.cs" />
+    <Compile Include="phi\phisics\Force.cs" />
     <Compile Include="phi\phisics\PhisicsObject.cs" />
     <Compile Include="phi\phisics\PhisicsPlane.cs" />
     <Compile Include="phi\phisics\Shape.cs" />
