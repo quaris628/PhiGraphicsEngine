@@ -12,7 +12,7 @@ namespace phi.phisics
       private PhisicsPlane plane;
 
       protected PhisicsObject(PhisicsPlane plane, double mass, Shape shape, Vector position, Vector velocity)
-         : base(plane.GetX(), plane.GetY(), shape.GetHeight(), shape.GetWidth())
+         : base(plane.GetX(), plane.GetY(), shape.GetWidth(), shape.GetHeight())
       {
 
       }

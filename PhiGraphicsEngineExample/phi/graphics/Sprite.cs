@@ -11,7 +11,7 @@ namespace phi.graphics
    {
       private Image image;
 
-      public Sprite(Image img, int x, int y) : base(x, y, img.Height, img.Width)
+      public Sprite(Image img, int x, int y) : base(x, y, img.Width, img.Height)
       {
          this.image = img ?? throw new ArgumentNullException();
       }

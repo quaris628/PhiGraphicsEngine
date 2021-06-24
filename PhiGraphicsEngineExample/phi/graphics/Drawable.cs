@@ -13,7 +13,7 @@ namespace phi.graphics
       protected int height;
       protected int width;
 
-      public Drawable(int x, int y, int height, int width) : base(x, y)
+      public Drawable(int x, int y, int width, int height) : base(x, y)
       {
          displaying = true;
          this.height = height;
@@ -25,7 +25,7 @@ namespace phi.graphics
       protected abstract void DrawAt(Graphics g, int x, int y);
 
       public virtual int GetHeight() { return height; }
-      public virtual int GetWidth() { return height; }
+      public virtual int GetWidth() { return width; }
 
       protected void SetDisplaying(bool displaying) { this.displaying = displaying; FlagChange(); }
       public bool IsDisplaying() { return displaying; }

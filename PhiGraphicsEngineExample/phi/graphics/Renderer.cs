@@ -11,6 +11,7 @@ namespace phi.graphics
    {
       public const string DEFAULT_BACKGROUND = WindowsForm.FILE_HOME + "phi/graphics/defaultBackground.png";
       private readonly Image defaultBackground = Image.FromFile(DEFAULT_BACKGROUND);
+      private const int DEFAULT_LAYER = 0;
 
       private Image output;
       private Image background;
@@ -84,6 +85,7 @@ namespace phi.graphics
          item.PutIn(this);
          FlagChange();
       }
+      public void Add(Drawable item) { Add(item, DEFAULT_LAYER); }
 
       public bool Remove(Drawable item)
       {
