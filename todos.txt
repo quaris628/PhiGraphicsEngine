@@ -1,15 +1,15 @@
-Vector and Vector test
+
 
 MAJOR:
 write tests (unit, regression...)
 add config file for keybinds
 add mouse event features
-optimize keyDownEvent into "subscribe for when this key is pressed" system?
 
 MINOR:
+Vector and Vector test
 make default renderer background image not need a file? (maybe not possible/feasible)
 add overload-esque displace methods to Movable2D
-Make 1 Renderer : 1 Scene (?)
+Make 1 Renderer : 1 Scene (?), saves some setup/takedown processing for scene switches, costs some extra memory (?)
 bug? a single keypress is sometimes interpreted as multiple KeyDown events
 bug - Renderer center functionality not updated on scene switch
-~optimize renderer.Render()?
+quasi-optimize renderer.Render() as described in its comments?

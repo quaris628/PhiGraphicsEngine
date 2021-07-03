@@ -9,9 +9,6 @@ namespace phi.graphics
 {
    public class Line : PenDrawable
    {
-      public Line(CdtPairInt start, CdtPairInt end)
-         : base(start.x, start.y, end.y, end.x) { }
-      
       public Line(int startX, int startY, int endX, int endY)
          : base(startX, startY, endX - startX, endY - startY) { }
 

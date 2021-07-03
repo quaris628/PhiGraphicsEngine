@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using phi.graphics;
-
+using phi.control;
+using phi.control.input;
 
 namespace PhiGraphicsEngineExample
 {
@@ -33,29 +34,18 @@ namespace PhiGraphicsEngineExample
          sceneSwitchMessage = new Text.TextBuilder(SWITCH_MSG).WithY(SWITCH_MSG_Y).Build();
       }
 
-      public override void Initialize(Renderer renderer)
+      protected override void InitializeMe()
       {
-         base.Initialize(renderer);
-         renderer.Add(sceneTitle, 0);
-         renderer.Add(backMessage, 0);
-         renderer.Add(sceneSwitchMessage, 0);
+         IO.KEYS.Subscribe(Back, BACK_KEY);
+         IO.KEYS.Subscribe(SwitchTo1, SWITCH_TO_1_KEY);
+         IO.RENDERER.Add(sceneTitle);
+         IO.RENDERER.Add(backMessage);
+         IO.RENDERER.Add(sceneSwitchMessage);
       }
 
-      public override Scene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs keyevent)
+      public void SwitchTo1()
       {
-         // by default, do not switch scenes
-         System.Windows.Forms.Keys key = keyevent.KeyCode;
-         Scene toSwitchTo = this;
-         if (key == BACK_KEY)
-         {
-            toSwitchTo = base.prevScene;
-         }
-         if (key == SWITCH_TO_1_KEY)
-         {
-            toSwitchTo = new Scene1(this);
-         }
-         return toSwitchTo;
+         SwitchTo(new Scene1(this));
       }
-
    }
 }

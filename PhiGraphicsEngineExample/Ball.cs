@@ -5,12 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 using phi;
 using phi.graphics;
+using phi.other;
 
 namespace PhiGraphicsEngineExample
 {
    class Ball : Renderable
    {
-      private const string IMAGE = WindowsForm.FILE_HOME + "res/Ball.png";
+      private const string IMAGE = Config.FILE_HOME + "res/Ball.png";
 
       private Sprite s;
 

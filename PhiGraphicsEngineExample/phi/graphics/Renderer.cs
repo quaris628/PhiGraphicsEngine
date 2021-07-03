@@ -4,14 +4,14 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using phi.other;
+using phi.control;
 
 namespace phi.graphics
 {
    public class Renderer : DynamicContainer
    {
-      public const string DEFAULT_BACKGROUND = WindowsForm.FILE_HOME + "phi/graphics/defaultBackground.png";
-      private readonly Image defaultBackground = Image.FromFile(DEFAULT_BACKGROUND);
-      private const int DEFAULT_LAYER = 0;
+      private readonly Image defaultBackground = Image.FromFile(Config.RENDER.DEFAULT_BACKGROUND);
 
       private Image output;
       private Image background;
@@ -85,7 +85,7 @@ namespace phi.graphics
          item.PutIn(this);
          FlagChange();
       }
-      public void Add(Drawable item) { Add(item, DEFAULT_LAYER); }
+      public void Add(Drawable item) { Add(item, Config.RENDER.DEFAULT_LAYER); }
 
       public bool Remove(Drawable item)
       {
@@ -109,13 +109,13 @@ namespace phi.graphics
 
       public void ClearLayer(int layer) { layers.Remove(layer); FlagChange(); }
       
-      public void ClearAllLayers() { layers.Clear(); RemoveCenter(); FlagChange(); }
+      public void Clear() { layers.Clear(); RemoveCenter(); FlagChange(); }
 
       /**
         * Sets the image to draw images on top of
         * Is also the output (pass by reference)
         */
-      public void setOutput(Image outputImage) { this.output = outputImage; FlagChange(); }
+      public void SetOutput(Image outputImage) { this.output = outputImage; FlagChange(); }
 
       /**
        * Sets the background that all drawn images are stacked on top of

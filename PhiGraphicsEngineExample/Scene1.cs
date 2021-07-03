@@ -4,7 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using phi.graphics;
-
+using phi.control;
+using phi.control.input;
 
 namespace PhiGraphicsEngineExample
 {
@@ -28,7 +29,6 @@ namespace PhiGraphicsEngineExample
       private Ball ball;
       private bool ballToggler;
 
-
       public Scene1(Scene prevScene) : base(prevScene)
       {
          sceneTitle = new Text.TextBuilder(TITLE).Build();
@@ -37,32 +37,23 @@ namespace PhiGraphicsEngineExample
          ball = new Ball();
       }
 
-      public override void Initialize(Renderer renderer)
+      protected override void InitializeMe()
       {
-         base.Initialize(renderer);
-         renderer.Add(sceneTitle, 0);
-         renderer.Add(backMessage, 0);
-         renderer.Add(sceneSwitchMessage, 0);
-         renderer.Add(ball.GetDrawable(), 0);
+         IO.KEYS.Subscribe(Back, BACK_KEY);
+         IO.KEYS.Subscribe(SwitchTo2, SWITCH_TO_2_KEY);
+         IO.FRAME_TIMER.Subscribe(MoveBall);
+         IO.RENDERER.Add(sceneTitle);
+         IO.RENDERER.Add(backMessage);
+         IO.RENDERER.Add(sceneSwitchMessage);
+         IO.RENDERER.Add(ball.GetDrawable(), 1);
       }
 
-      public override Scene OnKeyDownEvent(System.Windows.Forms.KeyEventArgs e)
+      public void SwitchTo2()
       {
-         // by default, do not switch scenes
-         System.Windows.Forms.Keys key = e.KeyCode;
-         Scene toSwitchTo = this;
-         if (key == BACK_KEY)
-         {
-            toSwitchTo = base.prevScene;
-         }
-         if (key == SWITCH_TO_2_KEY)
-         {
-            toSwitchTo = new Scene2(this);
-         }
-         return toSwitchTo;
+         SwitchTo(new Scene2(this));
       }
 
-      public override Scene OnFrameTickEvent()
+      public void MoveBall()
       {
          if(ballToggler)
          {
@@ -86,7 +77,6 @@ namespace PhiGraphicsEngineExample
                ball.GetDrawable().SetX(ball.GetDrawable().GetX() - 3);
             }
          }
-         return this;  
       }
 
    }

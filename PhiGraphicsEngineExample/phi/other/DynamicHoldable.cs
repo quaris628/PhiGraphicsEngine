@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace phi.graphics
+namespace phi.other
 {
    /**
     * A thing that can be put in 0..* dynamic container(s).

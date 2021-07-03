@@ -1,5 +1,5 @@
 ﻿
-namespace phi
+namespace phi.control
 {
    partial class WindowsForm
    {
@@ -37,9 +37,6 @@ namespace phi
          this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
          this.ClientSize = new System.Drawing.Size(800, 450);
          this.Name = "WindowsForm";
-         this.Text = "Form1";
-         this.Load += new System.EventHandler(this.WindowsForm_Load);
-         this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.WindowsForm_KeyDown);
          this.ResumeLayout(false);
 
       }
