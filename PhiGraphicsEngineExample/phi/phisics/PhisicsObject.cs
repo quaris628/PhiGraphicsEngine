@@ -17,11 +17,14 @@ namespace phi.phisics
 
       }
 
+      
       public abstract double getMass();
       public abstract Vector getVelocity();
       public abstract Vector getPosition();
       public abstract Shape getShape();
 
-      public abstract void update(); // ?  not set position, set velocity, ... ?
+      //this was originally used for testing purposes, it adds the velocity to it's position, basically used for the tick event.
+      public abstract void update(); // ?  not set position, set velocity, ... ? - Nathan 
+       
    }
 }

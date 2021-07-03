@@ -41,8 +41,16 @@ namespace phi.phisics
       {
          this.xComp = xComp;
          this.yComp = yComp;
-         magnitude = Math.Sqrt(xComp * xComp + yComp * yComp);
-         direction = Angle.CreateSlope(yComp, xComp);
+         if (this.xComp == 0 && this.yComp == 0)
+         {
+            magnitude = 0;
+            direction = Angle.CreateRadians(0);
+         }
+         else
+         {
+            magnitude = Math.Sqrt(xComp * xComp + yComp * yComp);
+            direction = Angle.CreateSlope(yComp, xComp);
+         }
       }
 
       public void setMagnitude(double magnitude)
@@ -90,6 +98,11 @@ namespace phi.phisics
       public static implicit operator bool(Vector a)
       {
          return a != null;
+      }
+
+      public static implicit operator double(Vector a)
+      {
+         return a.magnitude;
       }
       
       public static Vector operator +(Vector a) => a;
