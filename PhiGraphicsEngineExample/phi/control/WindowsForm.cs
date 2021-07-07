@@ -28,19 +28,24 @@ namespace phi.control
          Size = new Size(Config.WINDOW.WIDTH, Config.WINDOW.HEIGHT);
          Text = Config.WINDOW.TITLE;
 
-         // Setup input event delegation
-         KeyPreview = true;
-         KeyDown += new KeyEventHandler(IO.KEYS.KeyInputEvent);
-         // todo
-         //MouseClick += new MouseEventHandler(IO.MOUSE.ClickEvent);
-         //MouseMove += new MouseEventHandler(IO.MOUSE.MoveEvent);
-
-         // create a picture box, to hold an image, the same size as the window
+         // set up a picture box, to hold an image, the same size as the window
          pictureBox = new PictureBox();
          pictureBox.Size = Size;
          pictureBox.Image = Image.FromFile(Config.RENDER.DEFAULT_BACKGROUND);
          Controls.Add(pictureBox); // is this line needed?
+
+         // Setup input event delegation
+         KeyPreview = true;
+         KeyDown += new KeyEventHandler(IO.KEYS.KeyInputEvent);
+
+         pictureBox.MouseClick += new MouseEventHandler(IO.MOUSE.CLICK.Event);
+         pictureBox.MouseDown += new MouseEventHandler(IO.MOUSE.DOWN.Event);
+         pictureBox.MouseUp += new MouseEventHandler(IO.MOUSE.UP.Event);
+         // pictureBox.MouseMove += new MouseEventHandler(IO.MOUSE.MOVE.Event);
+         
+         // Set output to the picturebox image
          IO.RENDERER.SetOutput(pictureBox.Image);
+         // picturebox image must be refreshed to be updated to each render frame
          IO.FRAME_TIMER.LockSubscribe(new Random().Next(), RefreshPictureBox);
 
          Config.ENTRY_SCENE.Initialize();

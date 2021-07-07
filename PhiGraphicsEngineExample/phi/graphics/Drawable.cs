@@ -26,6 +26,15 @@ namespace phi.graphics
 
       public virtual int GetHeight() { return height; }
       public virtual int GetWidth() { return width; }
+      public int GetCenterX() { return GetX() + GetWidth() / 2; }
+      public int GetCenterY() { return GetY() + GetHeight() / 2; }
+      public int[] GetCenter() { return new int[] { GetCenterX(), GetCenterY() }; }
+      public Rectangle GetBoundaryRectangle()
+      {
+         return new Rectangle(
+            new Point(GetX(), GetY()),
+            new Size(new Point(GetWidth(), GetHeight())));
+      }
 
       protected void SetDisplaying(bool displaying) { this.displaying = displaying; FlagChange(); }
       public bool IsDisplaying() { return displaying; }

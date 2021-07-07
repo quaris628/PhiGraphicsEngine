@@ -13,7 +13,14 @@ namespace phi.control
    {
       public static readonly FrameTimerInputHandler FRAME_TIMER = new FrameTimerInputHandler();
       public static readonly KeyInputHandler KEYS = new KeyInputHandler();
-      public static readonly MouseInputHandler MOUSE = new MouseInputHandler();
+      public struct MOUSE
+      {
+         public static readonly MouseInputHandler CLICK = new MouseInputHandler();
+         public static readonly MouseInputHandler DOWN = new MouseInputHandler();
+         public static readonly MouseInputHandler UP = new MouseInputHandler();
+         public static readonly MouseInputHandler MOVE = new MouseInputHandler();
+         public static void Clear() { CLICK.Clear(); DOWN.Clear(); UP.Clear(); MOVE.Clear(); }
+      }
       public static readonly Renderer RENDERER = new Renderer(null);
 
       private IO() { }
@@ -22,8 +29,7 @@ namespace phi.control
       {
          FRAME_TIMER.Clear();
          KEYS.Clear();
-         // todo
-         //MOUSE.Clear();
+         MOUSE.Clear();
          RENDERER.Clear();
       }
 

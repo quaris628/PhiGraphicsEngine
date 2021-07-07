@@ -28,6 +28,7 @@ namespace PhiGraphicsEngineExample
       private Text sceneSwitchMessage;
       private Ball ball;
       private bool ballToggler;
+      private Button ballControl;
 
       public Scene1(Scene prevScene) : base(prevScene)
       {
@@ -35,6 +36,8 @@ namespace PhiGraphicsEngineExample
          backMessage = new Text.TextBuilder(BACK_MSG).WithY(BACK_MSG_Y).Build();
          sceneSwitchMessage = new Text.TextBuilder(SWITCH_MSG).WithY(SWITCH_MSG_Y).Build(); 
          ball = new Ball();
+         ballControl = new Button.ButtonBuilder((Sprite)ball.GetDrawable()).withText("Toggle").withOnClick(ToggleBall).Build();
+         ballControl.SetXY(250, 10);
       }
 
       protected override void InitializeMe()
@@ -46,6 +49,8 @@ namespace PhiGraphicsEngineExample
          IO.RENDERER.Add(backMessage);
          IO.RENDERER.Add(sceneSwitchMessage);
          IO.RENDERER.Add(ball.GetDrawable(), 1);
+         ballControl.Initialize();
+         IO.RENDERER.Add(ballControl);
       }
 
       public void SwitchTo2()
@@ -77,6 +82,11 @@ namespace PhiGraphicsEngineExample
                ball.GetDrawable().SetX(ball.GetDrawable().GetX() - 3);
             }
          }
+      }
+
+      public void ToggleBall()
+      {
+         ballToggler = !ballToggler;
       }
 
    }
