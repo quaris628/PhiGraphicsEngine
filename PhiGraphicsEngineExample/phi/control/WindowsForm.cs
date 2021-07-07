@@ -41,7 +41,7 @@ namespace phi.control
          pictureBox.MouseClick += new MouseEventHandler(IO.MOUSE.CLICK.Event);
          pictureBox.MouseDown += new MouseEventHandler(IO.MOUSE.DOWN.Event);
          pictureBox.MouseUp += new MouseEventHandler(IO.MOUSE.UP.Event);
-         // pictureBox.MouseMove += new MouseEventHandler(IO.MOUSE.MOVE.Event);
+         pictureBox.MouseMove += new MouseEventHandler(IO.MOUSE.MOVE.Event);
          
          // Set output to the picturebox image
          IO.RENDERER.SetOutput(pictureBox.Image);
