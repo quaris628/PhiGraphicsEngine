@@ -55,13 +55,13 @@ namespace PhiGraphicsEngineExample
          }
       }
 
-
       private Text sceneTitle;
       private Text backMessage;
       private Text sceneSwitchMessage;
       private Ball ball;
       private bool ballToggler;
       private Button ballToggle;
+      private Draggable dragger;
 
       public Scene1(Scene prevScene) : base(prevScene)
       {
@@ -70,6 +70,7 @@ namespace PhiGraphicsEngineExample
          sceneSwitchMessage = SWITCH_MSG.GetText();
          ball = new Ball();
          ballToggle = BALL_TOGGLE.GetButton(BounceBall);
+         dragger = new Draggable(ballToggle);
       }
 
       protected override void InitializeMe()
@@ -83,6 +84,7 @@ namespace PhiGraphicsEngineExample
          IO.RENDERER.Add(ball.GetDrawable(), 1);
          IO.RENDERER.Add(ballToggle);
          ballToggle.Initialize();
+         dragger.Initialize();
       }
 
       public void SwitchTo2()
