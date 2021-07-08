@@ -26,6 +26,9 @@ namespace phi.graphics
 
       public virtual int GetHeight() { return height; }
       public virtual int GetWidth() { return width; }
+      public void SetCenterX(int x) { SetX(x - GetWidth() / 2); }
+      public void SetCenterY(int y) { SetY(y - GetHeight() / 2); }
+      public void SetCenterXY(int x, int y) { SetCenterX(x); SetCenterY(y); }
       public int GetCenterX() { return GetX() + GetWidth() / 2; }
       public int GetCenterY() { return GetY() + GetHeight() / 2; }
       public int[] GetCenter() { return new int[] { GetCenterX(), GetCenterY() }; }

@@ -53,6 +53,7 @@
     <Compile Include="phi\control\input\KeyInputHandler.cs" />
     <Compile Include="phi\control\input\MouseInputHandler.cs" />
     <Compile Include="phi\graphics\Button.cs" />
+    <Compile Include="phi\graphics\Draggable.cs" />
     <Compile Include="phi\graphics\Drawable.cs" />
     <Compile Include="phi\other\DynamicContainer.cs" />
     <Compile Include="phi\other\DynamicHoldable.cs" />

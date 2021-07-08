@@ -45,7 +45,7 @@ namespace phi.control
          
          // Set output to the picturebox image
          IO.RENDERER.SetOutput(pictureBox.Image);
-         // picturebox image must be refreshed to be updated to each render frame
+         // picturebox image must be updated to the new image on each render frame
          IO.FRAME_TIMER.LockSubscribe(new Random().Next(), RefreshPictureBox);
 
          Config.ENTRY_SCENE.Initialize();

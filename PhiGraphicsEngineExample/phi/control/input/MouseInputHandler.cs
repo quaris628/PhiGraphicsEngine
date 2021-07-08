@@ -49,6 +49,21 @@ namespace phi.control.input
          existingActions.AddFirst(action);
       }
 
+      public void Unsubscribe(Action action)
+      {
+         actions.Remove(action);
+      }
+
+      public void UnsubscribeFromDrawable(Action action, Drawable drawable)
+      {
+         drawableActions[drawable].Remove(action);
+      }
+
+      public void UnsubscribeFromRegion(Action action, Rectangle region)
+      {
+         regionActions[region].Remove(action);
+      }
+
       public void Clear()
       {
          actions.Clear();

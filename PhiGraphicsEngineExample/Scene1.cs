@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using phi.graphics;
 using phi.control;
 using phi.control.input;
+using phi;
 
 namespace PhiGraphicsEngineExample
 {
@@ -13,31 +15,61 @@ namespace PhiGraphicsEngineExample
    {
       private const string TITLE = "This is scene 1";
 
-      private const string BACK_MSG = "Press Escape to go back";
-      private const int BACK_MSG_Y = 20;
+      private struct BACK_MSG
+      {
+         private const string MSG = "Press Escape to go back";
+         private const int X = 0;
+         private const int Y = 20;
+         public static Text GetText()
+         {
+            return new Text.TextBuilder(MSG).WithXY(X, Y).Build();
+         }
+      }
       private const System.Windows.Forms.Keys BACK_KEY =
-         System.Windows.Forms.Keys.Escape;
+            System.Windows.Forms.Keys.Escape;
 
-      private const string SWITCH_MSG = "Press 2 to switch to scene 2";
-      private const int SWITCH_MSG_Y = 40;
+      private struct SWITCH_MSG
+      {
+         private const string MSG = "Press 2 to switch to scene 2";
+         private const int X = 0;
+         private const int Y = 40;
+         public static Text GetText()
+         {
+            return new Text.TextBuilder(MSG).WithXY(X, Y).Build();
+         }
+      }
       private const System.Windows.Forms.Keys SWITCH_TO_2_KEY =
          System.Windows.Forms.Keys.D2;
+
+      private struct BALL_TOGGLE
+      {
+         private const string IMAGE = Config.FILE_HOME + "res/ButtonBackground.png";
+         private const string TEXT = "Bounce Ball";
+         private const int X = 250;
+         private const int Y = 10;
+         // OnClick is BounceBall; see constructor, BounceBall is non-static
+         public static Button GetButton(Action onClick)
+         {
+            return new Button.ButtonBuilder(Image.FromFile(IMAGE), X, Y)
+               .withText(TEXT).withOnClick(onClick).Build();
+         }
+      }
+
 
       private Text sceneTitle;
       private Text backMessage;
       private Text sceneSwitchMessage;
       private Ball ball;
       private bool ballToggler;
-      private Button ballControl;
+      private Button ballToggle;
 
       public Scene1(Scene prevScene) : base(prevScene)
       {
          sceneTitle = new Text.TextBuilder(TITLE).Build();
-         backMessage = new Text.TextBuilder(BACK_MSG).WithY(BACK_MSG_Y).Build();
-         sceneSwitchMessage = new Text.TextBuilder(SWITCH_MSG).WithY(SWITCH_MSG_Y).Build(); 
+         backMessage = BACK_MSG.GetText();
+         sceneSwitchMessage = SWITCH_MSG.GetText();
          ball = new Ball();
-         ballControl = new Button.ButtonBuilder((Sprite)ball.GetDrawable()).withText("Toggle").withOnClick(ToggleBall).Build();
-         ballControl.SetXY(250, 10);
+         ballToggle = BALL_TOGGLE.GetButton(BounceBall);
       }
 
       protected override void InitializeMe()
@@ -49,8 +81,8 @@ namespace PhiGraphicsEngineExample
          IO.RENDERER.Add(backMessage);
          IO.RENDERER.Add(sceneSwitchMessage);
          IO.RENDERER.Add(ball.GetDrawable(), 1);
-         ballControl.Initialize();
-         IO.RENDERER.Add(ballControl);
+         IO.RENDERER.Add(ballToggle);
+         ballToggle.Initialize();
       }
 
       public void SwitchTo2()
@@ -62,7 +94,7 @@ namespace PhiGraphicsEngineExample
       {
          if(ballToggler)
          {
-            if(ball.GetDrawable().GetX() > 300)
+            if(ball.GetDrawable().GetX() > Config.WINDOW.WIDTH - ball.GetDrawable().GetWidth())
             {
                ballToggler = !ballToggler;
             }
@@ -84,7 +116,7 @@ namespace PhiGraphicsEngineExample
          }
       }
 
-      public void ToggleBall()
+      public void BounceBall()
       {
          ballToggler = !ballToggler;
       }
