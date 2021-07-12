@@ -15,13 +15,11 @@ namespace PhiExample
 
       private const string BACK_MSG = "Press Backspace to go back";
       private const int BACK_MSG_Y = 20;
-      private const System.Windows.Forms.Keys BACK_KEY =
-         System.Windows.Forms.Keys.Back;
+      private const Keys BACK_KEY = Keys.Back;
       
       private const string SWITCH_MSG = "Press 1 to switch to scene 1";
       private const int SWITCH_MSG_Y = 40;
-      private const System.Windows.Forms.Keys SWITCH_TO_1_KEY =
-         System.Windows.Forms.Keys.D1;
+      private const Keys SWITCH_TO_1_KEY = Keys.D1;
 
       private Text sceneTitle;
       private Text backMessage;

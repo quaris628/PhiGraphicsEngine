@@ -19,5 +19,7 @@ namespace phi
          Application.SetCompatibleTextRenderingDefault(false);
          Application.Run(new WindowsForm(entryScene));
       }
+
+      public static void Main() { }
    }
 }

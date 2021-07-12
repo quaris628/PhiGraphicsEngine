@@ -68,7 +68,7 @@
     <Compile Include="io\IO.cs" />
     <Compile Include="io\KeyInputHandler.cs" />
     <Compile Include="io\Keys.cs" />
-    <Compile Include="io\KeysWrapper.cs" />
+    <Compile Include="io\KeyStroke.cs" />
     <Compile Include="io\MouseInputHandler.cs" />
     <Compile Include="other\DynamicContainer.cs" />
     <Compile Include="other\DynamicHoldable.cs" />

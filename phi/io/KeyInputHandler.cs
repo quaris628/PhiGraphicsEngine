@@ -10,46 +10,45 @@ namespace phi.io
    public class KeyInputHandler
    {
       private Dictionary<int, LinkedList<Action>> actions;
-      private Dictionary<int, LinkedList<Action<Keys>>> keyActions;
-      private Dictionary<int, LinkedList<Action<KeyEventArgs>>> eventActions;
+      private Dictionary<int, LinkedList<Action<KeyStroke>>> keyActions;
 
       public KeyInputHandler()
       {
          actions = new Dictionary<int, LinkedList<Action>>();
-         keyActions = new Dictionary<int, LinkedList<Action<Keys>>>();
-         eventActions = new Dictionary<int, LinkedList<Action<KeyEventArgs>>>();
+         keyActions = new Dictionary<int, LinkedList<Action<KeyStroke>>>();
       }
 
       // Subscribe overloads
-      public void Subscribe(Action action, Keys key) { Subscribe(action, new KeyEventArgs(KeysWrapper.GetWindowsKeys(key))); }
-      public void Subscribe(Action<Keys> action, Keys key) { Subscribe(action, new KeyEventArgs(key)); }
-      public void Subscribe(Action<KeyEventArgs> action, Keys key) { Subscribe(action, new KeyEventArgs(key)); }
-      public void Subscribe(Action action, KeyEventArgs keyEvent)
+      public void Subscribe(Action action, Keys key) { Subscribe(action, new KeyStroke(key)); }
+      public void Subscribe(Action<KeyStroke> action, Keys key) { Subscribe(action, new KeyStroke(key)); }
+      public void Subscribe(Action action, KeyStroke keyStroke)
       {
-         int hashKey = Hash(keyEvent);
-         if (!actions.ContainsKey(hashKey)) { actions[hashKey] = new LinkedList<Action>(); }
-         actions[hashKey].AddFirst(action);
+         if (action != null && keyStroke != null)
+         {
+            if (!actions.ContainsKey(keyStroke.GetCode()))
+            {
+               actions[keyStroke.GetCode()] = new LinkedList<Action>();
+            }
+            actions[keyStroke.GetCode()].AddFirst(action);
+         }
       }
-      public void Subscribe(Action<Keys> action, KeyEventArgs keyEvent)
+      public void Subscribe(Action<KeyStroke> action, KeyStroke keyStroke)
       {
-         int hashKey = Hash(keyEvent);
-         if (!keyActions.ContainsKey(hashKey)) { keyActions[hashKey] = new LinkedList<Action<Keys>>(); }
-         keyActions[hashKey].AddFirst(action);
-      }
-      public void Subscribe(Action<KeyEventArgs> action, KeyEventArgs keyEvent)
-      {
-         int hashKey = Hash(keyEvent);
-         if (!eventActions.ContainsKey(hashKey)) { eventActions[hashKey] = new LinkedList<Action<KeyEventArgs>>(); }
-         eventActions[hashKey].AddFirst(action);
+         if (action != null && keyStroke != null)
+         {
+            if (!keyActions.ContainsKey(keyStroke.GetCode()))
+            {
+               keyActions[keyStroke.GetCode()] = new LinkedList<Action<KeyStroke>>();
+            }
+            keyActions[keyStroke.GetCode()].AddFirst(action);
+         }
       }
 
       // Unsubscribe overloads
-      public void Unsubscribe(Action action, Keys key) { Unsubscribe(action, new KeyEventArgs(key)); }
-      public void Unsubscribe(Action<Keys> action, Keys key) { Unsubscribe(action, new KeyEventArgs(key)); }
-      public void Unsubscribe(Action<KeyEventArgs> action, Keys key) { Unsubscribe(action, new KeyEventArgs(key)); }
-      public void Unsubscribe(Action action, KeyEventArgs keyEvent) { actions[Hash(keyEvent)].Remove(action); }
-      public void Unsubscribe(Action<Keys> action, KeyEventArgs keyEvent) { keyActions[Hash(keyEvent)].Remove(action); }
-      public void Unsubscribe(Action<KeyEventArgs> action, KeyEventArgs keyEvent) { eventActions[Hash(keyEvent)].Remove(action); }
+      public void Unsubscribe(Action action, Keys key) { Unsubscribe(action, new KeyStroke(key)); }
+      public void Unsubscribe(Action<KeyStroke> action, Keys key) { Unsubscribe(action, new KeyStroke(key)); }
+      public void Unsubscribe(Action action, KeyStroke keyStroke) { actions[keyStroke.GetCode()].Remove(action); }
+      public void Unsubscribe(Action<KeyStroke> action, KeyStroke keyStroke) { keyActions[keyStroke.GetCode()].Remove(action); }
 
       public void Clear()
       {
@@ -59,51 +58,25 @@ namespace phi.io
 
       public void KeyInputEvent(object sender, KeyEventArgs e)
       {
-         int hash = Hash(e);
-         if (actions.ContainsKey(hash))
+         KeyStroke stroke = new KeyStroke(e.KeyData);
+         if (actions.ContainsKey(stroke.GetCode()))
          {
-            IEnumerator<Action> todos = actions[hash].GetEnumerator();
+            // todo -- what was this extra-verbose code all about?
+            IEnumerator<Action> todos = actions[stroke.GetCode()].GetEnumerator();
             while(todos.MoveNext())
             {
                Action action = todos.Current;
-               if (action != null)
-               {
-                  action.Invoke();
-               }
+               action.Invoke();
             }
          }
-         if (keyActions.ContainsKey(Hash(e)))
+         if (keyActions.ContainsKey(stroke.GetCode()))
          {
-            foreach (Action<Keys> action in keyActions[Hash(e)])
+            foreach (Action<KeyStroke> action in keyActions[stroke.GetCode()])
             {
-               action.Invoke(e.KeyCode);
-            }
-         }
-         if (eventActions.ContainsKey(Hash(e)))
-         {
-            foreach (Action<KeyEventArgs> action in eventActions[Hash(e)])
-            {
-               action.Invoke(e);
+               action.Invoke(stroke);
             }
          }
       }
 
-      private static int Hash(KeyEventArgs e)
-      {
-         /*
-         e.Alt; // bool
-         e.Control; // bool
-         e.Handled; // bool, not applicable ?
-         e.KeyCode; // Keys, dependent on KeyValue
-         e.KeyData; // Keys, dependent on KeyValue/KeyCode, Ctrl, Shift, Alt
-         e.KeyValue; // int
-         e.Modifiers; // Keys, dependent on Ctrl, Shift, Alt
-         e.Shift; // bool
-         e.SuppressKeyPress; // bool, not applicable?
-         */
-         return e.KeyData.GetHashCode();
-      }
    }
-
-
 }

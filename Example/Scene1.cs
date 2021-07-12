@@ -40,7 +40,7 @@ namespace PhiExample
 
       private struct BALL_TOGGLE
       {
-         private const string IMAGE = Config.FILE_HOME + "res/ButtonBackground.png";
+         private const string IMAGE = Config.RES + "ButtonBackground.png";
          private const string TEXT = "Bounce Ball";
          private const int X = 250;
          private const int Y = 10;

@@ -11,7 +11,7 @@ namespace PhiExample
 {
    class Ball : Renderable
    {
-      private const string IMAGE = Config.FILE_HOME + "res/Ball.png";
+      private const string IMAGE = Config.RES + "Ball.png";
 
       private Sprite s;
 

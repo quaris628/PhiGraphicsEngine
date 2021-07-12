@@ -10,6 +10,7 @@ namespace phi
    public class Config
    {
       public const string FILE_HOME = "../../";
+      public const string RES = FILE_HOME + "res/";
 
       public struct WINDOW
       {
@@ -21,7 +22,7 @@ namespace phi
 
       public struct RENDER
       {
-         public const string DEFAULT_BACKGROUND = FILE_HOME + "phi/graphics/defaultBackground.png";
+         public const string DEFAULT_BACKGROUND = RES + "defaultBackground.png";
          public const int DEFAULT_LAYER = 0;
          public const int FPS = 60;
 

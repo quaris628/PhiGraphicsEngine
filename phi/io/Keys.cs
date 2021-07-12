@@ -773,18 +773,18 @@ namespace phi.io
       //
       // Summary:
       //     The bitmask to extract a key code from a key value.
-      KeyCode = 65535,
+      KeyCode = 65535,  // 0x0ffff
       //
       // Summary:
       //     The SHIFT modifier key.
-      Shift = 65536,
+      Shift = 65536,    // 0x10000
       //
       // Summary:
       //     The CTRL modifier key.
-      Control = 131072,
+      Control = 131072, // 0x20000
       //
       // Summary:
       //     The ALT modifier key.
-      Alt = 262144
+      Alt = 262144      // 0x40000
    }
 }

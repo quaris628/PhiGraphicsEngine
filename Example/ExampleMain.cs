@@ -9,7 +9,8 @@ namespace PhiExample
 {
    static class ExampleMain
    {
-      static void Main()
+      // Entry point
+      public static void Main()
       {
          PhiMain.Main(new Scene1(null));
       }

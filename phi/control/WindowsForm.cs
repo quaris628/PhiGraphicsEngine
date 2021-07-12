@@ -21,7 +21,7 @@ namespace phi.control
       {
          this.entryScene = entryScene;
          Application.EnableVisualStyles();
-         Application.SetCompatibleTextRenderingDefault(false);
+         //Application.SetCompatibleTextRenderingDefault(false);
          InitializeComponent();
          Load += new EventHandler(FormLoad);
       }
@@ -36,7 +36,7 @@ namespace phi.control
          pictureBox = new PictureBox();
          pictureBox.Size = Size;
          pictureBox.Image = Image.FromFile(Config.RENDER.DEFAULT_BACKGROUND);
-         Controls.Add(pictureBox); // is this line needed?
+         Controls.Add(pictureBox); // is this line needed? -- Yes, I think so
 
          // Setup input event delegation
          KeyPreview = true;
