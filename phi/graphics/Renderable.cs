@@ -11,7 +11,7 @@ namespace phi.graphics
     *    have a drawable object rendered in the output display
     * @author Benjamin Lippincott (and Nathan Swartz)
     */
-   interface Renderable
+   public interface Renderable
    {
       /**
        * Get the Drawable, to be displayed

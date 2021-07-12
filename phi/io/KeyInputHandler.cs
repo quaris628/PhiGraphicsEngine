@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace phi.control.input
+namespace phi.io
 {
    public class KeyInputHandler
    {
@@ -21,7 +21,7 @@ namespace phi.control.input
       }
 
       // Subscribe overloads
-      public void Subscribe(Action action, Keys key) { Subscribe(action, new KeyEventArgs(key)); }
+      public void Subscribe(Action action, Keys key) { Subscribe(action, new KeyEventArgs(KeysWrapper.GetWindowsKeys(key))); }
       public void Subscribe(Action<Keys> action, Keys key) { Subscribe(action, new KeyEventArgs(key)); }
       public void Subscribe(Action<KeyEventArgs> action, Keys key) { Subscribe(action, new KeyEventArgs(key)); }
       public void Subscribe(Action action, KeyEventArgs keyEvent)

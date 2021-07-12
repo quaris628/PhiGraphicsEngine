@@ -11,7 +11,7 @@ using System.Windows.Forms;
 //       System.Windows.Forms.Timer does not have these problems
 //        - Nathan
 
-namespace phi.control.input
+namespace phi.io
 {
    public class FrameTimerInputHandler
    {

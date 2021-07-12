@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using phi.control.input;
-using phi.control;
+using phi.io;
 
 namespace phi.graphics
 {

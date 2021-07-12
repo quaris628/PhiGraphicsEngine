@@ -10,7 +10,6 @@ namespace phi
    public class Config
    {
       public const string FILE_HOME = "../../";
-      public static readonly Scene ENTRY_SCENE = new PhiGraphicsEngineExample.Scene1(null);
 
       public struct WINDOW
       {

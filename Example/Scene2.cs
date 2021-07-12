@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using phi.graphics;
 using phi.control;
-using phi.control.input;
+using phi.io;
 
-namespace PhiGraphicsEngineExample
+namespace PhiExample
 {
    class Scene2 : Scene
    {

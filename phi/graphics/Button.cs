@@ -4,8 +4,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using phi.control;
-using phi.control.input;
+using phi.io;
 
 namespace phi.graphics
 {
@@ -45,7 +44,7 @@ namespace phi.graphics
          private Action onClick;
 
          public ButtonBuilder(Sprite sprite) { this.sprite = sprite; }
-         public ButtonBuilder(Image image, int x, int y) { this.sprite = new Sprite(image, x, y); }
+         public ButtonBuilder(ImageWrapper image, int x, int y) { this.sprite = new Sprite(image.GetImage(), x, y); }
 
          public ButtonBuilder withText(Text text) { this.text = text; return this; }
          public ButtonBuilder withText(string text) { this.text = new Text.TextBuilder(text).Build(); return this; }

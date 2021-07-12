@@ -43,7 +43,7 @@ namespace phi.Properties
          {
             if ((resourceMan == null))
             {
-               global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("PhiGraphicsEngineExample.Properties.Resources", typeof(Resources).Assembly);
+               global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("phi.Properties.Resources", typeof(Resources).Assembly);
                resourceMan = temp;
             }
             return resourceMan;

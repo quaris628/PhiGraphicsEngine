@@ -7,17 +7,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using phi.control.input;
+using phi.io;
 using phi.other;
 
 namespace phi.control
 {
    partial class WindowsForm : Form
    {
+      private Scene entryScene;
       private PictureBox pictureBox;
 
-      public WindowsForm()
+      public WindowsForm(Scene entryScene)
       {
+         this.entryScene = entryScene;
+         Application.EnableVisualStyles();
+         Application.SetCompatibleTextRenderingDefault(false);
          InitializeComponent();
          Load += new EventHandler(FormLoad);
       }
@@ -48,7 +52,7 @@ namespace phi.control
          // picturebox image must be updated to the new image on each render frame
          IO.FRAME_TIMER.LockSubscribe(new Random().Next(), RefreshPictureBox);
 
-         Config.ENTRY_SCENE.Initialize();
+         entryScene.Initialize();
          IO.FRAME_TIMER.Start();
       }
 

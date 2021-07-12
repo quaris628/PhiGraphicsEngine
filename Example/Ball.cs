@@ -5,9 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using phi;
 using phi.graphics;
-using phi.other;
+using phi.io;
 
-namespace PhiGraphicsEngineExample
+namespace PhiExample
 {
    class Ball : Renderable
    {
@@ -17,7 +17,7 @@ namespace PhiGraphicsEngineExample
 
       public Ball()
       {
-         s = new Sprite(System.Drawing.Image.FromFile(IMAGE), 0, 50);
+         s = new Sprite(new ImageWrapper(IMAGE), 0, 50);
       }
 
       public Drawable GetDrawable()

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using phi.io;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace phi.graphics
    {
       private Image image;
 
-      public Sprite(Image img, int x, int y) : base(x, y, img.Width, img.Height)
+      public Sprite(ImageWrapper img, int x, int y) : base(x, y, img.GetImage().Width, img.GetImage().Height)
       {
-         this.image = img ?? throw new ArgumentNullException();
+         this.image = img.GetImage() ?? throw new ArgumentNullException();
       }
 
       // extend Drawable

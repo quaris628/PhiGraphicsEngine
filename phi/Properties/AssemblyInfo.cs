@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("PhiGraphicsEngineExample")]
+[assembly: AssemblyTitle("phi")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Hewlett-Packard")]
-[assembly: AssemblyProduct("PhiGraphicsEngineExample")]
+[assembly: AssemblyProduct("phi")]
 [assembly: AssemblyCopyright("Copyright © Hewlett-Packard 2021")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("90c70a85-5e55-4ace-b04c-e12b17728310")]
+[assembly: Guid("16a36fcd-07e6-4cae-b5cb-db677e33f3fb")]
 
 // Version information for an assembly consists of the following four values:
 //

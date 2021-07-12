@@ -4,10 +4,11 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using phi.control.input;
+using phi.io;
 using phi.graphics;
+using phi.control;
 
-namespace phi.control
+namespace phi.io
 {
    public class IO
    {

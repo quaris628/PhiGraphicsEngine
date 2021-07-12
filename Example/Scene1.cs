@@ -1,15 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using phi.graphics;
 using phi.control;
-using phi.control.input;
+using phi.io;
 using phi;
 
-namespace PhiGraphicsEngineExample
+namespace PhiExample
 {
    class Scene1 : Scene
    {
@@ -25,8 +24,7 @@ namespace PhiGraphicsEngineExample
             return new Text.TextBuilder(MSG).WithXY(X, Y).Build();
          }
       }
-      private const System.Windows.Forms.Keys BACK_KEY =
-            System.Windows.Forms.Keys.Escape;
+      private const Keys BACK_KEY = Keys.Escape;
 
       private struct SWITCH_MSG
       {
@@ -38,8 +36,7 @@ namespace PhiGraphicsEngineExample
             return new Text.TextBuilder(MSG).WithXY(X, Y).Build();
          }
       }
-      private const System.Windows.Forms.Keys SWITCH_TO_2_KEY =
-         System.Windows.Forms.Keys.D2;
+      private const Keys SWITCH_TO_2_KEY = Keys.D2;
 
       private struct BALL_TOGGLE
       {
@@ -50,7 +47,7 @@ namespace PhiGraphicsEngineExample
          // OnClick is BounceBall; see constructor, BounceBall is non-static
          public static Button GetButton(Action onClick)
          {
-            return new Button.ButtonBuilder(Image.FromFile(IMAGE), X, Y)
+            return new Button.ButtonBuilder(new ImageWrapper(IMAGE), X, Y)
                .withText(TEXT).withOnClick(onClick).Build();
          }
       }

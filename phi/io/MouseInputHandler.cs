@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace phi.control.input
+namespace phi.io
 {
    public class MouseInputHandler
    {
