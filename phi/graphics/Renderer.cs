@@ -11,11 +11,13 @@ namespace phi.graphics
 {
    public class Renderer : DynamicContainer
    {
-      private readonly Image defaultBackground = Image.FromFile(Config.RENDER.DEFAULT_BACKGROUND);
+      // default layer before any default (for overload Add method) is set
+      private const int DEFAULT_DEFAULT_LAYER = 0;
 
       private Image output;
       private Image background;
       private SortedList<int, LinkedList<Drawable>> layers;
+      private int defaultLayer;
 
       private bool isCentered;
       private Drawable centerDrawable; //used to center the camera on a specific drawable
@@ -24,11 +26,27 @@ namespace phi.graphics
       private int displacementX;
       private int displacementY;
 
-      public Renderer(Image output)
+      public Renderer(Image output, Image background)
       {
          this.output = output;
-         this.background = (Image)defaultBackground.Clone();
+         this.background = background;
          this.layers = new SortedList<int, LinkedList<Drawable>>();
+         this.defaultLayer = DEFAULT_DEFAULT_LAYER;
+
+         this.isCentered = false;
+         this.centerDrawable = null;
+         this.center_X_Displacement = 0;
+         this.center_Y_Displacement = 0;
+         this.displacementX = 0;
+         this.displacementY = 0;
+      }
+
+      public Renderer()
+      {
+         this.output = null;
+         this.background = null;
+         this.layers = new SortedList<int, LinkedList<Drawable>>();
+         this.defaultLayer = DEFAULT_DEFAULT_LAYER;
 
          this.isCentered = false;
          this.centerDrawable = null;
@@ -85,7 +103,9 @@ namespace phi.graphics
          item.PutIn(this);
          FlagChange();
       }
-      public void Add(Drawable item) { Add(item, Config.RENDER.DEFAULT_LAYER); }
+      public void Add(Drawable item) { Add(item, defaultLayer); }
+      public void SetDefaultLayer(int defaultLayer) { this.defaultLayer = defaultLayer; }
+      public int GetDefaultLayer() { return defaultLayer; }
 
       public bool Remove(Drawable item)
       {
@@ -124,6 +144,11 @@ namespace phi.graphics
       {
          this.background = background ?? throw new ArgumentNullException();
          FlagChange();
+      }
+
+      public Image GetBackground()
+      {
+         return this.background;
       }
 
       /**

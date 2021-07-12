@@ -8,7 +8,7 @@ using phi.control;
 using phi.io;
 using phi;
 
-namespace PhiExample
+namespace Example
 {
    class Scene1 : Scene
    {
@@ -40,7 +40,7 @@ namespace PhiExample
 
       private struct BALL_TOGGLE
       {
-         private const string IMAGE = Config.RES + "ButtonBackground.png";
+         private const string IMAGE = ExamplePhiConfig.RES_DIR + "ButtonBackground.png";
          private const string TEXT = "Bounce Ball";
          private const int X = 250;
          private const int Y = 10;
@@ -60,7 +60,7 @@ namespace PhiExample
       private Button ballToggle;
       private Draggable dragger;
 
-      public Scene1(Scene prevScene) : base(prevScene)
+      public Scene1(Scene prevScene) : base(prevScene, new ImageWrapper(ExamplePhiConfig.Render.DEFAULT_BACKGROUND))
       {
          sceneTitle = new Text.TextBuilder(TITLE).Build();
          backMessage = BACK_MSG.GetText();
@@ -93,7 +93,7 @@ namespace PhiExample
       {
          if(ballToggler)
          {
-            if(ball.GetDrawable().GetX() > Config.WINDOW.WIDTH - ball.GetDrawable().GetWidth())
+            if(ball.GetDrawable().GetX() > 600 - ball.GetDrawable().GetWidth())
             {
                ballToggler = !ballToggler;
             }

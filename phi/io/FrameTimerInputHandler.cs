@@ -19,13 +19,19 @@ namespace phi.io
       private LinkedList<Action> frameActions;
       private Dictionary<int, Action> lockedFrameActions;
 
-      public FrameTimerInputHandler()
+      public FrameTimerInputHandler(int fps)
       {
          frames = new Timer();
-         frames.Interval = 1000 / Config.RENDER.FPS;
+         frames.Interval = 1000 / fps;
          frames.Tick += new EventHandler(FrameTickEvent);
          //frames = new Timer(1000.0 / Config.RENDER.FPS);
          //frames.Elapsed += new ElapsedEventHandler(FrameTickEvent);
+         frameActions = new LinkedList<Action>();
+         lockedFrameActions = new Dictionary<int, Action>();
+      }
+      public FrameTimerInputHandler()
+      {
+         frames = null;
          frameActions = new LinkedList<Action>();
          lockedFrameActions = new Dictionary<int, Action>();
       }
@@ -40,12 +46,17 @@ namespace phi.io
          frameActions.Remove(action);
       }
 
-      public void LockSubscribe(int key, Action action)
+      /**
+       * Clear() will not removed locked subscriptions
+       * locked subscriptions can only be unlocked with the integer key, and
+       *    an Action that .Equals() the passed action
+       */
+      public void LockedSubscribe(int key, Action action)
       {
          lockedFrameActions[key] = action;
       }
 
-      public void UnsubscribeLocked(int key, Action action)
+      public void LockedUnsubscribe(int key, Action action)
       {
          Action find;
          lockedFrameActions.TryGetValue(key, out find);
@@ -63,8 +74,22 @@ namespace phi.io
 
       public void Start()
       {
+         if (frames == null)
+         {
+            throw new ArgumentException("Unspecified Frames per Second");
+         }
          frames.Enabled = true;
          frames.Start();
+      }
+
+      public void SetFPS(int fps)
+      {
+         if (frames == null)
+         {
+            frames = new Timer();
+            frames.Tick += new EventHandler(FrameTickEvent);
+         }
+         frames.Interval = 1000 / fps;
       }
 
       public void FrameTickEvent(object sender, EventArgs e)

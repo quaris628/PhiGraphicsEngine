@@ -22,7 +22,7 @@ namespace phi.io
          public static readonly MouseInputHandler MOVE = new MouseInputHandler();
          public static void Clear() { CLICK.Clear(); DOWN.Clear(); UP.Clear(); MOVE.Clear(); }
       }
-      public static readonly Renderer RENDERER = new Renderer(null);
+      public static readonly Renderer RENDERER = new Renderer();
 
       private IO() { }
 

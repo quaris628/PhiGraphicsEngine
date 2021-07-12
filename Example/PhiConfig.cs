@@ -7,7 +7,7 @@ using phi.control;
 
 namespace phi
 {
-   public class Config
+   public class PhiConfig : DefaultConfig
    {
       public const string FILE_HOME = "../../";
       public const string RES = FILE_HOME + "res/";
@@ -24,7 +24,7 @@ namespace phi
       {
          public const string DEFAULT_BACKGROUND = RES + "defaultBackground.png";
          public const int DEFAULT_LAYER = 0;
-         public const int FPS = 60;
+         public const int FPS = 80;
 
       }
 

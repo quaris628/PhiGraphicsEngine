@@ -7,7 +7,7 @@ using phi.graphics;
 using phi.control;
 using phi.io;
 
-namespace PhiExample
+namespace Example
 {
    class Scene2 : Scene
    {

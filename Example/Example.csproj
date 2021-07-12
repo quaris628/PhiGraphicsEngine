@@ -41,6 +41,7 @@
   <ItemGroup>
     <Compile Include="Ball.cs" />
     <Compile Include="ExampleMain.cs" />
+    <Compile Include="ExamplePhiConfig.cs" />
     <Compile Include="Scene1.cs" />
     <Compile Include="Scene2.cs" />
   </ItemGroup>

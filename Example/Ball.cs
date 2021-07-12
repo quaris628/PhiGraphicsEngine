@@ -7,11 +7,11 @@ using phi;
 using phi.graphics;
 using phi.io;
 
-namespace PhiExample
+namespace Example
 {
    class Ball : Renderable
    {
-      private const string IMAGE = Config.RES + "Ball.png";
+      private const string IMAGE = ExamplePhiConfig.RES_DIR + "Ball.png";
 
       private Sprite s;
 

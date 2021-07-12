@@ -1,5 +1,7 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 using phi.io;
+
 
 namespace phi.control
 {
@@ -18,7 +20,17 @@ namespace phi.control
       protected Scene(Scene prevScene)
       {
          this.prevScene = prevScene;
-         this.background = Image.FromFile(Config.RENDER.DEFAULT_BACKGROUND);
+         this.background = (Image)IO.RENDERER.GetBackground().Clone();
+      }
+
+      protected Scene(Scene prevScene, ImageWrapper background)
+      {
+         this.prevScene = prevScene;
+         if (background == null)
+         {
+            throw new ArgumentNullException();
+         }
+         this.background = background.GetImage();
       }
 
       public void Initialize()
