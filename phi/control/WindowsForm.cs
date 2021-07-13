@@ -15,10 +15,10 @@ namespace phi.control
    partial class WindowsForm : Form
    {
       private Scene entryScene;
-      private DefaultConfig config;
+      private Config config;
       private PictureBox pictureBox;
       
-      public WindowsForm(Scene entryScene, DefaultConfig config)
+      public WindowsForm(Scene entryScene, Config config)
       {
          this.entryScene = entryScene;
          this.config = config;
@@ -32,13 +32,13 @@ namespace phi.control
       private void FormLoad(object sender, EventArgs e)
       {
          // set window properites
-         Size = new Size(config.GetWindow().GetWidth(), config.GetWindow().GetHeight());
-         Text = config.GetWindow().GetTitle();
+         Size = new Size(config.GetWindowWidth(), config.GetWindowHeight());
+         Text = config.GetWindowTitle();
 
          // set up a picture box, to hold an image, the same size as the window
          pictureBox = new PictureBox();
          pictureBox.Size = Size;
-         pictureBox.Image = Image.FromFile(config.GetRender().GetDefaultBackground());
+         pictureBox.Image = Image.FromFile(config.GetRenderDefaultBackground());
          Controls.Add(pictureBox); // is this line needed? -- Yes, I think so
 
          // Setup key input event handling
@@ -53,12 +53,12 @@ namespace phi.control
          
          // Set output to the picturebox image
          IO.RENDERER.SetOutput(pictureBox.Image);
-         IO.RENDERER.SetBackground(Image.FromFile(config.GetRender().GetDefaultBackground()));
-         IO.RENDERER.SetDefaultLayer(config.GetRender().GetDefaultLayer());
+         IO.RENDERER.SetBackground(Image.FromFile(config.GetRenderDefaultBackground()));
+         IO.RENDERER.SetDefaultLayer(config.GetRenderDefaultLayer());
          // picturebox image must be updated to the new image on each render frame
          IO.FRAME_TIMER.LockedSubscribe(new Random().Next(), RefreshPictureBox);
          
-         IO.FRAME_TIMER.SetFPS(config.GetRender().GetFPS());
+         IO.FRAME_TIMER.SetFPS(config.GetRenderFPS());
 
          entryScene.Initialize();
          IO.FRAME_TIMER.Start();
