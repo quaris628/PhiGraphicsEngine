@@ -1,5 +1,6 @@
 # my custom gitignores
 mychangelog.txt
+*.vpp.bak_*
 
 #general visual studio project gitignore
 ## Ignore Visual Studio temporary files, build results, and

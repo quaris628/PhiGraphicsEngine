@@ -23,13 +23,16 @@ namespace phi.control
          this.background = (Image)IO.RENDERER.GetBackground().Clone();
       }
 
+      protected Scene(Scene prevScene, string imageFile)
+      {
+         this.prevScene = prevScene;
+         this.background = Image.FromFile(imageFile);
+      }
+
       protected Scene(Scene prevScene, ImageWrapper background)
       {
          this.prevScene = prevScene;
-         if (background == null)
-         {
-            throw new ArgumentNullException();
-         }
+         if (background == null) { throw new ArgumentNullException(); }
          this.background = background.GetImage();
       }
 

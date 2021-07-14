@@ -9,6 +9,8 @@ namespace phi.graphics
 {
    public class Text : Drawable
    {
+      private const int DEFAULT_X = 0;
+      private const int DEFAULT_Y = 0;
       private const string DEFAULT_FONT_NAME = "Arial";
       private const float DEFAULT_FONT_SIZE = 14;
       private static readonly Brush DEFAULT_COLOR = Brushes.Black;
@@ -18,6 +20,14 @@ namespace phi.graphics
       private Brush color;
       private Size calculatedSize;
       private bool sizeUpToDate;
+
+      public Text(string message) : base(DEFAULT_X, DEFAULT_Y, 0, 0)
+      {
+         this.message = message;
+         this.font = new Font(DEFAULT_FONT_NAME, DEFAULT_FONT_SIZE);
+         this.color = DEFAULT_COLOR;
+         this.sizeUpToDate = false;
+      }
 
       private Text(TextBuilder builder) : base(builder.GetX(), builder.GetY(), 0, 0)
       {
@@ -60,8 +70,8 @@ namespace phi.graphics
          public TextBuilder(string message)
          {
             this.message = message;
-            this.x = 0;
-            this.y = 0;
+            this.x = DEFAULT_X;
+            this.y = DEFAULT_Y;
             this.fontName = DEFAULT_FONT_NAME;
             this.fontSize = DEFAULT_FONT_SIZE;
             this.color = DEFAULT_COLOR;
@@ -77,7 +87,7 @@ namespace phi.graphics
          public string GetMessage() { return message; }
          public int GetX() { return x; }
          public int GetY() { return y; }
-         public Font GetFont() { return new Font(fontName, (float)fontSize); }
+         public Font GetFont() { return new Font(fontName, fontSize); }
          public Brush GetColor() { return color; }
 
          public Text Build() { return new Text(this); }

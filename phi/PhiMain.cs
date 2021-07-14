@@ -9,15 +9,21 @@ namespace phi
 {
    public static class PhiMain
    {
-      /// <summary>
-      /// The main entry point for the application.
-      /// </summary>
+      
       [STAThread]
       public static void Main(Scene entryScene, DefaultConfig config)
       {
          Application.EnableVisualStyles();
          Application.SetCompatibleTextRenderingDefault(false);
          Application.Run(new WindowsForm(entryScene, config));
+      }
+
+      [STAThread]
+      public static void Main(Scene entryScene)
+      {
+         Application.EnableVisualStyles();
+         Application.SetCompatibleTextRenderingDefault(false);
+         Application.Run(new WindowsForm(entryScene, new DefaultConfig()));
       }
 
       public static void Main() { }

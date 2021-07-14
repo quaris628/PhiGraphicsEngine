@@ -22,44 +22,39 @@ namespace phi.control
       {
          this.entryScene = entryScene;
          this.config = config;
+         this.pictureBox = new PictureBox();
 
-         Application.EnableVisualStyles();
-         //Application.SetCompatibleTextRenderingDefault(false);
+         // misc configs
+         IO.RENDERER.SetBackground(Image.FromFile(config.GetRenderDefaultBackground()));
+         IO.RENDERER.SetDefaultLayer(config.GetRenderDefaultLayer());
+         IO.FRAME_TIMER.SetFPS(config.GetRenderFPS());
+         IO.FRAME_TIMER.LockedSubscribe(new Random().Next(), RefreshPictureBox);
+
          InitializeComponent();
          Load += new EventHandler(FormLoad);
       }
 
       private void FormLoad(object sender, EventArgs e)
       {
-         // set window properites
+         // Set window properites
          Size = new Size(config.GetWindowWidth(), config.GetWindowHeight());
          Text = config.GetWindowTitle();
-
-         // set up a picture box, to hold an image, the same size as the window
-         pictureBox = new PictureBox();
+         // Set pictureBox properties
          pictureBox.Size = Size;
          pictureBox.Image = Image.FromFile(config.GetRenderDefaultBackground());
          Controls.Add(pictureBox); // is this line needed? -- Yes, I think so
+         IO.RENDERER.SetOutput(pictureBox.Image);
 
          // Setup key input event handling
          KeyPreview = true;
          KeyDown += new KeyEventHandler(IO.KEYS.KeyInputEvent);
-
          // Setup mouse input event handling
          pictureBox.MouseClick += new MouseEventHandler(IO.MOUSE.CLICK.Event);
          pictureBox.MouseDown += new MouseEventHandler(IO.MOUSE.DOWN.Event);
          pictureBox.MouseUp += new MouseEventHandler(IO.MOUSE.UP.Event);
          pictureBox.MouseMove += new MouseEventHandler(IO.MOUSE.MOVE.Event);
-         
-         // Set output to the picturebox image
-         IO.RENDERER.SetOutput(pictureBox.Image);
-         IO.RENDERER.SetBackground(Image.FromFile(config.GetRenderDefaultBackground()));
-         IO.RENDERER.SetDefaultLayer(config.GetRenderDefaultLayer());
-         // picturebox image must be updated to the new image on each render frame
-         IO.FRAME_TIMER.LockedSubscribe(new Random().Next(), RefreshPictureBox);
-         
-         IO.FRAME_TIMER.SetFPS(config.GetRenderFPS());
 
+         // Let's go!
          entryScene.Initialize();
          IO.FRAME_TIMER.Start();
       }
