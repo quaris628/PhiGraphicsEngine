@@ -7,6 +7,7 @@ using phi;
 
 namespace Example
 {
+   // pass this object to the PhiMain method to set it to be used as the phi config settings
    public class ExamplePhiConfig : DefaultConfig
    {
       public new class Window : DefaultConfig.Window

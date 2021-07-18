@@ -53,17 +53,18 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="control\WindowsForm.Designer.cs" />
-    <Compile Include="graphics\Button.cs" />
-    <Compile Include="graphics\Draggable.cs" />
+    <Compile Include="graphics\renderables\Draggable.cs" />
+    <Compile Include="graphics\drawables\Button.cs" />
     <Compile Include="graphics\Drawable.cs" />
-    <Compile Include="graphics\Grid.cs" />
-    <Compile Include="graphics\Line.cs" />
-    <Compile Include="graphics\Movable2D.cs" />
-    <Compile Include="graphics\PenDrawable.cs" />
+    <Compile Include="graphics\drawables\Grid.cs" />
+    <Compile Include="graphics\drawables\PenDrawable.cs" />
+    <Compile Include="graphics\drawables\Sprite.cs" />
+    <Compile Include="graphics\drawables\Text.cs" />
+    <Compile Include="graphics\drawables\Line.cs" />
+    <Compile Include="other\Movable2D.cs" />
     <Compile Include="graphics\Renderable.cs" />
     <Compile Include="graphics\Renderer.cs" />
-    <Compile Include="graphics\Sprite.cs" />
-    <Compile Include="graphics\Text.cs" />
+    <Compile Include="graphics\renderables\Snappable.cs" />
     <Compile Include="io\FrameTimerInputHandler.cs" />
     <Compile Include="io\ImageWrapper.cs" />
     <Compile Include="io\IO.cs" />

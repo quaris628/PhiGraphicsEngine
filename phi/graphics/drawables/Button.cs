@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using phi.io;
 
-namespace phi.graphics
+namespace phi.graphics.drawables
 {
    public class Button : Drawable
    {

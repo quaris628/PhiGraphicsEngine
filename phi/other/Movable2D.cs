@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using phi.other;
 
-namespace phi.graphics
+namespace phi.other
 {
    public class Movable2D : DynamicHoldable
    {

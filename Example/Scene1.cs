@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using phi.graphics;
 using phi.control;
 using phi.io;
-using phi;
+using phi.graphics.renderables;
+using phi.graphics.drawables;
 
 namespace Example
 {

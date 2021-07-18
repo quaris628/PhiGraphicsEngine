@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using phi;
 using phi.graphics;
+using phi.graphics.drawables;
 using phi.io;
 
 namespace Example

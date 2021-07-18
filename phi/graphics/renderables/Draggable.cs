@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using phi.io;
 
-namespace phi.graphics
+namespace phi.graphics.renderables
 {
    public class Draggable : Renderable
    {

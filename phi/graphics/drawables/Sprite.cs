@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace phi.graphics
+namespace phi.graphics.drawables
 {
    public class Sprite : Drawable
    {
