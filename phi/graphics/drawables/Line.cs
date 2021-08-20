@@ -1,4 +1,5 @@
-﻿using System;
+﻿using phi.phisics.Shapes;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
@@ -11,6 +12,9 @@ namespace phi.graphics.drawables
    {
       public Line(int startX, int startY, int endX, int endY)
          : base(startX, startY, endX - startX, endY - startY) { }
+
+      public Line(Edge e)
+      : base(e.GetPoint1().x, e.GetPoint1().y, e.GetPoint2().x - e.GetPoint1().x, e.GetPoint2().y - e.GetPoint1().y) { }
 
       protected override void DrawAt(Graphics g, int x, int y)
       {

@@ -10,7 +10,6 @@ namespace phi.phisics
 {
    public abstract class PhisicsObject : Drawable
    {
-      private PhisicsPlane plane;
 
       protected PhisicsObject(PhisicsPlane plane, double mass, Shape shape, Vector position, Vector velocity)
          : base(plane.GetX(), plane.GetY(), shape.GetWidth(), shape.GetHeight())
