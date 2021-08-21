@@ -37,6 +37,11 @@ namespace phi.graphics.drawables
          }
       }
 
+      public override string ToString()
+      {
+         return "Button '" + text.GetMessage() + "' " + base.ToString();
+      }
+
       public class ButtonBuilder
       {
          private Sprite sprite;

@@ -57,5 +57,10 @@ namespace phi.graphics.drawables
          foreach (Line l in horzLines) { l.SetPen(pen); }
          FlagChange();
       }
+
+      public override string ToString()
+      {
+         return "Grid " + base.ToString();
+      }
    }
 }

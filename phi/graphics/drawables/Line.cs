@@ -19,5 +19,9 @@ namespace phi.graphics.drawables
          g.DrawLine(GetPen(), x, y, x2, y2);
       }
 
+      public override string ToString()
+      {
+         return "Line " + base.ToString();
+      }
    }
 }
