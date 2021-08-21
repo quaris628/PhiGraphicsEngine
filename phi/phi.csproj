@@ -74,6 +74,7 @@
     <Compile Include="io\MouseInputHandler.cs" />
     <Compile Include="other\DynamicContainer.cs" />
     <Compile Include="other\DynamicHoldable.cs" />
+    <Compile Include="other\Rectangle.cs" />
     <Compile Include="PhiMain.cs" />
     <Compile Include="phisics\Angle.cs" />
     <Compile Include="phisics\Force.cs" />
