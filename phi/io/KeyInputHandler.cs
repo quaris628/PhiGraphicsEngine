@@ -61,7 +61,9 @@ namespace phi.io
          KeyStroke stroke = new KeyStroke(e.KeyData);
          if (actions.ContainsKey(stroke.GetCode()))
          {
-            // todo -- what was this extra-verbose code all about?
+            // This extra-verbose while loop iteration is here instead of a simpler foreach
+            //    to force iteration to continue even if an element in the collection is updated.
+            // If this was replaced by a foreach, an exception would be thrown.
             IEnumerator<Action> todos = actions[stroke.GetCode()].GetEnumerator();
             while(todos.MoveNext())
             {
