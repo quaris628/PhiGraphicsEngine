@@ -33,11 +33,9 @@ namespace phi.graphics
       public int GetCenterX() { return GetX() + GetWidth() / 2; }
       public int GetCenterY() { return GetY() + GetHeight() / 2; }
       public int[] GetCenter() { return new int[] { GetCenterX(), GetCenterY() }; }
-      public Rectangle GetBoundaryRectangle()
+      public phi.other.Rectangle GetBoundaryRectangle()
       {
-         return new Rectangle(
-            new Point(GetX(), GetY()),
-            new Size(new Point(GetWidth(), GetHeight())));
+         return new phi.other.Rectangle(GetX(), GetY(), GetWidth(), GetHeight());
       }
 
       protected void SetDisplaying(bool displaying) { this.displaying = displaying; FlagChange(); }

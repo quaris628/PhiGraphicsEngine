@@ -58,6 +58,11 @@ namespace phi.graphics.drawables
       public string GetMessage() { return message; }
       public Font GetFont() { return font; }
 
+      public override string ToString()
+      {
+         return "Text '" + message + "' " + base.ToString();
+      }
+
       public class TextBuilder
       {
          private string message;

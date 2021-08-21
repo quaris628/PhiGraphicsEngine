@@ -56,7 +56,7 @@ namespace phi.io
          regionActions[region].Remove(action);
       }
 
-      // Subscription overloads
+      // Subscription overloads for no-parameter actions
       private Action<int, int> Wrap(Action action)
       {
          return new Action<int, int>((a, b) => { action.Invoke(); });
@@ -77,19 +77,35 @@ namespace phi.io
 
       public void Event(object sender, MouseEventArgs e)
       {
-         foreach (Action<int, int> action in actions)
+         // Deep copy actions to do after iteration through collections of actions
+         // This resolves what should happen if one of those actions edits one of the
+         //   collections. (Throws exception if done during iteration.)
+         LinkedList<Action<int, int>> todos = new LinkedList<Action<int, int>>();
+
+         LinkedListNode<Action<int, int>> iter = actions.First;
+         if (iter != null)
          {
-            action.Invoke(e.X, e.Y);
+            while (iter.Next != null)
+            {
+               todos.AddLast(iter.Value);
+               iter = iter.Next;
+            }
+            todos.AddLast(iter.Value);
          }
 
-         // not very efficient; todo try to improve (by using 2d array to sort a list in 2 distinct orders at the same time?)
-         foreach (Rectangle region in regionActions.Keys)
+         // not very efficient; todo try to improve
+         // since this is called so often
+         // (by using 2d array to sort a list in 2 distinct orders at the same time?)
+
+         List<Rectangle> regions = regionActions.Keys.ToList();
+
+         foreach (Rectangle region in regions)
          {
             if (region.Contains(e.X, e.Y))
             {
                foreach (Action<int, int> action in regionActions[region])
                {
-                  action.Invoke(e.X, e.Y);
+                  todos.AddLast(action);
                }
             }
          }
@@ -100,10 +116,19 @@ namespace phi.io
             {
                foreach (Action<int, int> action in kvp.Value)
                {
-                  action.Invoke(e.X, e.Y);
+                  todos.AddLast(action);
                }
             }
          }
+
+         // do all the actions after 'deciding which actions to do' is complete
+         // so one action does not change a state that 'deciding which actions to do' depends on
+         // in the middle of 'deciding which actions to do'
+         foreach (Action<int, int> action in todos)
+         {
+            action.Invoke(e.X, e.Y);
+         }
+
       }
    }
 }

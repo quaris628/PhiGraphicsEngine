@@ -20,13 +20,11 @@ namespace phi.graphics.renderables
 
       public void Initialize()
       {
-         // TODO Make this (int, int) location overload in MouseINputHandler
          IO.MOUSE.DOWN.SubscribeOnDrawable(MouseDown, drawable);
       }
 
       private void MouseDown(int x, int y)
       {
-         // TODO Make this (int, int) location overload in MouseINputHandler
          IO.MOUSE.MOVE.Subscribe(MouseMove);
          IO.MOUSE.UP.Subscribe(MouseUp);
          dragOffsetX = x - drawable.GetX();
@@ -35,21 +33,20 @@ namespace phi.graphics.renderables
       }
       protected virtual void MyMouseDown(int x, int y) { }
 
-      private void MouseUp()
-      {
-         // TODO Make this (int, int) location overload in MouseINputHandler
-         IO.MOUSE.MOVE.Unsubscribe(MouseMove);
-         IO.MOUSE.UP.Unsubscribe(MouseUp);
-         MyMouseUp();
-      }
-      protected virtual void MyMouseUp() { }
-
       private void MouseMove(int x, int y)
       {
          drawable.SetXY(x - dragOffsetX, y - dragOffsetY);
          MyMouseMove(x, y);
       }
       protected virtual void MyMouseMove(int x, int y) { }
+
+      private void MouseUp(int x, int y)
+      {
+         IO.MOUSE.MOVE.Unsubscribe(MouseMove);
+         IO.MOUSE.UP.Unsubscribe(MouseUp);
+         MyMouseUp(x, y);
+      }
+      protected virtual void MyMouseUp(int x, int y) { }
 
       public Drawable GetDrawable() { return drawable; }
    }

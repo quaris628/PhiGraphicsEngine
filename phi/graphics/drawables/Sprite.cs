@@ -71,5 +71,10 @@ namespace phi.graphics.drawables
          }
       }
 
+      public override string ToString()
+      {
+         return "Sprite " + base.ToString();
+      }
+
    }
 }
