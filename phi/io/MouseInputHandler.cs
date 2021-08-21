@@ -56,7 +56,7 @@ namespace phi.io
          regionActions[region].Remove(action);
       }
 
-      // Subscription overloads
+      // Subscription overloads for no-parameter actions
       private Action<int, int> Wrap(Action action)
       {
          return new Action<int, int>((a, b) => { action.Invoke(); });
@@ -77,13 +77,26 @@ namespace phi.io
 
       public void Event(object sender, MouseEventArgs e)
       {
-         foreach (Action<int, int> action in actions)
+         // Manual iteration allows edits to the collection while iteration is happening
+         LinkedListNode<Action<int, int>> iter = actions.First;
+         if (iter != null)
          {
-            action.Invoke(e.X, e.Y);
+            while (iter.Next != null)
+            {
+               iter.Value.Invoke(e.X, e.Y);
+               iter = iter.Next;
+            }
+            iter.Value.Invoke(e.X, e.Y);
          }
 
-         // not very efficient; todo try to improve (by using 2d array to sort a list in 2 distinct orders at the same time?)
-         foreach (Rectangle region in regionActions.Keys)
+         // not very efficient; todo try to improve
+         // (by using 2d array to sort a list in 2 distinct orders at the same time?)
+
+         // I expect this to be a deep copy
+         // Allows edits to the original collection during iteration
+         List<Rectangle> regions = regionActions.Keys.ToList();
+
+         foreach (Rectangle region in regions)
          {
             if (region.Contains(e.X, e.Y))
             {
@@ -94,16 +107,29 @@ namespace phi.io
             }
          }
 
-         foreach (KeyValuePair<Drawable, LinkedList<Action<int, int>>> kvp in drawableActions)
+         // I expect this to be a deep copy
+         // Allows edits to the original collection during iteration
+
+         LinkedList<Action<int, int>> todos = new LinkedList<Action<int, int>>();
+         
+         foreach (Drawable drawable in drawableActions.Keys)
          {
-            if (kvp.Key.GetBoundaryRectangle().Contains(e.X, e.Y))
+            // help me, why does this throw a KeyNoutFoundException
+            Console.WriteLine(drawableActions[drawable]);
+
+            if (drawable.GetBoundaryRectangle().Contains(e.X, e.Y))
             {
-               foreach (Action<int, int> action in kvp.Value)
+               foreach (Action<int, int> action in drawableActions[drawable])
                {
-                  action.Invoke(e.X, e.Y);
+                  todos.AddLast(action);
                }
             }
          }
+         foreach (Action<int, int> action in todos)
+         {
+            action.Invoke(e.X, e.Y);
+         }
+
       }
    }
 }
