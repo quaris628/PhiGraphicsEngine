@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace phi.phisics.Shapes
 {
-   class Polygon : Shape, Renderable
+   class Polygon : Shape
    {
       protected Sprite s;
       private Edge[] edges;
@@ -22,7 +22,7 @@ namespace phi.phisics.Shapes
          
       }
 
-      public Drawable GetDrawable()
+      public override Drawable GetDrawable()
       {
          return s;
       }

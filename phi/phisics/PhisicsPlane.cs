@@ -8,7 +8,7 @@ using phi.graphics;
 
 namespace phi.phisics
 {
-   public class PhisicsPlane : Drawable
+   public class PhisicsPlane
    {
 
       private HashSet<PhisicsObject> objs;
@@ -16,17 +16,28 @@ namespace phi.phisics
       /**
        * Constructs a rectangularly bounded phisics plane
        */
-      public PhisicsPlane(int originX, int originY, int width, int height) : base(originX, originY, width, height)
+      public PhisicsPlane(int originX, int originY, int width, int height)
       {
 
       }
 
-      protected override void DrawAt(Graphics g, int x, int y)
+      public bool AddObject(PhisicsObject o)
       {
-         foreach (PhisicsObject obj in objs)
+         return objs.Add(o);
+      }
+
+      public bool RemoveObject(PhisicsObject o)
+      {
+         return objs.Remove(o);
+      }
+
+      public void updateObjects()
+      {
+         foreach(PhisicsObject o in objs)
          {
-            obj.DrawOffset(g, x, y);
+            o.update(60);
          }
       }
+
    }
 }

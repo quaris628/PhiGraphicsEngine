@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace phi.phisics.Shapes
 {
-   public class Circle : Shape, Renderable
+   public class Circle : Shape
    {
       private double radius;
       protected Sprite s;
@@ -31,7 +31,7 @@ namespace phi.phisics.Shapes
          base.updatePosition(originX, originY);
          s.SetXY((int)originX, (int)originY);
       }
-      public Drawable GetDrawable()
+      public override Drawable GetDrawable()
       {
          return s;
       }

@@ -13,7 +13,7 @@ namespace phi.phisics.Shapes
       CIRCLE,
       POLYGON
    }
-   public abstract class Shape
+   public abstract class Shape : Renderable
    {
       
       protected double originX;
@@ -59,5 +59,6 @@ namespace phi.phisics.Shapes
       public abstract Edge[] GetEdges();
       public abstract bool willCollide(Shape s, double dx, double dy);
       public abstract bool isColliding(Shape s);
+      public abstract Drawable GetDrawable();
    }
 }

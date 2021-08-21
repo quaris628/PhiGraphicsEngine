@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace phi.phisics.Shapes
 {
-   public class Rectangle : Shape, Renderable
+   public class Rectangle : Shape
    {
       private int height;
       private int width;
@@ -114,7 +114,7 @@ namespace phi.phisics.Shapes
          return edges;
       }
 
-      public Drawable GetDrawable()
+      public override Drawable GetDrawable()
       {
          return s;
       }
