@@ -66,7 +66,7 @@ namespace Example
          sceneTitle = new Text.TextBuilder(TITLE).Build();
          backMessage = BACK_MSG.GetText();
          sceneSwitchMessage = SWITCH_MSG.GetText();
-         ball = new Ball();
+         ball = new Ball(0, 50);
          ballToggle = BALL_TOGGLE.GetButton(BounceBall);
          dragger = new Draggable(ballToggle);
       }

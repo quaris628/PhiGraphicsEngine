@@ -3,23 +3,24 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using phi.control;
 
 namespace phi
 {
-   public class DefaultConfig : Config
+   class SaveableConfig : Config
    {
       public const string HOME_DIR = "../../";
       public const string RES_DIR = HOME_DIR + "res/";
+      public const string CONFIG_DIR = HOME_DIR + "config/";
+      public const string FILE_PATH = CONFIG_DIR + "config.txt";
 
       public class Window
       {
-         public const string TITLE = "Phi Engine Demo";
+         public const string TITLE = "Phi Engine Application";
          public const int WIDTH = 600;
          public const int HEIGHT = 400;
-         
+
       }
-      
+
       public class Render
       {
          public const string DEFAULT_BACKGROUND = RES_DIR + "defaultBackground.png";
@@ -27,7 +28,6 @@ namespace phi
          public const int FPS = 60;
 
       }
-
       public virtual string GetHomeDir() { return HOME_DIR; }
       public virtual string GetResourcesDir() { return RES_DIR; }
       public virtual string GetWindowTitle() { return Window.TITLE; }
@@ -36,5 +36,33 @@ namespace phi
       public virtual string GetRenderDefaultBackground() { return Render.DEFAULT_BACKGROUND; }
       public virtual int GetRenderDefaultLayer() { return Render.DEFAULT_LAYER; }
       public virtual int GetRenderFPS() { return Render.FPS; }
+
+      public virtual void SaveConfig()
+      {
+         SaveConfig(FILE_PATH);
+      }
+      public virtual void SaveConfig(String path)
+      {
+
+      }
+      public virtual void LoadConfig()
+      {
+         LoadConfig(FILE_PATH);
+      }
+      public virtual void LoadConfig(String path)
+      {
+
+      }
+
+
+      public virtual void RestoreDefaults()
+      {
+         //Restores all Default values from the DefaultConfig
+      }
+
+      public virtual void RestoreDefaultResolution()
+      {
+         //Restores just the resolution to default
+      }
    }
 }
