@@ -33,13 +33,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject />
+    <StartupObject>Example.ExampleMain</StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Ball.cs" />
+    <Compile Include="Box.cs" />
     <Compile Include="ExampleMain.cs" />
     <Compile Include="ExamplePhiConfig.cs" />
     <Compile Include="Scene1.cs" />

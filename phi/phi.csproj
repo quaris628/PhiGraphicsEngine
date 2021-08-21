@@ -81,7 +81,11 @@
     <Compile Include="phisics\Momentum.cs" />
     <Compile Include="phisics\PhisicsObject.cs" />
     <Compile Include="phisics\PhisicsPlane.cs" />
-    <Compile Include="phisics\Shape.cs" />
+    <Compile Include="phisics\Shapes\Circle.cs" />
+    <Compile Include="phisics\Shapes\Edge.cs" />
+    <Compile Include="phisics\Shapes\Polygon.cs" />
+    <Compile Include="phisics\Shapes\Rectangle.cs" />
+    <Compile Include="phisics\Shapes\Shape.cs" />
     <Compile Include="phisics\Vector.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="control\WindowsForm.resx" />

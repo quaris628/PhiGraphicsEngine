@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using phi.graphics;
+using phi.phisics.Shapes;
 
 namespace phi.phisics
 {
    public abstract class PhisicsObject : Drawable
    {
-      private PhisicsPlane plane;
 
       protected PhisicsObject(PhisicsPlane plane, double mass, Shape shape, Vector position, Vector velocity)
          : base(plane.GetX(), plane.GetY(), shape.GetWidth(), shape.GetHeight())
