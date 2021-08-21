@@ -77,23 +77,26 @@ namespace phi.io
 
       public void Event(object sender, MouseEventArgs e)
       {
-         // Manual iteration allows edits to the collection while iteration is happening
+         // Deep copy actions to do after iteration through collections of actions
+         // This resolves what should happen if one of those actions edits one of the
+         //   collections. (Throws exception if done during iteration.)
+         LinkedList<Action<int, int>> todos = new LinkedList<Action<int, int>>();
+
          LinkedListNode<Action<int, int>> iter = actions.First;
          if (iter != null)
          {
             while (iter.Next != null)
             {
-               iter.Value.Invoke(e.X, e.Y);
+               todos.AddLast(iter.Value);
                iter = iter.Next;
             }
-            iter.Value.Invoke(e.X, e.Y);
+            todos.AddLast(iter.Value);
          }
 
          // not very efficient; todo try to improve
+         // since this is called so often
          // (by using 2d array to sort a list in 2 distinct orders at the same time?)
 
-         // I expect this to be a deep copy
-         // Allows edits to the original collection during iteration
          List<Rectangle> regions = regionActions.Keys.ToList();
 
          foreach (Rectangle region in regions)
@@ -102,29 +105,25 @@ namespace phi.io
             {
                foreach (Action<int, int> action in regionActions[region])
                {
-                  action.Invoke(e.X, e.Y);
+                  todos.AddLast(action);
                }
             }
          }
 
-         // I expect this to be a deep copy
-         // Allows edits to the original collection during iteration
-
-         LinkedList<Action<int, int>> todos = new LinkedList<Action<int, int>>();
-         
-         foreach (Drawable drawable in drawableActions.Keys)
+         foreach (KeyValuePair<Drawable, LinkedList<Action<int, int>>> kvp in drawableActions)
          {
-            // help me, why does this throw a KeyNoutFoundException
-            Console.WriteLine(drawableActions[drawable]);
-
-            if (drawable.GetBoundaryRectangle().Contains(e.X, e.Y))
+            if (kvp.Key.GetBoundaryRectangle().Contains(e.X, e.Y))
             {
-               foreach (Action<int, int> action in drawableActions[drawable])
+               foreach (Action<int, int> action in kvp.Value)
                {
                   todos.AddLast(action);
                }
             }
          }
+
+         // do all the actions after 'deciding which actions to do' is complete
+         // so one action does not change a state that 'deciding which actions to do' depends on
+         // in the middle of 'deciding which actions to do'
          foreach (Action<int, int> action in todos)
          {
             action.Invoke(e.X, e.Y);
