@@ -60,6 +60,9 @@ namespace Example
       private bool ballToggler;
       private Button ballToggle;
       private Draggable dragger;
+      private ProgressBar bar;
+      private ProgressCircle circle;
+      private ProgressCircle clock;
 
       public Scene1(Scene prevScene) : base(prevScene, new ImageWrapper(ExamplePhiConfig.Render.DEFAULT_BACKGROUND))
       {
@@ -69,6 +72,10 @@ namespace Example
          ball = new Ball(0, 50);
          ballToggle = BALL_TOGGLE.GetButton(BounceBall);
          dragger = new Draggable(ballToggle);
+
+         bar = new ProgressBar(10, 300, 100, 30, 100);
+         circle = new ProgressCircle(300, 300, 50, 100);
+         clock = new ProgressCircle(140, 300, 50, ExamplePhiConfig.Render.FPS);
       }
 
       protected override void InitializeMe()
@@ -76,11 +83,17 @@ namespace Example
          IO.KEYS.Subscribe(Back, BACK_KEY);
          IO.KEYS.Subscribe(SwitchTo2, SWITCH_TO_2_KEY);
          IO.FRAME_TIMER.Subscribe(MoveBall);
+         IO.FRAME_TIMER.Subscribe(clock_tick);
          IO.RENDERER.Add(sceneTitle);
          IO.RENDERER.Add(backMessage);
          IO.RENDERER.Add(sceneSwitchMessage);
          IO.RENDERER.Add(ball.GetDrawable(), 1);
          IO.RENDERER.Add(ballToggle);
+         IO.RENDERER.Add(bar);
+         IO.RENDERER.Add(circle);
+         IO.RENDERER.Add(clock);
+         IO.KEYS.Subscribe(AddProgress, Keys.Up);
+         IO.KEYS.Subscribe(RemoveProgress, Keys.Down);
          ballToggle.Initialize();
          dragger.Initialize();
       }
@@ -90,6 +103,30 @@ namespace Example
          SwitchTo(new Scene2(this));
       }
 
+      public void SwitchToSettings()
+      {
+
+      }
+      public void AddProgress()
+      {
+         bar.AddProgress(5);
+         circle.AddProgress(5);
+      }
+      public void RemoveProgress()
+      {
+         bar.RemoveProgress(5);
+         circle.RemoveProgress(5);
+      }
+
+      public void clock_tick()
+      {
+         if(clock.getCurrentProgress() <= 0)
+         {
+            clock.SetToMax();
+         }
+         clock.RemoveProgress();
+            
+      }
       public void MoveBall()
       {
          if(ballToggler)

@@ -3,6 +3,8 @@ using System;
 using System.Drawing;
 using phi;
 using phi.graphics;
+using phi.graphics.drawables;
+using phi.io;
 
 namespace PhiTests
 {
@@ -15,7 +17,7 @@ namespace PhiTests
       public void ConstructorImage_ImageEqualsGivenImage()
       {
          // Arrange
-         Image image = Image.FromFile(ARBITRARY_IMAGE_FILE);
+         ImageWrapper image = new ImageWrapper(ARBITRARY_IMAGE_FILE);
 
          // Act
          Sprite sprite = new Sprite(image, 0, 0);
@@ -29,7 +31,7 @@ namespace PhiTests
       public void ConstructorImage_NullImageThrowsArgumentNullException()
       {
          // Arrange
-         Image image = null;
+         ImageWrapper image = null;
 
          // Act
          bool exceptionThrown;
@@ -52,7 +54,7 @@ namespace PhiTests
       public void ConstructorImageXY_ImageEqualsGivenImage()
       {
          // Arrange
-         Image image = Image.FromFile(ARBITRARY_IMAGE_FILE);
+         ImageWrapper image = new ImageWrapper(ARBITRARY_IMAGE_FILE);
          int x = 0;
          int y = 0;
 
@@ -68,7 +70,7 @@ namespace PhiTests
       public void ConstructorImageXY_NullImageThrowsArgumentNullException()
       {
          // Arrange
-         Image image = null;
+         ImageWrapper image = new ImageWrapper(ARBITRARY_IMAGE_FILE);
          int x = 0;
          int y = 0;
 

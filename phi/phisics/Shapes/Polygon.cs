@@ -17,7 +17,7 @@ namespace phi.phisics.Shapes
          this.s = s;
          this.originX = originX;
          this.originY = originY;
-         this.type = ShapeTypes.RECTANGLE;
+         this.type = ShapeTypes.POLYGON;
          edges = e;
          
       }

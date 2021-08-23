@@ -53,6 +53,8 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="control\WindowsForm.Designer.cs" />
+    <Compile Include="graphics\drawables\ProgressBar.cs" />
+    <Compile Include="graphics\drawables\ProgressCircle.cs" />
     <Compile Include="graphics\renderables\Draggable.cs" />
     <Compile Include="graphics\drawables\Button.cs" />
     <Compile Include="graphics\Drawable.cs" />

@@ -29,6 +29,11 @@ namespace phi.phisics.Shapes
          this.p1 = p1;
          this.p2 = p2;
       }
+      public Edge(int x1, int y1, int x2, int y2)
+      {
+         this.p1 = new point(x1, y1);
+         this.p2 = new point(x2, y2);
+      }
       public point GetPoint1()
       {
          return p1;
@@ -63,6 +68,19 @@ namespace phi.phisics.Shapes
          p1.y += p.y;
          p2.x += p.x;
          p2.y += p.y;
+      }
+      public Angle getAngle()
+      {
+         return Angle.CreateSlope(p2.x - p1.x, p2.y - p1.y);
+      }
+      public Angle getNormal()
+      {
+         return getAngle().getNormal();
+      }
+         
+      public void shiftEdge(int x1, int y1)
+      {
+         shiftEdge(new point(x1, y1));
       }
    }
 }

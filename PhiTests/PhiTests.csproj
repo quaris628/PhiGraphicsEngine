@@ -51,6 +51,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="TestAngle.cs" />
+    <Compile Include="TestEdge.cs" />
     <Compile Include="TestVector.cs" />
     <Compile Include="UnitTestSprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -62,6 +63,10 @@
     <ProjectReference Include="..\PhiGraphicsEngineExample\PhiGraphicsEngineExample.csproj">
       <Project>{90c70a85-5e55-4ace-b04c-e12b17728310}</Project>
       <Name>PhiGraphicsEngineExample</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\phi\phi.csproj">
+      <Project>{16A36FCD-07E6-4CAE-B5CB-DB677E33F3FB}</Project>
+      <Name>phi</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets" Condition="Exists('$(VSToolsPath)\TeamTest\Microsoft.TestTools.targets')" />

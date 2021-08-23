@@ -45,6 +45,7 @@
     <Compile Include="ExamplePhiConfig.cs" />
     <Compile Include="Scene1.cs" />
     <Compile Include="Scene2.cs" />
+    <Compile Include="SettingsScene.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\phi\phi.csproj">
