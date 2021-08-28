@@ -53,6 +53,7 @@
     <Compile Include="TestAngle.cs" />
     <Compile Include="TestEdge.cs" />
     <Compile Include="TestVector.cs" />
+    <Compile Include="TestFastClickRegions.cs" />
     <Compile Include="UnitTestSprite.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
