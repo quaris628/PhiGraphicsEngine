@@ -14,7 +14,15 @@ namespace Example
       {
          public new const int WIDTH = 400;
       }
+      public new class Render : DefaultConfig.Render
+      {
+         public new const int FPS = 30;
+      }
 
       public override int GetWindowWidth() { return Window.WIDTH; }
+      public override int GetRenderFPS()
+      {
+         return Render.FPS;
+      }
    }
 }
