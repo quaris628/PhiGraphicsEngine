@@ -1,24 +1,26 @@
 ﻿using phi.graphics;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
+//using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using phi.other;
 
 namespace phi.io
 {
    public class MouseInputHandler
    {
       private LinkedList<Action<int, int>> actions;
-      private Dictionary<Rectangle, LinkedList<Action<int, int>>> regionActions;
+      private FastClickRegions<Action<int, int>> fastRegions;
+      // private Dictionary<Rectangle, LinkedList<Action<int, int>>> regionActions;
       private Dictionary<Drawable, LinkedList<Action<int, int>>> drawableActions;
 
       public MouseInputHandler()
       {
          actions = new LinkedList<Action<int, int>>();
-         regionActions = new Dictionary<Rectangle, LinkedList<Action<int, int>>>();
+         fastRegions = new FastClickRegions<Action<int, int>>();
          drawableActions = new Dictionary<Drawable, LinkedList<Action<int, int>>>();
       }
 
@@ -42,18 +44,12 @@ namespace phi.io
 
       public void SubscribeOnRegion(Action<int, int> action, Rectangle region)
       {
-         LinkedList<Action<int, int>> existingActions;
-         if (!regionActions.TryGetValue(region, out existingActions))
-         {
-            existingActions = new LinkedList<Action<int, int>>();
-            regionActions.Add(region, existingActions);
-         }
-         existingActions.AddFirst(action);
+         fastRegions.Add(action, region);
       }
 
       public void UnsubscribeFromRegion(Action<int, int> action, Rectangle region)
       {
-         regionActions[region].Remove(action);
+         fastRegions.Remove(action, region);
       }
 
       // Subscription overloads for no-parameter actions
@@ -71,7 +67,7 @@ namespace phi.io
       public void Clear()
       {
          actions.Clear();
-         regionActions.Clear();
+         fastRegions = new FastClickRegions<Action<int, int>>();
          drawableActions.Clear();
       }
 
@@ -82,6 +78,7 @@ namespace phi.io
          //   collections. (Throws exception if done during iteration.)
          LinkedList<Action<int, int>> todos = new LinkedList<Action<int, int>>();
 
+         // Actions
          LinkedListNode<Action<int, int>> iter = actions.First;
          if (iter != null)
          {
@@ -93,23 +90,10 @@ namespace phi.io
             todos.AddLast(iter.Value);
          }
 
-         // not very efficient; todo try to improve
-         // since this is called so often
-         // (by using 2d array to sort a list in 2 distinct orders at the same time?)
+         // Fast Regions Actions
+         LinkedList<Action<int, int>> fastRegionsTodos = fastRegions.GetClickItems(e.X, e.Y);
 
-         List<Rectangle> regions = regionActions.Keys.ToList();
-
-         foreach (Rectangle region in regions)
-         {
-            if (region.Contains(e.X, e.Y))
-            {
-               foreach (Action<int, int> action in regionActions[region])
-               {
-                  todos.AddLast(action);
-               }
-            }
-         }
-
+         // Drawable Actions
          foreach (KeyValuePair<Drawable, LinkedList<Action<int, int>>> kvp in drawableActions)
          {
             if (kvp.Key.GetBoundaryRectangle().Contains(e.X, e.Y))
@@ -124,6 +108,15 @@ namespace phi.io
          // do all the actions after 'deciding which actions to do' is complete
          // so one action does not change a state that 'deciding which actions to do' depends on
          // in the middle of 'deciding which actions to do'
+         
+         if (fastRegionsTodos != null)
+         {
+            foreach (Action<int, int> action in fastRegionsTodos)
+            {
+               action.Invoke(e.X, e.Y);
+            }
+         }
+         
          foreach (Action<int, int> action in todos)
          {
             action.Invoke(e.X, e.Y);
