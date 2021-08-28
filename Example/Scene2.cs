@@ -14,13 +14,13 @@ namespace Example
    {
       private const string TITLE = "This is scene 2";
 
-      private const string BACK_MSG = "Press Backspace to go back";
+      private const string BACK_MSG = "Press Esc to go back";
       private const int BACK_MSG_Y = 20;
-      private const Keys BACK_KEY = Keys.Back;
+      private const Keys BACK_KEY = Keys.Escape;
       
-      private const string SWITCH_MSG = "Press 1 to switch to scene 1";
+      private const string SWITCH_MSG = "Press 3 to switch to scene 3";
       private const int SWITCH_MSG_Y = 40;
-      private const Keys SWITCH_TO_1_KEY = Keys.D1;
+      private const Keys SWITCH_TO_3_KEY = Keys.D3;
 
       private const string COLL_MSG = "COLLISION DETECTED";
       private const string NOT_COLL_MSG = "COLLISION NOT DETECTED";
@@ -59,7 +59,7 @@ namespace Example
       protected override void InitializeMe()
       {
          IO.KEYS.Subscribe(Back, BACK_KEY);
-         IO.KEYS.Subscribe(SwitchTo1, SWITCH_TO_1_KEY);
+         IO.KEYS.Subscribe(SwitchTo3, SWITCH_TO_3_KEY);
          IO.FRAME_TIMER.Subscribe(run);
          IO.KEYS.Subscribe(moveBoxLeft, Keys.Left);
          IO.KEYS.Subscribe(moveBoxRight, Keys.Right);
@@ -149,9 +149,9 @@ namespace Example
          e1.shiftEdge(new point(0, 5));
       }
 
-      public void SwitchTo1()
+      public void SwitchTo3()
       {
-         SwitchTo(new Scene1(this));
+         SwitchTo(new Scene3(this));
       }
    }
 }

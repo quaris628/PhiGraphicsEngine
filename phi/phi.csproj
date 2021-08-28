@@ -53,6 +53,7 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="control\WindowsForm.Designer.cs" />
+    <Compile Include="graphics\drawables\RectangleDrawable.cs" />
     <Compile Include="graphics\drawables\ProgressBar.cs" />
     <Compile Include="graphics\drawables\ProgressCircle.cs" />
     <Compile Include="graphics\renderables\Draggable.cs" />
@@ -63,6 +64,9 @@
     <Compile Include="graphics\drawables\Sprite.cs" />
     <Compile Include="graphics\drawables\Text.cs" />
     <Compile Include="graphics\drawables\Line.cs" />
+    <Compile Include="io\FastClickRegions.cs" />
+    <Compile Include="other\Growable2DArray.cs" />
+    <Compile Include="other\GrowableArray.cs" />
     <Compile Include="other\Movable2D.cs" />
     <Compile Include="graphics\Renderable.cs" />
     <Compile Include="graphics\Renderer.cs" />
@@ -77,6 +81,7 @@
     <Compile Include="other\DynamicContainer.cs" />
     <Compile Include="other\DynamicHoldable.cs" />
     <Compile Include="other\Rectangle.cs" />
+    <Compile Include="other\SortedGrowableArray.cs" />
     <Compile Include="PhiMain.cs" />
     <Compile Include="phisics\Angle.cs" />
     <Compile Include="phisics\Force.cs" />

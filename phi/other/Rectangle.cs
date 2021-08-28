@@ -23,7 +23,13 @@ namespace phi.other
 
       public bool Contains(int x, int y)
       {
-         return 0 <= x - X && x - X <= Width && 0 <= y - Y && y - Y <= Height;
+         return 0 <= x - X && x - X < Width && 0 <= y - Y && y - Y < Height;
       }
+
+      public static explicit operator System.Drawing.Rectangle(Rectangle r)
+      {
+         return new System.Drawing.Rectangle(r.X, r.Y, r.Width, r.Height);
+      }
+
    }
 }

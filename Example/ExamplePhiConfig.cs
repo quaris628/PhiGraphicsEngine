@@ -12,7 +12,8 @@ namespace Example
    {
       public new class Window : DefaultConfig.Window
       {
-         public new const int WIDTH = 400;
+         public new const int WIDTH = 1200;
+         public new const int HEIGHT = 700;
       }
       public new class Render : DefaultConfig.Render
       {
@@ -20,9 +21,7 @@ namespace Example
       }
 
       public override int GetWindowWidth() { return Window.WIDTH; }
-      public override int GetRenderFPS()
-      {
-         return Render.FPS;
-      }
+      public override int GetWindowHeight() { return Window.HEIGHT; }
+      public override int GetRenderFPS() { return Render.FPS; }
    }
 }

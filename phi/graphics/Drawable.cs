@@ -21,6 +21,20 @@ namespace phi.graphics
          this.width = width;
       }
 
+      public Drawable(other.Rectangle rect) : base(rect.X, rect.Y)
+      {
+         displaying = true;
+         this.height = rect.Height;
+         this.width = rect.Width;
+      }
+
+      public Drawable(System.Drawing.Rectangle rect) : base(rect.X, rect.Y)
+      {
+         displaying = true;
+         this.height = rect.Height;
+         this.width = rect.Width;
+      }
+
       public void Draw(Graphics g) { DrawAt(g, this.GetX(), this.GetY()); }
       public void DrawOffset(Graphics g, int xOffset, int yOffset) { DrawAt(g, this.GetX() + xOffset, this.GetY() + yOffset); }
       protected abstract void DrawAt(Graphics g, int x, int y);
