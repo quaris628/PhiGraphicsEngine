@@ -14,7 +14,7 @@ namespace phi
 
       public class Window
       {
-         public const string TITLE = "Phi Engine Demo";
+         public const string TITLE = "Phi Engine";
          public const int WIDTH = 600;
          public const int HEIGHT = 400;
          

@@ -30,8 +30,8 @@ namespace phi.graphics.drawables
          pen = new Pen(DEFAULT_COLOR);
       }
 
-      public virtual void SetColor(Color color) { this.pen = new Pen(color); FlagChange(); }
-      public virtual void SetPen(Pen pen) { this.pen = pen; FlagChange(); }
+      public virtual PenDrawable SetColor(Color color) { this.pen = new Pen(color); FlagChange(); return this; }
+      public virtual PenDrawable SetPen(Pen pen) { this.pen = pen; FlagChange(); return this; }
       protected virtual Pen GetPen() { return pen; }
    }
 }

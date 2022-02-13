@@ -9,8 +9,11 @@ namespace Example
 {
    static class ExampleMain
    {
-	  // to hide console for a project (this has already been done for this project):
-      // project -> properties -> Output type, set to Windows Application instead of Console Application
+      // to enable reference to the phi namescape:
+      // in VS solution explorer, project -> references -> Add reference
+
+      // to hide console for a project (this has already been done for this project):
+      // in VS, project -> properties -> Output type, set to Windows Application instead of Console Application
 	   
       // Entry point
       public static void Main()

@@ -50,12 +50,13 @@ namespace phi.graphics.drawables
          }
       }
 
-      public override void SetPen(Pen pen)
+      public override PenDrawable SetPen(Pen pen)
       {
          base.SetPen(pen); // does this really call PenDrawable.SetPen() ? Or does this call Grid.SetPen()?
          foreach (Line l in vertLines) { l.SetPen(pen); }
          foreach (Line l in horzLines) { l.SetPen(pen); }
          FlagChange();
+         return this;
       }
 
       public override string ToString()

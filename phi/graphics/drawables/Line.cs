@@ -23,6 +23,14 @@ namespace phi.graphics.drawables
          g.DrawLine(GetPen(), x, y, x2, y2);
       }
 
+      public void SetXY1(int x, int y) { SetX1(x); SetY1(y); }
+      public void SetX1(int x) { this.width -= x - GetX(); SetX(x); }
+      public void SetY1(int y) { this.height -= y - GetY(); SetY(y); }
+
+      public void SetXY2(int x, int y) { SetX2(x); SetY2(y); }
+      public void SetX2(int x) { this.width = x - GetX(); FlagChange(); }
+      public void SetY2(int y) { this.height = y - GetY(); FlagChange(); }
+
       public override string ToString()
       {
          return "Line " + base.ToString();
