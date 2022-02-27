@@ -52,7 +52,7 @@ namespace phi.graphics
          return new phi.other.Rectangle(GetX(), GetY(), GetWidth(), GetHeight());
       }
 
-      protected void SetDisplaying(bool displaying) { this.displaying = displaying; FlagChange(); }
+      public void SetDisplaying(bool displaying) { this.displaying = displaying; FlagChange(); }
       public bool IsDisplaying() { return displaying; }
 
       public override int GetHashCode()

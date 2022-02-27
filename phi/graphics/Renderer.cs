@@ -99,11 +99,34 @@ namespace phi.graphics
             // create new sub-list for a new layer
             layers.Add(layer, new LinkedList<Drawable>());
          }
-         layers[layer].AddLast(item);
+         layers[layer].AddFirst(item);
          item.PutIn(this);
          FlagChange();
       }
+      public void Add(IEnumerable<Drawable> items, int layer)
+      {
+         if (!layers.ContainsKey(layer))
+         {
+            // create new sub-list for a new layer
+            layers.Add(layer, new LinkedList<Drawable>());
+         }
+         foreach (Drawable item in items)
+         {
+            layers[layer].AddFirst(item);
+            item.PutIn(this);
+         }
+         FlagChange();
+      }
+      
+      // renderable overloads
+      public void Add(Renderable r, int layer) { Add(r, layer); }
+      public void Add(MultiRenderable mr, int layer) { Add(mr, layer); }
+      public void Add(Renderable r) { Add(r.GetDrawable()); }
+      public void Add(MultiRenderable mr) { Add(mr.GetDrawables()); }
+
+      // default layer overloads & etc
       public void Add(Drawable item) { Add(item, defaultLayer); }
+      public void Add(IEnumerable<Drawable> items) { Add(items, defaultLayer); }
       public void SetDefaultLayer(int defaultLayer) { this.defaultLayer = defaultLayer; }
       public int GetDefaultLayer() { return defaultLayer; }
 

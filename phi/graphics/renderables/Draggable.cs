@@ -11,6 +11,10 @@ namespace phi.graphics.renderables
 {
    public class Draggable : Renderable
    {
+      // TODO fix that two overlapping drawables both move if the
+      // click is over both of them, instead only have the top one
+      // move.
+
       private Drawable drawable;
       private int dragOffsetX;
       private int dragOffsetY;

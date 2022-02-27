@@ -91,7 +91,7 @@ namespace phi.io
          }
 
          // Fast Regions Actions
-         LinkedList<Action<int, int>> fastRegionsTodos = fastRegions.GetClickItems(e.X, e.Y);
+         IEnumerable<Action<int, int>> fastRegionsTodos = fastRegions.GetClickItems(e.X, e.Y);
 
          // Drawable Actions
          foreach (KeyValuePair<Drawable, LinkedList<Action<int, int>>> kvp in drawableActions)
