@@ -14,6 +14,9 @@ namespace phi.control
 {
    partial class WindowsForm : Form
    {
+      private const int WIDTH_FUDGE = 14;
+      private const int HEIGHT_FUDGE = 39;
+
       private Scene entryScene;
       private Config config;
       private PictureBox pictureBox;
@@ -37,7 +40,8 @@ namespace phi.control
       private void FormLoad(object sender, EventArgs e)
       {
          // Set window properites
-         Size = new Size(config.GetWindowWidth(), config.GetWindowHeight());
+         Size = new Size(config.GetWindowWidth() + WIDTH_FUDGE,
+            config.GetWindowHeight() + HEIGHT_FUDGE);
          Text = config.GetWindowTitle();
          // Set pictureBox properties
          pictureBox.Size = Size;
