@@ -57,12 +57,15 @@ namespace Example
       private Text backMessage;
       private Text sceneSwitchMessage;
       private Ball ball;
+      private Ball ball2;
+      private Ball ball3;
       private bool ballToggler;
       private Button ballToggle;
       private Draggable dragger;
       private ProgressBar bar;
       private ProgressCircle circle;
       private ProgressCircle clock;
+      private double t;
 
       public Scene1(Scene prevScene) : base(prevScene, new ImageWrapper(ExamplePhiConfig.Render.DEFAULT_BACKGROUND))
       {
@@ -70,12 +73,14 @@ namespace Example
          backMessage = BACK_MSG.GetText();
          sceneSwitchMessage = SWITCH_MSG.GetText();
          ball = new Ball(0, 50);
+         ball2 = new Ball(500, 500);
+         ball3 = new Ball(500, 500);
          ballToggle = BALL_TOGGLE.GetButton(BounceBall);
          dragger = new Draggable(ballToggle);
 
          bar = new ProgressBar(10, 300, 100, 30, 100);
          circle = new ProgressCircle(300, 300, 50, 100);
-         clock = new ProgressCircle(140, 300, 50, ExamplePhiConfig.Render.FPS);
+         clock = new ProgressCircle(140, 300, 50, ExamplePhiConfig.Render.FPS); //trying to get this to match 1s every time
       }
 
       protected override void InitializeMe()
@@ -84,6 +89,7 @@ namespace Example
          IO.KEYS.Subscribe(SwitchTo2, SWITCH_TO_2_KEY);
          IO.FRAME_TIMER.Subscribe(MoveBall);
          IO.FRAME_TIMER.Subscribe(clock_tick);
+         IO.FRAME_TIMER.Subscribe(tick_Orbits);
          IO.RENDERER.Add(sceneTitle);
          IO.RENDERER.Add(backMessage);
          IO.RENDERER.Add(sceneSwitchMessage);
@@ -92,6 +98,8 @@ namespace Example
          IO.RENDERER.Add(bar);
          IO.RENDERER.Add(circle);
          IO.RENDERER.Add(clock);
+         IO.RENDERER.Add(ball2.GetDrawable(), 1);
+         IO.RENDERER.Add(ball3.GetDrawable(), 1);
          IO.KEYS.Subscribe(AddProgress, Keys.Up);
          IO.KEYS.Subscribe(RemoveProgress, Keys.Down);
          ballToggle.Initialize();
@@ -106,6 +114,16 @@ namespace Example
       public void SwitchToSettings()
       {
 
+      }
+
+      public void tick_Orbits()
+      {
+         double t1 = 2 * Math.PI * Math.Sqrt(Math.Pow(25, 3) / (4300000));
+         double t2 = 2 * Math.PI * Math.Sqrt(Math.Pow(100, 3) / (4300000));
+         ball2.updatePosition(20 * Math.Cos(t/t1) + 500, 25 * Math.Sin(t/t1) + 500);
+         ball3.updatePosition(100 * Math.Cos(t/t2) + 500, 60 * Math.Sin(t/t2) + 500);
+         t = (t + (Math.PI / 27)) % (Math.Pow(2,9) * Math.PI);
+         
       }
       public void AddProgress()
       {

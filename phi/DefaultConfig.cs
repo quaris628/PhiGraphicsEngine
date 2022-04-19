@@ -17,7 +17,8 @@ namespace phi
          public const string TITLE = "Phi Engine Demo";
          public const int WIDTH = 600;
          public const int HEIGHT = 400;
-         
+         public const int TICK_RATE = 60;
+         public const bool IS_FULL_SCREEN = false;
       }
       
       public class Render
@@ -33,8 +34,11 @@ namespace phi
       public virtual string GetWindowTitle() { return Window.TITLE; }
       public virtual int GetWindowWidth() { return Window.WIDTH; }
       public virtual int GetWindowHeight() { return Window.HEIGHT; }
+      public virtual bool IsFullScreen() { return Window.IS_FULL_SCREEN; }
       public virtual string GetRenderDefaultBackground() { return Render.DEFAULT_BACKGROUND; }
       public virtual int GetRenderDefaultLayer() { return Render.DEFAULT_LAYER; }
       public virtual int GetRenderFPS() { return Render.FPS; }
+
+      public virtual int GetTickRate() { return Window.TICK_RATE; }
    }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace phi.phisics
+namespace phi.phisics.PhiMath
 {
    public class Vector
    {

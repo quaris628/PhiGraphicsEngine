@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 using phi.graphics;
 using phi.phisics.Shapes;
 using phi.graphics.drawables;
+using phi.phisics.PhiMath;
 
 namespace phi.phisics
 {
-   public enum CollidableType
-   {
-
-   }
    public class PhisicsObject : Renderable
    {
       private int x, y;
@@ -48,7 +45,10 @@ namespace phi.phisics
       }
 
 
-
+      public void ApplyForce(Vector v, int tickRate)
+      {
+         velocity += new Vector((v.getMagnitude() / mass) * (tickRate / 1000), v.getDirection());
+      }
       public int getX()
       {
          return x;

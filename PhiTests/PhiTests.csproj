@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="TestAngle.cs" />
     <Compile Include="TestEdge.cs" />
+    <Compile Include="TestMatrix.cs" />
     <Compile Include="TestVector.cs" />
     <Compile Include="TestFastClickRegions.cs" />
     <Compile Include="UnitTestSprite.cs" />

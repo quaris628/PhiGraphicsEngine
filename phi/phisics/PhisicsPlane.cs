@@ -6,12 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using phi.graphics;
 
+
 namespace phi.phisics
 {
    public class PhisicsPlane
    {
 
-      private HashSet<PhisicsObject> objs;
+      private HashSet<PhisicsObject> hardObjs; //Hard Objects collide with all colidables
+      private HashSet<PhisicsObject> softObjs; //Soft Objects only collide with Hard Objects
+      private HashSet<PhisicsObject> nonObjs; //Non-Objects have no collison with anything
 
       /**
        * Constructs a rectangularly bounded phisics plane
@@ -21,21 +24,21 @@ namespace phi.phisics
 
       }
 
-      public bool AddObject(PhisicsObject o)
+      public bool AddHardCollidable(PhisicsObject o)
       {
-         return objs.Add(o);
+         return hardObjs.Add(o);
       }
 
-      public bool RemoveObject(PhisicsObject o)
+      public bool RemoveHardCollidable(PhisicsObject o)
       {
-         return objs.Remove(o);
+         return hardObjs.Remove(o);
       }
 
-      public void updateObjects()
+      public void updateObjects(int tickSpeed)
       {
-         foreach(PhisicsObject o in objs)
+         foreach(PhisicsObject o in hardObjs)
          {
-            o.update(60);
+            o.update(tickSpeed);
          }
       }
 

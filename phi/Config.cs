@@ -14,10 +14,12 @@ namespace phi
       string GetWindowTitle();
       int GetWindowWidth();
       int GetWindowHeight();
-
+      bool IsFullScreen();
       string GetRenderDefaultBackground();
       int GetRenderDefaultLayer();
       int GetRenderFPS();
+
+      int GetTickRate();
 
    }
 }

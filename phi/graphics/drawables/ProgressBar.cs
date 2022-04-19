@@ -32,7 +32,7 @@ namespace phi.graphics.drawables
          return current;
       }
 
-      public double getCurrentProgress()
+      public virtual double getCurrentProgress()
       {
          return (min + current) / max;
       }

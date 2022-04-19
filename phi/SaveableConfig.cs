@@ -43,6 +43,26 @@ namespace phi
                _height = value;
             }
          }
+         private static int _tickrate = 60;
+         public static int TICK_RATE
+         {
+            get => _tickrate;
+            set
+            {
+               if (value <= 0) { throw new ArgumentException("TickRate too small"); }
+               if (value > 1000) { throw new ArgumentException("TickRate too large"); }
+               _tickrate = value;
+            }
+         }
+         private static bool _fullscreen = false;
+         public static bool FULL_SCREEN
+         {
+            get => _fullscreen;
+            set
+            {
+               _fullscreen = value;
+            }
+         }
       }
 
       public class Render
@@ -85,9 +105,12 @@ namespace phi
             f.WriteLine("title:" + Window.TITLE);
             f.WriteLine("width:" + Window.WIDTH);
             f.WriteLine("height:" + Window.HEIGHT);
+            f.WriteLine("fullscreen:" + Window.FULL_SCREEN);
+            f.WriteLine("tick-rate:" + Window.TICK_RATE);
             f.WriteLine("\nRenderer");
             f.WriteLine("default-layer:" + Render.DEFAULT_LAYER);
             f.WriteLine("fps:" + Render.FPS);
+            
          }
          catch (Exception e)
          {
@@ -114,6 +137,8 @@ namespace phi
             string titleLine = f.ReadLine(); // title:TITLE
             string widthLine = f.ReadLine(); // width:WIDTH
             string heightLine = f.ReadLine(); // height:HEIGHT
+            string fullscreenLine = f.ReadLine(); //fullscreen:FULL_SCREEN
+            string tickrateLine = f.ReadLine(); //tick-rate:TICK_RATE
             f.ReadLine(); // Renderer
             string layerLine = f.ReadLine(); // default-layer:DEFAULT_LAYER
             string fpsLine = f.ReadLine(); // fps:FPS
@@ -168,5 +193,8 @@ namespace phi
       public virtual int GetRenderDefaultLayer() { return Render.DEFAULT_LAYER; }
       public virtual int GetRenderFPS() { return Render.FPS; }
 
+      public virtual int GetTickRate() { return Window.TICK_RATE;  }
+
+      public bool IsFullScreen(){ return Window.FULL_SCREEN; }
    }
 }

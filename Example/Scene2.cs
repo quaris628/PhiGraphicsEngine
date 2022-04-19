@@ -37,9 +37,9 @@ namespace Example
       private Text Collision_Detected;
       private Text Intersect_Detected;
 
-      private Box box1 = new Box(0, 80, 32, 32);
-      private Box box2 = new Box(40, 120, 32, 32);
-      private Box box3 = new Box(100, 120, 32, 32);
+      //private Box box1 = new Box(0, 80, 32, 32);
+      //private Box box2 = new Box(40, 120, 32, 32);
+      //private Box box3 = new Box(100, 120, 32, 32);
 
       private Line l1;
       private Line l2;
@@ -69,9 +69,9 @@ namespace Example
          IO.RENDERER.Add(sceneTitle);
          IO.RENDERER.Add(backMessage);
          IO.RENDERER.Add(sceneSwitchMessage);
-         IO.RENDERER.Add(box1.GetDrawable(), 1);
-         IO.RENDERER.Add(box2.GetDrawable(), 1);
-         IO.RENDERER.Add(box3.GetDrawable(), 1);
+         //IO.RENDERER.Add(box1.GetDrawable(), 1);
+         //IO.RENDERER.Add(box2.GetDrawable(), 1);
+         //IO.RENDERER.Add(box3.GetDrawable(), 1);
          IO.RENDERER.Add(Collision_Detected);
          IO.RENDERER.Add(Intersect_Detected);
 
@@ -92,61 +92,61 @@ namespace Example
 
       public void run()
       {
-         coll = box1.isColliding(box2) || box1.isColliding(box3);
-         if(coll)
-         {
-            Collision_Detected.SetMessage(COLL_MSG);
-         }
-         else
-         {
-            Collision_Detected.SetMessage(NOT_COLL_MSG);
-         }
-         Intersect_Detected.SetMessage("Lines intersect? " + e1.Intersects(e2));
+         //coll = box1.isColliding(box2) || box1.isColliding(box3);
+         //if(coll)
+         //{
+         //   Collision_Detected.SetMessage(COLL_MSG);
+         //}
+         //else
+         //{
+         //   Collision_Detected.SetMessage(NOT_COLL_MSG);
+         //}
+         //Intersect_Detected.SetMessage("Lines intersect? " + e1.Intersects(e2));
       }
 
       public void moveBoxLeft()
       {
-         if (!box1.willCollide(box2, -5, 0))
-            box1.updatePosition((int)box1.getX() - 5, (int)box1.getY());
-         else
-         {
-            box1.updatePosition((int)box2.getX() + box2.GetWidth(), (int)box1.getY());
-         }
-         l1.SetX(l1.GetX() - 5);
-         e1.shiftEdge(new point(-5, 0));
+         //if (!box1.willCollide(box2, -5, 0))
+         //   box1.updatePosition((int)box1.getX() - 5, (int)box1.getY());
+         //else
+         //{
+         //   box1.updatePosition((int)box2.getX() + box2.GetWidth(), (int)box1.getY());
+         //}
+         //l1.SetX(l1.GetX() - 5);
+         //e1.shiftEdge(new point(-5, 0));
       }
       public void moveBoxRight()
       {
-         if (!box1.willCollide(box2, 5, 0))
-            box1.updatePosition((int)box1.getX() + 5, (int)box1.getY());
-         else
-         {
-            box1.updatePosition((int)box2.getX() - box1.GetWidth(), (int)box1.getY());
-         }
-         l1.SetX(l1.GetX() + 5);
-         e1.shiftEdge(new point(5, 0));
+         //if (!box1.willCollide(box2, 5, 0))
+         //   box1.updatePosition((int)box1.getX() + 5, (int)box1.getY());
+         //else
+         //{
+         //   box1.updatePosition((int)box2.getX() - box1.GetWidth(), (int)box1.getY());
+         //}
+         //l1.SetX(l1.GetX() + 5);
+         //e1.shiftEdge(new point(5, 0));
       }
       public void moveBoxUp()
       {
-         if (!box1.willCollide(box2, 0, -5))
-            box1.updatePosition((int)box1.getX(), (int)box1.getY() - 5);
-         else
-         {
-            box1.updatePosition((int)box1.getX(), (int)box2.getY() + box2.GetHeight());
-         }
-         l1.SetY(l1.GetY() - 5);
-         e1.shiftEdge(new point(0, -5));
+         //if (!box1.willCollide(box2, 0, -5))
+         //   box1.updatePosition((int)box1.getX(), (int)box1.getY() - 5);
+         //else
+         //{
+         //   box1.updatePosition((int)box1.getX(), (int)box2.getY() + box2.GetHeight());
+         //}
+         //l1.SetY(l1.GetY() - 5);
+         //e1.shiftEdge(new point(0, -5));
       }
       public void moveBoxDown()
       {
-         if(!box1.willCollide(box2, 0, 5))
-         box1.updatePosition((int)box1.getX(), (int)box1.getY() + 5);
-         else
-         {
-            box1.updatePosition((int)box1.getX(), (int)box2.getY() - box1.GetHeight());
-         }
-         l1.SetY(l1.GetY() + 5);
-         e1.shiftEdge(new point(0, 5));
+         //if(!box1.willCollide(box2, 0, 5))
+         //box1.updatePosition((int)box1.getX(), (int)box1.getY() + 5);
+         //else
+         //{
+         //   box1.updatePosition((int)box1.getX(), (int)box2.getY() - box1.GetHeight());
+         //}
+         //l1.SetY(l1.GetY() + 5);
+         //e1.shiftEdge(new point(0, 5));
       }
 
       public void SwitchTo3()

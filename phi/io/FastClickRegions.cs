@@ -83,7 +83,7 @@ namespace phi.other
          
       }
 
-      private int[] FindIndexes(int xcdt, int ycdt)
+      public int[] FindIndexes(int xcdt, int ycdt)
       {
          int x = xBounds.BinarySearch(xcdt);
          int y = yBounds.BinarySearch(ycdt);

@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using phi.phisics;
+using phi.phisics.PhiMath;
 
 namespace PhiTests
 {
