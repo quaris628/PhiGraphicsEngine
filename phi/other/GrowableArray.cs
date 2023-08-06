@@ -41,7 +41,7 @@ namespace phi.other
          }
       }
 
-      private void GrowToFit(int i)
+      public void GrowToFit(int i)
       {
          if (i >= max)
          {

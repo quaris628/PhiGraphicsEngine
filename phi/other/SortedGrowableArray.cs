@@ -84,6 +84,10 @@ namespace phi.other
          return 0 <= BinarySearch(item);
       }
 
+      public void GrowToFit(int n)
+      {
+         ga.GrowToFit(n);
+      }
 
       // Setters / Getters
 

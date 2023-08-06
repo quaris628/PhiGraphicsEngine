@@ -7,6 +7,8 @@ namespace phi.other
 {
    public class FastClickRegions<T>
    {
+      // Warning, this class has some problems. Trust with caution.
+
       private Growable2DArray<LinkedList<T>> regionItems;
       private SortedGrowableArray<int> xBounds; // screen cdts
       private SortedGrowableArray<int> yBounds;
@@ -33,6 +35,16 @@ namespace phi.other
          xBounds.Put(maxXCdt);
          yBounds = new SortedGrowableArray<int>();
          yBounds.Put(maxYCdt);
+      }
+
+      /**
+       * Increases array sizes to accomodate nX by nY partitions. 
+       * Each item added typically introduces 2 partitions, sometimes less.
+       */
+      public void MakeRoomFor(int nX, int nY)
+      {
+         xBounds.GrowToFit(nX);
+         yBounds.GrowToFit(nY);
       }
 
       public void Add(T item, Rectangle rect)
@@ -67,9 +79,13 @@ namespace phi.other
                }
             }
          }
+         // TODO: need to update xBounds and yBounds?
+         // i.e. check if a partition can be removed?
+         // (but is that worth it for performance?
+         // It seems intensive to remove, and doesn't get a large performance benefit
       }
 
-      public LinkedList<T> GetClickItems(int xcdt, int ycdt)
+      public IEnumerable<T> GetClickItems(int xcdt, int ycdt)
       {
          int[] indices = FindIndexes(xcdt, ycdt);
          try
@@ -80,7 +96,6 @@ namespace phi.other
          {
             return null;
          }
-         
       }
 
       public int[] FindIndexes(int xcdt, int ycdt)
@@ -106,7 +121,6 @@ namespace phi.other
       private int InsertXPartition(int cdt)
       {
          int index = xBounds.Put(cdt);
-         
          if (index < 0)
          {
             index = -index;
