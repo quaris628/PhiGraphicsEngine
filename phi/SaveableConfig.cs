@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,51 +24,57 @@ namespace phi
       public class Window
       {
          public static string TITLE = "Phi Engine Application";
-         private static int _width = 600;
-         public static int WIDTH
+         private static int _maxWidth = 600;
+         public static int MAX_WIDTH
          {
-            get => _width;
+            get => _maxWidth;
             set
             {
                if (value <= 0) { throw new ArgumentException("Negative window width"); }
-               _width = value;
+               _maxWidth = value;
             }
          }
-         private static int _height = 600;
-         public static int HEIGHT
+         private static int _maxHeight = 600;
+         public static int MAX_HEIGHT
          {
-            get => _height;
+            get => _maxHeight;
             set
             {
                if (value <= 0) { throw new ArgumentException("Negative window height"); }
-               _height = value;
+               _maxHeight = value;
             }
          }
-         private static int _tickrate = 60;
-         public static int TICK_RATE
+         private static int _initialWidth = 600;
+         public static int INITIAL_WIDTH
          {
-            get => _tickrate;
+            get => _initialWidth;
             set
             {
-               if (value <= 0) { throw new ArgumentException("TickRate too small"); }
-               if (value > 1000) { throw new ArgumentException("TickRate too large"); }
-               _tickrate = value;
+               if (value <= 0) { throw new ArgumentException("Negative window width"); }
+               _initialWidth = value;
+            }
+         }
+         private static int _initialHeight = 600;
+         public static int INITIAL_HEIGHT
+         {
+            get => _initialHeight;
+            set
+            {
+               if (value <= 0) { throw new ArgumentException("Negative window height"); }
+               _initialHeight = value;
             }
          }
          private static bool _fullscreen = false;
-         public static bool FULL_SCREEN
+         public static bool IS_FULL_SCREEN
          {
             get => _fullscreen;
-            set
-            {
-               _fullscreen = value;
-            }
+            set => _fullscreen = value;
          }
       }
 
       public class Render
       {
-         public const string DEFAULT_BACKGROUND = RES_DIR + "defaultBackground.png";
+         public static readonly Color DEFAULT_BACKGROUND = Color.White;
          private static int _default_layer = 0;
          public static int DEFAULT_LAYER
          {
@@ -89,6 +96,17 @@ namespace phi
                _fps = value;
             }
          }
+         private static int _tickrate = 60;
+         public static int TICK_RATE
+         {
+            get => _tickrate;
+            set
+            {
+               if (value <= 0) { throw new ArgumentException("TickRate too small"); }
+               if (value > 1000) { throw new ArgumentException("TickRate too large"); }
+               _tickrate = value;
+            }
+         }
       }
 
       // Save
@@ -103,14 +121,13 @@ namespace phi
             f.WriteLine(" ----- Phi Config Save File ----- ");
             f.WriteLine("\nWindow");
             f.WriteLine("title:" + Window.TITLE);
-            f.WriteLine("width:" + Window.WIDTH);
-            f.WriteLine("height:" + Window.HEIGHT);
-            f.WriteLine("fullscreen:" + Window.FULL_SCREEN);
-            f.WriteLine("tick-rate:" + Window.TICK_RATE);
+            f.WriteLine("width:" + Window.MAX_WIDTH);
+            f.WriteLine("height:" + Window.MAX_HEIGHT);
+            f.WriteLine("fullscreen:" + Window.IS_FULL_SCREEN);
             f.WriteLine("\nRenderer");
             f.WriteLine("default-layer:" + Render.DEFAULT_LAYER);
             f.WriteLine("fps:" + Render.FPS);
-            
+            f.WriteLine("tick-rate:" + Render.TICK_RATE);
          }
          catch (Exception e)
          {
@@ -137,18 +154,20 @@ namespace phi
             string titleLine = f.ReadLine(); // title:TITLE
             string widthLine = f.ReadLine(); // width:WIDTH
             string heightLine = f.ReadLine(); // height:HEIGHT
-            string fullscreenLine = f.ReadLine(); //fullscreen:FULL_SCREEN
-            string tickrateLine = f.ReadLine(); //tick-rate:TICK_RATE
+            string fullscreenLine = f.ReadLine(); // fullscreen:FULL_SCREEN
             f.ReadLine(); // Renderer
             string layerLine = f.ReadLine(); // default-layer:DEFAULT_LAYER
             string fpsLine = f.ReadLine(); // fps:FPS
+            string tickrateLine = f.ReadLine(); // tick-rate:TICK_RATE
 
             // parse strings to values
             Window.TITLE = SubstringAfter(titleLine, ':');
-            Window.WIDTH = int.Parse(SubstringAfter(widthLine, ':'));
-            Window.HEIGHT = int.Parse(SubstringAfter(heightLine, ':'));
+            Window.MAX_WIDTH = int.Parse(SubstringAfter(widthLine, ':'));
+            Window.MAX_HEIGHT = int.Parse(SubstringAfter(heightLine, ':'));
+            Window.IS_FULL_SCREEN = bool.Parse(SubstringAfter(fullscreenLine, ';'));
             Render.DEFAULT_LAYER = int.Parse(SubstringAfter(layerLine, ':'));
             Render.FPS = int.Parse(SubstringAfter(fpsLine, ':'));
+            Render.TICK_RATE = int.Parse(SubstringAfter(tickrateLine, ':'));
          }
          catch (Exception e)
          {
@@ -170,31 +189,36 @@ namespace phi
       {
          //Restores all Default values from the DefaultConfig
          Window.TITLE = DefaultConfig.Window.TITLE;
-         Window.WIDTH = DefaultConfig.Window.WIDTH;
-         Window.HEIGHT = DefaultConfig.Window.HEIGHT;
+         Window.MAX_WIDTH = DefaultConfig.Window.MAX_WIDTH;
+         Window.MAX_HEIGHT = DefaultConfig.Window.MAX_HEIGHT;
+         Window.IS_FULL_SCREEN = DefaultConfig.Window.IS_FULL_SCREEN;
          Render.DEFAULT_LAYER = DefaultConfig.Render.DEFAULT_LAYER;
          Render.FPS = DefaultConfig.Render.FPS;
+         Render.TICK_RATE = DefaultConfig.Render.TICK_RATE;
       }
 
       public virtual void RestoreDefaultResolution()
       {
          //Restores just the resolution to default
-         Window.WIDTH = DefaultConfig.Window.WIDTH;
-         Window.HEIGHT = DefaultConfig.Window.HEIGHT;
+         Window.MAX_WIDTH = DefaultConfig.Window.MAX_WIDTH;
+         Window.MAX_HEIGHT = DefaultConfig.Window.MAX_HEIGHT;
       }
 
       // Implement Config interface
       public virtual string GetHomeDir() { return HOME_DIR; }
       public virtual string GetResourcesDir() { return RES_DIR; }
       public virtual string GetWindowTitle() { return Window.TITLE; }
-      public virtual int GetWindowWidth() { return Window.WIDTH; }
-      public virtual int GetWindowHeight() { return Window.HEIGHT; }
-      public virtual string GetRenderDefaultBackground() { return Render.DEFAULT_BACKGROUND; }
+      public virtual string GetWindowIcon() { return ""; } // TODO
+      public virtual int GetMaxWindowWidth() { return Window.MAX_WIDTH; }
+      public virtual int GetMaxWindowHeight() { return Window.MAX_HEIGHT; }
+
+      public virtual int GetInitialWindowWidth() { return Window.INITIAL_WIDTH; }
+      public virtual int GetInitialWindowHeight() { return Window.INITIAL_HEIGHT; }
+      public virtual bool IsFullScreen() { return Window.IS_FULL_SCREEN; }
+      public virtual Color GetRenderDefaultBackground() { return Render.DEFAULT_BACKGROUND; }
       public virtual int GetRenderDefaultLayer() { return Render.DEFAULT_LAYER; }
       public virtual int GetRenderFPS() { return Render.FPS; }
+      public virtual int GetTickRate() { return Render.TICK_RATE; }
 
-      public virtual int GetTickRate() { return Window.TICK_RATE;  }
-
-      public bool IsFullScreen(){ return Window.FULL_SCREEN; }
    }
 }

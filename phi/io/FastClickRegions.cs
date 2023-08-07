@@ -92,12 +92,13 @@ namespace phi.other
          {
             return regionItems.Get(indices[0], indices[1]);
          }
-         catch (IndexOutOfRangeException e)
+         catch (IndexOutOfRangeException)
          {
             return null;
          }
       }
 
+      // maybe this shouldn't be public, but there's a unit test that uses it...
       public int[] FindIndexes(int xcdt, int ycdt)
       {
          int x = xBounds.BinarySearch(xcdt);

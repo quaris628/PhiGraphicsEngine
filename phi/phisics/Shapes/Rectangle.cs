@@ -70,7 +70,6 @@ namespace phi.phisics.Shapes
             }
             return false;
          }
-         return false;
       }
 
       public override bool isColliding(Shape s)

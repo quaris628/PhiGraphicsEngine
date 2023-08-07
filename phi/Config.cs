@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,14 +13,16 @@ namespace phi
       string GetResourcesDir();
 
       string GetWindowTitle();
-      int GetWindowWidth();
-      int GetWindowHeight();
+      string GetWindowIcon();
+      int GetMaxWindowWidth();
+      int GetMaxWindowHeight();
+      int GetInitialWindowWidth();
+      int GetInitialWindowHeight();
       bool IsFullScreen();
-      string GetRenderDefaultBackground();
+
+      Color GetRenderDefaultBackground();
       int GetRenderDefaultLayer();
       int GetRenderFPS();
-
       int GetTickRate();
-
    }
 }

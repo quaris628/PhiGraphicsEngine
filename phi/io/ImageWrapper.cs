@@ -12,6 +12,7 @@ namespace phi.io
       private Image image;
       public ImageWrapper(string filename)
       {
+         if (filename == null) { throw new ArgumentNullException("filename"); }
          image = Image.FromFile(filename);
       }
       public Image GetImage() { return image; }

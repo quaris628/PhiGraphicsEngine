@@ -14,10 +14,6 @@ namespace phi.graphics.drawables
       {
          this.radius = radius;
       }
-      public override double getCurrentProgress()
-      {
-         return (current + min) / max;
-      }
       protected override void DrawAt(Graphics g, int x, int y)
       {
          g.FillPie(new SolidBrush(Color.Black), new Rectangle(x, y, radius, radius), 270, (float)(-360 * (current + min) / max));

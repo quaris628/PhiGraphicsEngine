@@ -20,7 +20,7 @@ namespace PhiTests
 
          // Assert
          Assert.IsNotNull(fcr.GetClickItems(4, 4));
-         Assert.IsTrue(fcr.GetClickItems(4, 4).Contains(a));
+         Assert.IsTrue(fcr.GetClickItems(4, 4).GetEnumerator().Current == a);
       }
 
       [TestMethod]
@@ -36,7 +36,7 @@ namespace PhiTests
 
          // Assert
          Assert.IsTrue(fcr.GetClickItems(8, 8) == null
-            || !fcr.GetClickItems(8, 8).Contains(a));
+            || fcr.GetClickItems(8, 8).GetEnumerator().Current != a);
       }
 
       // Note: must make FindIndexes public manually

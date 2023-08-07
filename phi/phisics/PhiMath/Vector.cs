@@ -1,10 +1,11 @@
-﻿using System;
+﻿using phi.phisics.PhiMath;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace phi.phisics.PhiMath
+namespace phi.phisics
 {
    public class Vector
    {

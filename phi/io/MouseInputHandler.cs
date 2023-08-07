@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using phi.other;
+using System.Reflection;
 
 namespace phi.io
 {
@@ -16,12 +17,16 @@ namespace phi.io
       private FastClickRegions<Action<int, int>> fastRegions;
       // private Dictionary<Rectangle, LinkedList<Action<int, int>>> regionActions;
       private Dictionary<Drawable, LinkedList<Action<int, int>>> drawableActions;
+      private Dictionary<Action, Action<int, int>> wrapIndex;
+      private LinkedList<Action<int, int>> todos;
 
       public MouseInputHandler()
       {
          actions = new LinkedList<Action<int, int>>();
          fastRegions = new FastClickRegions<Action<int, int>>();
          drawableActions = new Dictionary<Drawable, LinkedList<Action<int, int>>>();
+         wrapIndex = new Dictionary<Action, Action<int, int>>();
+         todos = new LinkedList<Action<int, int>>();
       }
 
       public void Subscribe(Action<int, int> action) { actions.AddFirst(action); }
@@ -29,8 +34,7 @@ namespace phi.io
 
       public void SubscribeOnDrawable(Action<int, int> action, Drawable drawable)
       {
-         LinkedList<Action<int, int>> existingActions;
-         if (!drawableActions.TryGetValue(drawable, out existingActions))
+         if (!drawableActions.TryGetValue(drawable, out LinkedList<Action<int, int>> existingActions))
          {
             existingActions = new LinkedList<Action<int, int>>();
             drawableActions.Add(drawable, existingActions);
@@ -40,6 +44,14 @@ namespace phi.io
       public void UnsubscribeFromDrawable(Action<int, int> action, Drawable drawable)
       {
          drawableActions[drawable].Remove(action);
+         if (drawableActions[drawable].Count == 0)
+         {
+            drawableActions.Remove(drawable);
+         }
+      }
+      public void UnsubscribeAllFromDrawable(Drawable drawable)
+      {
+         drawableActions.Remove(drawable);
       }
 
       public void SubscribeOnRegion(Action<int, int> action, Rectangle region)
@@ -55,7 +67,12 @@ namespace phi.io
       // Subscription overloads for no-parameter actions
       private Action<int, int> Wrap(Action action)
       {
-         return new Action<int, int>((a, b) => { action.Invoke(); });
+         if (!wrapIndex.TryGetValue(action, out Action<int, int> actionXY))
+         {
+            actionXY = new Action<int, int>((a, b) => { action.Invoke(); });
+            wrapIndex.Add(action, actionXY);
+         }
+         return actionXY;
       }
       public void Subscribe(Action action) { Subscribe(Wrap(action)); }
       public void Unsubscribe(Action action) { Unsubscribe(Wrap(action)); }
@@ -76,7 +93,7 @@ namespace phi.io
          // Deep copy actions to do after iteration through collections of actions
          // This resolves what should happen if one of those actions edits one of the
          //   collections. (Throws exception if done during iteration.)
-         LinkedList<Action<int, int>> todos = new LinkedList<Action<int, int>>();
+         todos.Clear();
 
          // Actions
          LinkedListNode<Action<int, int>> iter = actions.First;
@@ -94,21 +111,33 @@ namespace phi.io
          IEnumerable<Action<int, int>> fastRegionsTodos = fastRegions.GetClickItems(e.X, e.Y);
 
          // Drawable Actions
-         foreach (KeyValuePair<Drawable, LinkedList<Action<int, int>>> kvp in drawableActions)
+         // TODO this could be made more efficient by sorting the drawables by their layer in the internal data structure
+         // Only one drawable should be able to be clicked at a time.
+         // And it should be the drawable in the farthest-front layer.
+         int layerOfFurthestFront = -1;
+         Drawable furthestFront = null;
+         foreach (Drawable d in drawableActions.Keys)
          {
-            if (kvp.Key.GetBoundaryRectangle().Contains(e.X, e.Y))
+            if (d.IsDisplaying() &&
+               layerOfFurthestFront <= IO.RENDERER.GetLayerOf(d) && 
+               d.GetBoundaryRectangle().Contains(e.X, e.Y))
             {
-               foreach (Action<int, int> action in kvp.Value)
-               {
-                  todos.AddLast(action);
-               }
+               layerOfFurthestFront = IO.RENDERER.GetLayerOf(d);
+               furthestFront = d;
+            }
+         }
+         if (furthestFront != null)
+         {
+            foreach (Action<int, int> action in drawableActions[furthestFront])
+            {
+               todos.AddLast(action);
             }
          }
 
          // do all the actions after 'deciding which actions to do' is complete
          // so one action does not change a state that 'deciding which actions to do' depends on
          // in the middle of 'deciding which actions to do'
-         
+         /*
          if (fastRegionsTodos != null)
          {
             foreach (Action<int, int> action in fastRegionsTodos)
@@ -116,12 +145,65 @@ namespace phi.io
                action.Invoke(e.X, e.Y);
             }
          }
-         
-         foreach (Action<int, int> action in todos)
-         {
-            action.Invoke(e.X, e.Y);
-         }
+         // */
 
+         void doLaterMouse()
+         {
+            IO.FRAME_TIMER.Unsubscribe(doLaterMouse);
+            foreach (Action<int, int> action in todos)
+            {
+               action.Invoke(e.X, e.Y);
+            }
+         }
+         IO.FRAME_TIMER.Subscribe(doLaterMouse);
+      }
+
+      public string LogDetailsForCrash()
+      {
+         string log = "";
+         foreach (KeyValuePair<Drawable, LinkedList<Action<int, int>>> kvp in drawableActions)
+         {
+            log += "\nactions for drawable " + kvp.Key;
+            foreach (Action<int, int> actionXY in kvp.Value)
+            {
+               log += "\n\t";
+               MethodInfo method = actionXY.Method;
+               if (wrapIndex.ContainsValue(actionXY))
+               {
+                  // find the wrapped method and log that instead
+                  log += "Wrapped: ";
+                  method = wrapIndex.FirstOrDefault(kvp1 => kvp1.Value == actionXY).Key.Method;
+               }
+               log += method.DeclaringType.FullName + "." + method.Name;
+            }
+         }
+         log += "\nactions:";
+         foreach (Action<int, int> actionXY in actions)
+         {
+            log += "\n\t";
+            MethodInfo method = actionXY.Method;
+            if (wrapIndex.ContainsValue(actionXY))
+            {
+               // find the wrapped method and log that instead
+               log += "Wrapped: ";
+               method = wrapIndex.FirstOrDefault(kvp1 => kvp1.Value == actionXY).Key.Method;
+            }
+            log += method.DeclaringType.FullName + "." + method.Name;
+         }
+         log += "\ntodos:";
+         foreach (Action<int, int> actionXY in todos)
+         {
+            log += "\n\t";
+            MethodInfo method = actionXY.Method;
+            if (wrapIndex.ContainsValue(actionXY))
+            {
+               // find the wrapped method and log that instead
+               log += "Wrapped: ";
+               method = wrapIndex.FirstOrDefault(kvp1 => kvp1.Value == actionXY).Key.Method;
+            }
+            log += method.DeclaringType.FullName + "." + method.Name;
+         }
+         return log;
       }
    }
 }

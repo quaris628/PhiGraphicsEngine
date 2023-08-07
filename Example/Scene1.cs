@@ -67,7 +67,7 @@ namespace Example
       private ProgressCircle clock;
       private double t;
 
-      public Scene1(Scene prevScene) : base(prevScene, new ImageWrapper(ExamplePhiConfig.Render.DEFAULT_BACKGROUND))
+      public Scene1(Scene prevScene) : base(prevScene, ExamplePhiConfig.Render.DEFAULT_BACKGROUND)
       {
          sceneTitle = new Text.TextBuilder(TITLE).Build();
          backMessage = BACK_MSG.GetText();

@@ -14,7 +14,7 @@ namespace phi.graphics.drawables
 
       public Sprite(ImageWrapper img, int x, int y) : base(x, y, img.GetImage().Width, img.GetImage().Height)
       {
-         this.image = img.GetImage() ?? throw new ArgumentNullException();
+         this.image = img.GetImage();
       }
 
       // extend Drawable

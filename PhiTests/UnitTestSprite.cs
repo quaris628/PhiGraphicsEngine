@@ -24,11 +24,11 @@ namespace PhiTests
          Image result = sprite.GetImage();
 
          // Assert
-         Assert.AreEqual(image, result);
+         Assert.AreEqual(image.GetImage(), result);
       }
 
       [TestMethod]
-      public void ConstructorImage_NullImageThrowsArgumentNullException()
+      public void ConstructorImage_NullImageWrapperThrowsException()
       {
          // Arrange
          ImageWrapper image = null;
@@ -40,7 +40,7 @@ namespace PhiTests
             Sprite sprite = new Sprite(image, 0, 0);
             exceptionThrown = false;
          }
-         catch (ArgumentNullException)
+         catch (NullReferenceException)
          {
             exceptionThrown = true;
          }
@@ -63,14 +63,14 @@ namespace PhiTests
          Image result = sprite.GetImage();
 
          // Assert
-         Assert.AreEqual(image, result);
+         Assert.AreEqual(image.GetImage(), result);
       }
 
       [TestMethod]
-      public void ConstructorImageXY_NullImageThrowsArgumentNullException()
+      public void ConstructorImageXY_NullImageThrowsException()
       {
          // Arrange
-         ImageWrapper image = new ImageWrapper(ARBITRARY_IMAGE_FILE);
+         ImageWrapper image = null;
          int x = 0;
          int y = 0;
 
@@ -81,7 +81,7 @@ namespace PhiTests
             Sprite sprite = new Sprite(image, x, y);
             exceptionThrown = false;
          }
-         catch (ArgumentNullException)
+         catch (NullReferenceException)
          {
             exceptionThrown = true;
          }

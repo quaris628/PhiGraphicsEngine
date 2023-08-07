@@ -12,16 +12,16 @@ namespace Example
    {
       public new class Window : DefaultConfig.Window
       {
-         public new const int WIDTH = 1200;
-         public new const int HEIGHT = 700;
+         public new const int INITIAL_WIDTH = 1200;
+         public new const int INITIAL_HEIGHT = 700;
       }
       public new class Render : DefaultConfig.Render
       {
          public new const int FPS = 30;
       }
 
-      public override int GetWindowWidth() { return Window.WIDTH; }
-      public override int GetWindowHeight() { return Window.HEIGHT; }
+      public override int GetInitialWindowWidth() { return Window.INITIAL_WIDTH; }
+      public override int GetInitialWindowHeight() { return Window.INITIAL_HEIGHT; }
       public override int GetRenderFPS() { return Render.FPS; }
    }
 }

@@ -11,12 +11,17 @@ namespace phi.graphics
 {
    public class Renderer : DynamicContainer
    {
+      // lower layer = further back
+      // higher layer = further front
+
       // default layer before any default (for overload Add method) is set
       private const int DEFAULT_DEFAULT_LAYER = 0;
 
+      private Graphics g;
       private Image output;
-      private Image background;
+      private Color background;
       private SortedList<int, LinkedList<Drawable>> layers;
+      private Dictionary<Drawable, int> layerIndex;
       private int defaultLayer;
 
       private bool isCentered;
@@ -26,11 +31,13 @@ namespace phi.graphics
       private int displacementX;
       private int displacementY;
 
-      public Renderer(Image output, Image background)
+      public Renderer(Image output, Color background)
       {
+         this.g = Graphics.FromImage(output);
          this.output = output;
          this.background = background;
          this.layers = new SortedList<int, LinkedList<Drawable>>();
+         this.layerIndex = new Dictionary<Drawable, int>();
          this.defaultLayer = DEFAULT_DEFAULT_LAYER;
 
          this.isCentered = false;
@@ -43,9 +50,11 @@ namespace phi.graphics
 
       public Renderer()
       {
+         this.g = null;
          this.output = null;
-         this.background = null;
+         this.background = Color.White;
          this.layers = new SortedList<int, LinkedList<Drawable>>();
+         this.layerIndex = new Dictionary<Drawable, int>();
          this.defaultLayer = DEFAULT_DEFAULT_LAYER;
 
          this.isCentered = false;
@@ -72,8 +81,7 @@ namespace phi.graphics
       {
          if (HasChanged())
          {
-            Graphics g = Graphics.FromImage(output);
-            g.DrawImage(background, 0, 0);
+            g.Clear(background);
             CalculateDisplacement();
 
             foreach (LinkedList<Drawable> drawables in layers.Values)
@@ -86,8 +94,6 @@ namespace phi.graphics
                   }
                }
             }
-
-            g.Dispose();
             UnflagChanges();
          }
       }
@@ -100,6 +106,7 @@ namespace phi.graphics
             layers.Add(layer, new LinkedList<Drawable>());
          }
          layers[layer].AddFirst(item);
+         layerIndex[item] = layer;
          item.PutIn(this);
          FlagChange();
       }
@@ -113,14 +120,15 @@ namespace phi.graphics
          foreach (Drawable item in items)
          {
             layers[layer].AddFirst(item);
+            layerIndex[item] = layer;
             item.PutIn(this);
          }
          FlagChange();
       }
       
       // renderable overloads
-      public void Add(Renderable r, int layer) { Add(r, layer); }
-      public void Add(MultiRenderable mr, int layer) { Add(mr, layer); }
+      public void Add(Renderable r, int layer) { Add(r.GetDrawable(), layer); }
+      public void Add(MultiRenderable mr, int layer) { Add(mr.GetDrawables(), layer); }
       public void Add(Renderable r) { Add(r.GetDrawable()); }
       public void Add(MultiRenderable mr) { Add(mr.GetDrawables()); }
 
@@ -129,25 +137,38 @@ namespace phi.graphics
       public void Add(IEnumerable<Drawable> items) { Add(items, defaultLayer); }
       public void SetDefaultLayer(int defaultLayer) { this.defaultLayer = defaultLayer; }
       public int GetDefaultLayer() { return defaultLayer; }
+      
 
       public bool Remove(Drawable item)
       {
-         bool success = false;
-         // for each layer, or stop if item successfully found
-         IEnumerator<KeyValuePair<int, LinkedList<Drawable>>> enumerator = layers.GetEnumerator();
-         while (enumerator.MoveNext() && !success)
-         {
-            LinkedList<Drawable> drawables = enumerator.Current.Value;
-
-            success = drawables.Remove(item);
-         }
-
-         if (success)
+         if (layerIndex.TryGetValue(item, out int layer) &&
+            layers[layer].Remove(item))
          {
             item.TakeOut(this);
             FlagChange();
+            return true;
+         }
+         return false;
+      }
+      // renderable overloads
+      public bool Remove(Renderable r) { return Remove(r.GetDrawable()); }
+      public bool Remove(MultiRenderable mr)
+      {
+         bool success = true;
+         foreach (Drawable d in mr.GetDrawables())
+         {
+            if (!Remove(d))
+            {
+               success = false;
+            }
          }
          return success;
+      }
+
+      // returns -1 if drawable is not contained inside the renderer
+      public int GetLayerOf(Drawable d)
+      {
+         return layerIndex.TryGetValue(d, out int layer) ? layer : -1;
       }
 
       public void ClearLayer(int layer) { layers.Remove(layer); FlagChange(); }
@@ -158,18 +179,23 @@ namespace phi.graphics
         * Sets the image to draw images on top of
         * Is also the output (pass by reference)
         */
-      public void SetOutput(Image outputImage) { this.output = outputImage; FlagChange(); }
+      public void SetOutput(Image outputImage)
+      {
+         this.output = outputImage;
+         this.g = Graphics.FromImage(output);
+         FlagChange();
+      }
 
       /**
        * Sets the background that all drawn images are stacked on top of
        */
-      public void SetBackground(Image background)
+      public void SetBackground(Color background)
       {
-         this.background = background ?? throw new ArgumentNullException();
+         this.background = background;
          FlagChange();
       }
 
-      public Image GetBackground()
+      public Color GetBackground()
       {
          return this.background;
       }

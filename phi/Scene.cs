@@ -15,25 +15,19 @@ namespace phi.control
    public abstract class Scene
    {
       protected Scene prevScene;
-      protected Image background;
+      protected Color background;
+      protected bool isInit;
 
       protected Scene(Scene prevScene)
       {
          this.prevScene = prevScene;
-         this.background = (Image)IO.RENDERER.GetBackground().Clone();
+         this.background = IO.RENDERER.GetBackground();
       }
 
-      protected Scene(Scene prevScene, string imageFile)
+      protected Scene(Scene prevScene, Color background)
       {
          this.prevScene = prevScene;
-         this.background = Image.FromFile(imageFile);
-      }
-
-      protected Scene(Scene prevScene, ImageWrapper background)
-      {
-         this.prevScene = prevScene;
-         if (background == null) { throw new ArgumentNullException(); }
-         this.background = background.GetImage();
+         this.background = background;
       }
 
       public void Initialize()
@@ -41,30 +35,36 @@ namespace phi.control
          IO.RENDERER.SetBackground(background);
          IO.FRAME_TIMER.Subscribe(IO.RENDERER.Render);
          InitializeMe();
+         isInit = true;
       }
       protected virtual void InitializeMe() { }
 
-      public void Close()
+      public void Uninitialize()
       {
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         isInit = false;
          IO.Clear();
-         CloseMe();
+         UninitializeMe();
       }
-      protected virtual void CloseMe() { }
+      protected virtual void UninitializeMe() { }
 
       protected void SwitchTo(Scene scene)
       {
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
          if (scene == null)
          {
             IO.Exit();
          }
          else if (!this.Equals(scene))
          {
-            this.Close();
+            // shouldn't queue b/c we need to uninit the old scene before initing the new one
+            Uninitialize();
             scene.Initialize();
          }
       }
       protected void Back()
       {
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
          SwitchTo(prevScene);
       }
    }

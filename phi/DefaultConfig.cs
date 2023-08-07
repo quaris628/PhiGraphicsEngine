@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,30 +16,35 @@ namespace phi
       public class Window
       {
          public const string TITLE = "Phi Engine";
-         public const int WIDTH = 600;
-         public const int HEIGHT = 400;
-         public const int TICK_RATE = 60;
+         public const string ICON = RES_DIR + "icon.ico"; // TODO set up in base phi project
+         public const int MAX_WIDTH = 2048;
+         public const int MAX_HEIGHT = 1080;
+         public const int INITIAL_WIDTH = 800;
+         public const int INITIAL_HEIGHT = 600;
          public const bool IS_FULL_SCREEN = false;
       }
       
       public class Render
       {
-         public const string DEFAULT_BACKGROUND = RES_DIR + "defaultBackground.png";
-         public const int DEFAULT_LAYER = 0;
+         public static readonly Color DEFAULT_BACKGROUND = Color.White;
+         public const int DEFAULT_LAYER = 10;
          public const int FPS = 60;
+         public const int TICK_RATE = 60;
 
       }
 
       public virtual string GetHomeDir() { return HOME_DIR; }
       public virtual string GetResourcesDir() { return RES_DIR; }
       public virtual string GetWindowTitle() { return Window.TITLE; }
-      public virtual int GetWindowWidth() { return Window.WIDTH; }
-      public virtual int GetWindowHeight() { return Window.HEIGHT; }
+      public virtual string GetWindowIcon() { return Window.ICON; }
+      public virtual int GetMaxWindowWidth() { return Window.MAX_WIDTH; }
+      public virtual int GetMaxWindowHeight() { return Window.MAX_HEIGHT; }
+      public virtual int GetInitialWindowWidth() { return Window.INITIAL_WIDTH; }
+      public virtual int GetInitialWindowHeight() { return Window.INITIAL_HEIGHT; }
       public virtual bool IsFullScreen() { return Window.IS_FULL_SCREEN; }
-      public virtual string GetRenderDefaultBackground() { return Render.DEFAULT_BACKGROUND; }
+      public virtual Color GetRenderDefaultBackground() { return Render.DEFAULT_BACKGROUND; }
       public virtual int GetRenderDefaultLayer() { return Render.DEFAULT_LAYER; }
       public virtual int GetRenderFPS() { return Render.FPS; }
-
-      public virtual int GetTickRate() { return Window.TICK_RATE; }
+      public virtual int GetTickRate() { return Render.TICK_RATE; }
    }
 }

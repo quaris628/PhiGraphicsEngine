@@ -11,46 +11,113 @@ namespace phi.graphics.renderables
 {
    public class Draggable : Renderable
    {
-      // TODO fix that two overlapping drawables both move if the
-      // click is over both of them, instead only have the top one
-      // move.
+      private const bool DEFAULT_USE_RIGHT_MOUSE_BUTTON = false;
 
       private Drawable drawable;
       private int dragOffsetX;
       private int dragOffsetY;
-      private bool hasBounds;
+      private int boundsType; // 0 = none, 1 = static, 2 = dynamic
       private Rectangle dragBounds;
+      private Func<Rectangle> getDynamicDragBounds;
+      private bool useRightMouseButton;
+      protected bool isMoving { get; private set; }
+      protected bool isInit;
 
       public Draggable(Drawable drawable)
+         : this(drawable, new Rectangle(), DEFAULT_USE_RIGHT_MOUSE_BUTTON) { }
+      public Draggable(Drawable drawable, bool useRightMouseButton)
       {
          this.drawable = drawable;
-         this.hasBounds = false;
-         this.dragBounds = new Rectangle();
+         this.boundsType = 0;
+         this.useRightMouseButton = useRightMouseButton;
+         this.isMoving = false;
       }
-
-      public Draggable(Drawable drawable, Rectangle dragBounds)
-      {
-         this.drawable = drawable;
-         this.hasBounds = true;
-         this.dragBounds = dragBounds;
-      }
-
+      public Draggable(Drawable drawable, Rectangle rectangle)
+         : this(drawable, rectangle, DEFAULT_USE_RIGHT_MOUSE_BUTTON) { }
       public Draggable(Drawable drawable, int minX, int minY, int maxX, int maxY)
+         : this(drawable, minX, minY, maxX, maxY, DEFAULT_USE_RIGHT_MOUSE_BUTTON) { }
+      public Draggable(Drawable drawable, int minX, int minY, int maxX, int maxY, bool useRightMouseButton)
+         : this(drawable, new Rectangle(minX, minY, maxX - minX, maxY - minY), useRightMouseButton) { }
+      public Draggable(Drawable drawable, Rectangle dragBounds, bool useRightMouseButton)
       {
          this.drawable = drawable;
-         this.hasBounds = true;
-         this.dragBounds = new Rectangle(minX, minY, maxX - minX, maxY - minY);
+         this.boundsType = 1;
+         this.dragBounds = dragBounds;
+         this.useRightMouseButton = useRightMouseButton;
+         this.isMoving = false;
+      }
+      public Draggable(Drawable drawable, Func<Rectangle> getDynamicDragBounds)
+         : this(drawable, getDynamicDragBounds, DEFAULT_USE_RIGHT_MOUSE_BUTTON) { }
+      public Draggable(Drawable drawable, Func<Rectangle> getDynamicDragBounds, bool useRightMouseButton)
+      {
+         this.drawable = drawable;
+         this.boundsType = 2;
+         this.getDynamicDragBounds = getDynamicDragBounds;
+         this.useRightMouseButton = useRightMouseButton;
+         this.isMoving = false;
       }
 
-      public void Initialize()
+      public virtual void Initialize()
       {
-         IO.MOUSE.DOWN.SubscribeOnDrawable(MouseDown, drawable);
+         if (useRightMouseButton)
+         {
+            IO.MOUSE.RIGHT_DOWN.SubscribeOnDrawable(MouseDown, drawable);
+         }
+         else
+         {
+            IO.MOUSE.LEFT_DOWN.SubscribeOnDrawable(MouseDown, drawable);
+         }
+         isInit = true;
+      }
+      
+      public virtual void Uninitialize()
+      {
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         isInit = false;
+         if (isMoving)
+         {
+            IO.MOUSE.MOVE.Unsubscribe(MouseMove);
+            if (useRightMouseButton)
+            {
+               IO.MOUSE.RIGHT_UP.Unsubscribe(MouseUp);
+               IO.MOUSE.RIGHT_DOWN.UnsubscribeFromDrawable(MouseDown, drawable);
+            }
+            else
+            {
+               IO.MOUSE.LEFT_UP.Unsubscribe(MouseUp);
+               IO.MOUSE.LEFT_DOWN.UnsubscribeFromDrawable(MouseDown, drawable);
+            }
+         }
+         else
+         {
+            if (useRightMouseButton)
+            {
+               IO.MOUSE.RIGHT_DOWN.UnsubscribeFromDrawable(MouseDown, drawable);
+            }
+            else
+            {
+               IO.MOUSE.LEFT_DOWN.UnsubscribeFromDrawable(MouseDown, drawable);
+            }
+         }
+         
       }
 
       private void MouseDown(int x, int y)
       {
-         IO.MOUSE.MOVE.Subscribe(MouseMove);
-         IO.MOUSE.UP.Subscribe(MouseUp);
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         if (!isMoving)
+         {
+            isMoving = true;
+            IO.MOUSE.MOVE.Subscribe(MouseMove);
+            if (useRightMouseButton)
+            {
+               IO.MOUSE.RIGHT_UP.Subscribe(MouseUp);
+            }
+            else
+            {
+               IO.MOUSE.LEFT_UP.Subscribe(MouseUp);
+            }
+         }
          dragOffsetX = x - drawable.GetX();
          dragOffsetY = y - drawable.GetY();
          MyMouseDown(x, y);
@@ -59,14 +126,19 @@ namespace phi.graphics.renderables
 
       private void MouseMove(int x, int y)
       {
-         if (hasBounds)
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         if (boundsType == 2)
          {
-            drawable.SetX(ConfineToXBound(x - dragOffsetX));
-            drawable.SetY(ConfineToYBound(y - dragOffsetY));
+            dragBounds = getDynamicDragBounds.Invoke();
          }
-         else
+         if (boundsType != 0)
          {
-            drawable.SetXY(x - dragOffsetX, y - dragOffsetY);
+            drawable.SetX(Math.Max(dragBounds.X,
+               Math.Min(x - dragOffsetX,
+               dragBounds.X + dragBounds.Width - drawable.GetWidth())));
+            drawable.SetY(Math.Max(dragBounds.Y,
+               Math.Min(y - dragOffsetY,
+               dragBounds.Y + dragBounds.Height - drawable.GetHeight())));
          }
          MyMouseMove(x, y);
       }
@@ -74,42 +146,70 @@ namespace phi.graphics.renderables
 
       private void MouseUp(int x, int y)
       {
-         IO.MOUSE.MOVE.Unsubscribe(MouseMove);
-         IO.MOUSE.UP.Unsubscribe(MouseUp);
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         if (isMoving)
+         {
+            isMoving = false;
+            IO.MOUSE.MOVE.Unsubscribe(MouseMove);
+            if (useRightMouseButton)
+            {
+               IO.MOUSE.RIGHT_UP.Unsubscribe(MouseUp);
+            }
+            else
+            {
+               IO.MOUSE.LEFT_UP.Unsubscribe(MouseUp);
+            }
+         }
          MyMouseUp(x, y);
       }
       protected virtual void MyMouseUp(int x, int y) { }
 
-      protected int GetDragOffsetX() { return dragOffsetX; }
-      protected int GetDragOffsetY() { return dragOffsetY; }
-
-      private int ConfineToXBound(int x)
+      protected int GetDragOffsetX()
       {
-         return Math.Max(dragBounds.X, Math.Min(x,
-            dragBounds.X + dragBounds.Width - drawable.GetWidth()));
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         return dragOffsetX;
+      }
+      protected int GetDragOffsetY()
+      {
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         return dragOffsetY;
       }
 
-      private int ConfineToYBound(int y)
+      public bool HasDragBounds()
       {
-         return Math.Max(dragBounds.Y, Math.Min(y,
-            dragBounds.Y + dragBounds.Height - drawable.GetHeight()));
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         return this.boundsType != 0;
       }
-
-      public bool HasDragBounds() { return this.hasBounds; }
-      public void SetDragUnbounded() { this.hasBounds = false; }
+      public void SetDragUnbounded()
+      {
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         this.boundsType = 0;
+      }
       
       public void SetDragBounds(Rectangle bounds)
       {
-         this.hasBounds = true;
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         this.boundsType = 1;
          this.dragBounds = bounds;
       }
 
       public void SetDragBounds(int minX, int minY, int maxX, int maxY)
       {
-         this.hasBounds = true;
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         this.boundsType = 1;
          this.dragBounds = new Rectangle(minX, minY, maxX - minX, maxY - minY);
       }
 
-      public Drawable GetDrawable() { return drawable; }
+      public void SetDragBounds(Func<Rectangle> getDynamicDragBounds)
+      {
+         if (!isInit) { throw new InvalidOperationException(this + " is not inited"); }
+         this.boundsType = 2;
+         this.getDynamicDragBounds = getDynamicDragBounds;
+      }
+
+      public Drawable GetDrawable()
+      {
+         return drawable;
+      }
    }
 }

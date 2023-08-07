@@ -6,7 +6,6 @@ using System.Text;
 using System.Threading.Tasks;
 using phi.graphics;
 
-
 namespace phi.phisics
 {
    public class PhisicsPlane
@@ -36,7 +35,7 @@ namespace phi.phisics
 
       public void updateObjects(int tickSpeed)
       {
-         foreach(PhisicsObject o in hardObjs)
+         foreach (PhisicsObject o in hardObjs)
          {
             o.update(tickSpeed);
          }
