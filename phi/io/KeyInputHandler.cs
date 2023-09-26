@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Windows.Input;
 
 namespace phi.io
 {
@@ -11,11 +12,13 @@ namespace phi.io
    {
       private Dictionary<int, LinkedList<Action>> actions;
       private Dictionary<int, LinkedList<Action<KeyStroke>>> keyActions;
+      private LinkedList<Action> todos;
 
       public KeyInputHandler()
       {
          actions = new Dictionary<int, LinkedList<Action>>();
          keyActions = new Dictionary<int, LinkedList<Action<KeyStroke>>>();
+         todos = new LinkedList<Action>();
       }
 
       // Subscribe overloads
@@ -49,6 +52,8 @@ namespace phi.io
       public void Unsubscribe(Action<KeyStroke> action, Keys key) { Unsubscribe(action, new KeyStroke(key)); }
       public void Unsubscribe(Action action, KeyStroke keyStroke) { actions[keyStroke.GetCode()].Remove(action); }
       public void Unsubscribe(Action<KeyStroke> action, KeyStroke keyStroke) { keyActions[keyStroke.GetCode()].Remove(action); }
+      public void UnsubscribeAll(Keys key) { UnsubscribeAll(new KeyStroke(key)); }
+      public void UnsubscribeAll(KeyStroke keyStroke) { actions.Remove(keyStroke.GetCode()); keyActions.Remove(keyStroke.GetCode()); }
 
       public void Clear()
       {
@@ -58,27 +63,68 @@ namespace phi.io
 
       public void KeyInputEvent(object sender, KeyEventArgs e)
       {
+         todos.Clear();
          KeyStroke stroke = new KeyStroke(e.KeyData);
-         if (actions.ContainsKey(stroke.GetCode()))
+         if (actions.TryGetValue(stroke.GetCode(), out LinkedList<Action> keystrokeActions))
          {
-            // This extra-verbose while loop iteration is here instead of a simpler foreach
-            //    to force iteration to continue even if an element in the collection is updated.
-            // If this was replaced by a foreach, an exception would be thrown.
-            IEnumerator<Action> todos = actions[stroke.GetCode()].GetEnumerator();
-            while(todos.MoveNext())
+            // make copy of collection b/c otherwise could run into concurrent modification exception
+            
+            foreach (Action action in keystrokeActions)
             {
-               Action action = todos.Current;
-               action.Invoke();
+               todos.AddLast(action);
             }
          }
          if (keyActions.ContainsKey(stroke.GetCode()))
          {
             foreach (Action<KeyStroke> action in keyActions[stroke.GetCode()])
             {
-               action.Invoke(stroke);
+               todos.AddLast(() => { action.Invoke(stroke); });
             }
+         }
+
+         IO.FRAME_TIMER.Subscribe(doLaterKeys);
+      }
+
+      private void doLaterKeys()
+      {
+         IO.FRAME_TIMER.Unsubscribe(doLaterKeys);
+         foreach (Action action in todos)
+         {
+            action.Invoke();
          }
       }
 
+      public bool IsModifierKeyDown(Keys key)
+      {
+         System.Windows.Forms.Keys formsKey = (System.Windows.Forms.Keys)key;
+         return formsKey == (Control.ModifierKeys & formsKey);
+      }
+
+      public string LogDetailsForCrash()
+      {
+         string log = "\n\nKeyInputHandler";
+         foreach (KeyValuePair<int, LinkedList<Action>> kvp in actions)
+         {
+            log += "\nactions for " + (Keys)(kvp.Key);
+            foreach (Action action in kvp.Value)
+            {
+               log += "\n\t" + action.Method.DeclaringType.FullName + "." + action.Method.Name;
+            }
+         }
+         foreach (KeyValuePair<int, LinkedList<Action<KeyStroke>>> kvp in keyActions)
+         {
+            log += "\nkeyActions for " + (Keys)(kvp.Key);
+            foreach (Action<KeyStroke> action in kvp.Value)
+            {
+               log += "\n\t" + action.Method.DeclaringType.FullName + "." + action.Method.Name;
+            }
+         }
+         log += "\ntodos:";
+         foreach (Action action in todos)
+         {
+            log += "\n\t" + action.Method.DeclaringType.FullName + "." + action.Method.Name;
+         }
+         return log;
+      }
    }
 }

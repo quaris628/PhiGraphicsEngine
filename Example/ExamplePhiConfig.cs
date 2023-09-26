@@ -20,8 +20,8 @@ namespace Example
          public new const int FPS = 30;
       }
 
-      public override int GetWindowWidth() { return Window.WIDTH; }
-      public override int GetWindowHeight() { return Window.HEIGHT; }
+      public override int GetInitialWindowWidth() { return Window.WIDTH; }
+      public override int GetInitialWindowHeight() { return Window.HEIGHT; }
       public override int GetRenderFPS() { return Render.FPS; }
    }
 }

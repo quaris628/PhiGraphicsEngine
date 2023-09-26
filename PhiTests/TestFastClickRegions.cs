@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using phi.other;
+using System.Linq;
 
 namespace PhiTests
 {
@@ -49,9 +50,9 @@ namespace PhiTests
          Action a = new Action(() => { });
          Rectangle r = new Rectangle(2, 2, 4, 4);
          fcr.Add(a, r);
-
+         PrivateObject obj = new PrivateObject(fcr);
          // Act
-         int[] res = fcr.FindIndexes(4, 4);
+         int[] res = (int[])obj.Invoke("FindIndexes",4,4);
 
          // Assert
          Assert.AreEqual(1, res[0]);

@@ -18,13 +18,12 @@ namespace PhiTests
       {
          // Arrange
          ImageWrapper image = new ImageWrapper(ARBITRARY_IMAGE_FILE);
-
          // Act
          Sprite sprite = new Sprite(image, 0, 0);
          Image result = sprite.GetImage();
 
          // Assert
-         Assert.AreEqual(image, result);
+         Assert.AreEqual<Image>(image.GetImage(), result);
       }
 
       [TestMethod]
@@ -63,7 +62,7 @@ namespace PhiTests
          Image result = sprite.GetImage();
 
          // Assert
-         Assert.AreEqual(image, result);
+         Assert.AreEqual<Image>(image.GetImage(), result);
       }
 
       [TestMethod]

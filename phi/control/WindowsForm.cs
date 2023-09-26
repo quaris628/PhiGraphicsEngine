@@ -14,8 +14,8 @@ namespace phi.control
 {
    partial class WindowsForm : Form
    {
-      private const int WIDTH_FUDGE = 14;
-      private const int HEIGHT_FUDGE = 39;
+      public const int WIDTH_FUDGE = 14;
+      public const int HEIGHT_FUDGE = 39;
 
       private Scene entryScene;
       private Config config;
@@ -28,34 +28,60 @@ namespace phi.control
          this.pictureBox = new PictureBox();
 
          // misc configs
-         IO.RENDERER.SetBackground(Image.FromFile(config.GetRenderDefaultBackground()));
+         IO.RENDERER.SetBackground(config.GetRenderDefaultBackground());
          IO.RENDERER.SetDefaultLayer(config.GetRenderDefaultLayer());
          IO.FRAME_TIMER.SetFPS(config.GetRenderFPS());
          IO.FRAME_TIMER.LockedSubscribe(new Random().Next(), RefreshPictureBox);
 
          InitializeComponent();
+         try { Icon = new Icon(config.GetWindowIcon()); } catch (Exception) { }
          Load += new EventHandler(FormLoad);
       }
 
       private void FormLoad(object sender, EventArgs e)
       {
+         Image image = new Bitmap(config.GetMaxWindowWidth(), config.GetMaxWindowHeight());
+         IO.RENDERER.SetOutput(image);
+
          // Set window properites
-         Size = new Size(config.GetWindowWidth() + WIDTH_FUDGE,
-            config.GetWindowHeight() + HEIGHT_FUDGE);
+         IO.WINDOW.SetWindowsForm(this);
+         Size = new Size(
+            config.GetInitialWindowWidth() + WIDTH_FUDGE,
+            config.GetInitialWindowHeight() + HEIGHT_FUDGE);
          Text = config.GetWindowTitle();
+         
          // Set pictureBox properties
          pictureBox.Size = Size;
-         pictureBox.Image = Image.FromFile(config.GetRenderDefaultBackground());
+         pictureBox.Image = image;
          Controls.Add(pictureBox); // is this line needed? -- Yes, I think so
-         IO.RENDERER.SetOutput(pictureBox.Image);
-
+         
          // Setup key input event handling
          KeyPreview = true;
          KeyDown += new KeyEventHandler(IO.KEYS.KeyInputEvent);
          // Setup mouse input event handling
-         pictureBox.MouseClick += new MouseEventHandler(IO.MOUSE.CLICK.Event);
-         pictureBox.MouseDown += new MouseEventHandler(IO.MOUSE.DOWN.Event);
-         pictureBox.MouseUp += new MouseEventHandler(IO.MOUSE.UP.Event);
+         pictureBox.MouseClick += new MouseEventHandler((sender1, e1) => {
+            IO.MOUSE.CLICK.Event(sender1, e1);
+            if (e1.Button == MouseButtons.Left) { IO.MOUSE.LEFT_CLICK.Event(sender1, e1); }
+            else if (e1.Button == MouseButtons.Right) { IO.MOUSE.RIGHT_CLICK.Event(sender1, e1); }
+            else if (e1.Button == MouseButtons.Middle) { IO.MOUSE.MID_CLICK.Event(sender1, e1); }
+         });
+         pictureBox.MouseDown += new MouseEventHandler((sender1, e1) => {
+            IO.MOUSE.DOWN.Event(sender1, e1);
+            if (e1.Button == MouseButtons.Left) { IO.MOUSE.LEFT_DOWN.Event(sender1, e1); }
+            else if (e1.Button == MouseButtons.Right) { IO.MOUSE.RIGHT_DOWN.Event(sender1, e1); }
+            else if (e1.Button == MouseButtons.Middle) { IO.MOUSE.MID_CLICK_DOWN.Event(sender1, e1); }
+         });
+         pictureBox.MouseUp += new MouseEventHandler((sender1, e1) => {
+            IO.MOUSE.UP.Event(sender1, e1);
+            if (e1.Button == MouseButtons.Left) { IO.MOUSE.LEFT_UP.Event(sender1, e1); }
+            else if (e1.Button == MouseButtons.Right) { IO.MOUSE.RIGHT_UP.Event(sender1, e1); }
+            else if (e1.Button == MouseButtons.Middle) { IO.MOUSE.MID_CLICK_UP.Event(sender1, e1); }
+         });
+         pictureBox.MouseWheel += new MouseEventHandler((sender1, e1) => {
+             IO.MOUSE.MID_SCROLL.Event(sender1, e1);
+             if (e1.Delta > 0) { IO.MOUSE.MID_SCROLL_UP.Event(sender1, e1); }
+             else { IO.MOUSE.MID_SCROLL_DOWN.Event(sender1, e1); }
+         });
          pictureBox.MouseMove += new MouseEventHandler(IO.MOUSE.MOVE.Event);
 
          // Let's go!
@@ -66,6 +92,7 @@ namespace phi.control
       private void RefreshPictureBox()
       {
          pictureBox.Image = pictureBox.Image; // Do not delete; forces some sort of update
+         pictureBox.Size = Size;
       }
 
       public static void Exit() { Application.Exit(); }
