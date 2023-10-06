@@ -64,7 +64,7 @@ namespace Example
       private ProgressCircle circle;
       private ProgressCircle clock;
 
-      public Scene1(Scene prevScene) : base(prevScene, new ImageWrapper(ExamplePhiConfig.Render.DEFAULT_BACKGROUND))
+      public Scene1(Scene prevScene) : base(prevScene, ExamplePhiConfig.Render.DEFAULT_BACKGROUND)
       {
          sceneTitle = new Text.TextBuilder(TITLE).Build();
          backMessage = BACK_MSG.GetText();
@@ -87,7 +87,7 @@ namespace Example
          IO.RENDERER.Add(sceneTitle);
          IO.RENDERER.Add(backMessage);
          IO.RENDERER.Add(sceneSwitchMessage);
-         IO.RENDERER.Add(ball.GetDrawable(), 1);
+         IO.RENDERER.Add(ball.GetDrawable());
          IO.RENDERER.Add(ballToggle);
          IO.RENDERER.Add(bar);
          IO.RENDERER.Add(circle);

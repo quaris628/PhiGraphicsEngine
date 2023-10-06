@@ -20,7 +20,7 @@ namespace phi.graphics
       private Graphics g;
       private Image output;
       private Color background;
-      private SortedList<int, LinkedList<Drawable>> layers;
+      private SortedList<int, Layer> layers;
       private Dictionary<Drawable, int> layerIndex;
       private int defaultLayer;
 
@@ -36,7 +36,7 @@ namespace phi.graphics
          this.g = Graphics.FromImage(output);
          this.output = output;
          this.background = background;
-         this.layers = new SortedList<int, LinkedList<Drawable>>();
+         this.layers = new SortedList<int, Layer>();
          this.layerIndex = new Dictionary<Drawable, int>();
          this.defaultLayer = DEFAULT_DEFAULT_LAYER;
 
@@ -53,7 +53,7 @@ namespace phi.graphics
          this.g = null;
          this.output = null;
          this.background = Color.White;
-         this.layers = new SortedList<int, LinkedList<Drawable>>();
+         this.layers = new SortedList<int, Layer>();
          this.layerIndex = new Dictionary<Drawable, int>();
          this.defaultLayer = DEFAULT_DEFAULT_LAYER;
 
@@ -79,23 +79,20 @@ namespace phi.graphics
        */
       public void Render()
       {
-         if (HasChanged())
+         if ( true ) //HasChanged())
          {
             g.Clear(background);
             CalculateDisplacement();
 
-            foreach (LinkedList<Drawable> drawables in layers.Values)
+            foreach (Layer layer in layers.Values)
             {
-               foreach (Drawable drawable in drawables)
-               {
-                  if (drawable.IsDisplaying())
-                  {
-                     drawable.DrawOffset(g, displacementX, displacementY);
-                  }
-               }
+               layer.RenderLayer(displacementX, displacementY);
+               g.DrawImage(layer.GetImage(), 0, 0);
             }
             UnflagChanges();
+            SetOutput(output);
          }
+         
       }
 
       public void Add(Drawable item, int layer)
@@ -103,9 +100,9 @@ namespace phi.graphics
          if (!layers.ContainsKey(layer))
          {
             // create new sub-list for a new layer
-            layers.Add(layer, new LinkedList<Drawable>());
+            layers.Add(layer, new Layer(new Bitmap(output.Width, output.Height), Color.Transparent));
          }
-         layers[layer].AddFirst(item);
+         layers[layer].AddDrawable(item);
          layerIndex[item] = layer;
          item.PutIn(this);
          FlagChange();
@@ -115,11 +112,11 @@ namespace phi.graphics
          if (!layers.ContainsKey(layer))
          {
             // create new sub-list for a new layer
-            layers.Add(layer, new LinkedList<Drawable>());
+            layers.Add(layer, new Layer(new Bitmap(output.Width, output.Height), Color.Transparent));
          }
          foreach (Drawable item in items)
          {
-            layers[layer].AddFirst(item);
+            layers[layer].AddDrawable(item);
             layerIndex[item] = layer;
             item.PutIn(this);
          }
@@ -142,7 +139,7 @@ namespace phi.graphics
       public bool Remove(Drawable item)
       {
          if (layerIndex.TryGetValue(item, out int layer) &&
-            layers[layer].Remove(item))
+            layers[layer].RemoveDrawable(item))
          {
             item.TakeOut(this);
             FlagChange();
@@ -173,7 +170,12 @@ namespace phi.graphics
 
       public void ClearLayer(int layer) { layers.Remove(layer); FlagChange(); }
       
-      public void Clear() { layers.Clear(); RemoveCenter(); FlagChange(); }
+      public void Clear() 
+      { 
+         layers.Clear();
+         RemoveCenter(); 
+         FlagChange();
+      }
 
       /**
         * Sets the image to draw images on top of
@@ -278,6 +280,71 @@ namespace phi.graphics
          else
             return 0;
 
+      }
+
+      /*
+       * Private class to contain layer data
+       * This class should be imagined as it's own renderer
+       */
+      private class Layer : DynamicContainer
+      {
+         LinkedList<Drawable> layerDrawables; //Drawables in this layer
+         bool hasChanged; //Whether this layer has changed
+         private Graphics g;
+         private Image output;
+         private Color background;
+
+         public Layer(Image output, Color background)
+         {
+            this.output = output;
+            this.g = Graphics.FromImage(this.output);
+            layerDrawables = new LinkedList<Drawable>();
+            hasChanged = true;
+            this.background = background;
+         }
+
+         public void RenderLayer(int displacementX, int displacementY)
+         {
+            if ( true )//HasChanged())
+            {
+               g.Clear(background);
+               
+                  foreach (Drawable drawable in layerDrawables)
+                  {
+                     if (drawable.IsDisplaying())
+                     {
+                        drawable.DrawOffset(g, displacementX, displacementY);
+                     }
+                  }
+               UnflagChanges();
+            }
+         }
+         public Image GetImage()
+         {
+            return output;
+         }
+
+         public void AddDrawable(Drawable d)
+         {
+            layerDrawables.AddLast(d);
+         }
+         public bool RemoveDrawable(Drawable d)
+         {
+            return layerDrawables.Remove(d);
+         }
+
+         public LinkedList<Drawable> getDrawables()
+         {
+            return layerDrawables;
+         }
+
+         ~Layer()
+         {
+            output = new Bitmap(new Bitmap(output.Width, output.Height));
+            g.Dispose();
+            output.Dispose();
+            layerDrawables.Clear();
+         }
       }
    }
 }
